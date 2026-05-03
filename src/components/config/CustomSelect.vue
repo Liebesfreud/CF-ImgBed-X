@@ -106,11 +106,11 @@ export default {
 }
 
 .custom-select-trigger:hover {
-    border-color: var(--el-color-primary-light-5);
+    border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
 }
 
 .custom-select.is-open .custom-select-trigger {
-    border-color: var(--el-color-primary);
+    border-color: var(--color-accent);
 }
 
 .custom-select-value {
@@ -167,7 +167,7 @@ export default {
 }
 
 .custom-select-option.is-selected {
-    color: var(--el-color-primary);
+    color: var(--color-accent);
     font-weight: 500;
 }
 

@@ -822,7 +822,7 @@ mounted() {
     gap: 8px;
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 2px solid var(--el-color-primary-light-7);
+    border-bottom: 2px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 .second-title {
@@ -889,7 +889,7 @@ mounted() {
 }
 
 .first-settings :deep(.el-switch) {
-    --el-switch-on-color: var(--el-color-primary);
+    --el-switch-on-color: var(--color-accent);
 }
 
 .form-item-hint {

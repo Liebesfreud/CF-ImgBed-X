@@ -1289,7 +1289,7 @@ mounted() {
 
 .group-icon {
     font-size: 18px;
-    color: var(--el-color-primary);
+    color: var(--color-accent);
 }
 
 .channel-count {
@@ -1343,40 +1343,45 @@ mounted() {
     background: radial-gradient(circle, rgba(0, 0, 0, 0.08) 0%, transparent 70%);
 }
 
-.channel-card.telegram .card-glow {
-    background: radial-gradient(circle, rgba(84, 169, 235, 0.2) 0%, transparent 70%);
-}
+  .channel-card.telegram .card-glow,
+  .channel-card.cfr2 .card-glow,
+  .channel-card.s3 .card-glow,
+  .channel-card.discord .card-glow,
+  .channel-card.huggingface .card-glow,
+  .channel-card.webdav .card-glow {
+      background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 20%, transparent) 0%, transparent 70%);
+  }
 
-.channel-card.cfr2 .card-glow {
-    background: radial-gradient(circle, rgba(246, 130, 31, 0.2) 0%, transparent 70%);
-}
+  .channel-card:hover {
+      border-color: var(--glass-border-hover);
+      box-shadow: var(--shadow-as-border-strong);
+      background: var(--glass-bg-hover);
+  }
+  
+  .channel-card.disabled {
+      opacity: 0.6;
+      background: var(--color-surface-soft);
+  }
+  
+  /* 渠道类型边缘颜色统一为主题色 */
+  .channel-card.telegram,
+  .channel-card.cfr2,
+  .channel-card.s3,
+  .channel-card.discord,
+  .channel-card.huggingface,
+  .channel-card.webdav {
+      border-left-color: var(--color-accent);
+  }
 
-.channel-card.s3 .card-glow {
-    background: radial-gradient(circle, rgba(86, 154, 49, 0.2) 0%, transparent 70%);
-}
+  .channel-card.disabled {
+      opacity: 0.6;
+      background: var(--color-surface-soft);
+  }
 
-.channel-card.discord .card-glow {
-    background: radial-gradient(circle, rgba(88, 101, 242, 0.2) 0%, transparent 70%);
-}
-
-.channel-card.huggingface .card-glow {
-    background: radial-gradient(circle, rgba(255, 210, 30, 0.2) 0%, transparent 70%);
-}
-
-.channel-card.webdav .card-glow {
-    background: radial-gradient(circle, rgba(20, 184, 166, 0.2) 0%, transparent 70%);
-}
-
-.channel-card:hover {
-    border-color: var(--glass-border-hover);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    background: var(--glass-bg-hover);
-}
-
-.channel-card.disabled {
-    opacity: 0.6;
-    background: var(--el-fill-color-lighter);
-}
+  .channel-card.fixed {
+      border-left-width: 3px;
+      border-left-style: dashed;
+  }
 
 /* 渠道类型边缘颜色 */
 .channel-card.telegram {

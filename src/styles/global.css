@@ -184,7 +184,7 @@ body {
     --admin-cuscfg-table-bg-color: var(--color-surface);
     --admin-syscfg-tabs-border-color: var(--color-border);
 
-    --admin-purple: #8b5cf6;
+    --admin-purple: var(--color-accent);
     --theme-toggle-color: var(--color-text);
     --theme-toggle-bg-color: var(--color-surface);
     --admin-theme-toggle-color: var(--color-text);

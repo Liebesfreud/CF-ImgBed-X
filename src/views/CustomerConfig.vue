@@ -2,7 +2,7 @@
     <div class="container">
         <header class="app-topbar">
             <div class="header-content">
-                <DashboardTabs activeTab="settings">
+                <DashboardTabs activeTab="users">
                     <template #actions>
                         <el-tooltip :disabled="disableTooltip" :content="$t('sysConfig.logout')" placement="bottom">
                             <BaseButton class="nav-action danger" icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
@@ -12,16 +12,7 @@
             </div>
         </header>
         <div class="main-container">
-            <section class="settings-section-nav">
-                <button class="settings-switch is-active" type="button">
-                    <font-awesome-icon icon="user-cog" />
-                    <span>用户管理</span>
-                </button>
-                <button class="settings-switch" type="button" @click="$router.push('/systemConfig')">
-                    <font-awesome-icon icon="cog" />
-                    <span>系统设置</span>
-                </button>
-            </section>
+
             <el-table :data="paginatedData" :default-sort="{ prop: 'count', order: 'descending' }" row-key="ip" class="main-table" table-layout="fixed" v-loading="loading" @expand-change="handleExpandChange">
                 <el-table-column type="expand">
                     <template v-slot="props">
@@ -81,7 +72,7 @@
                     :pager-count="pagerCount"
                     @current-change="handlePageChange"
                 ></el-pagination>
-                <el-button v-if="currentPage === Math.ceil(dealedData.length / pageSize)" type="primary" @click="loadMoreData" :loading="loading" class="load-more">{{ $t('customerConfig.loadMore') }}</el-button>
+                <el-button v-if="currentPage === Math.ceil(dealedData.length / pageSize)" @click="loadMoreData" :loading="loading" class="load-more">{{ $t('customerConfig.loadMore') }}</el-button>
             </div>
         </div>
     </div>
@@ -259,15 +250,9 @@ export default {
 </script>
 
 <style scoped>
-.main-table {
-    width: 95%;
-    max-width: 1400px;
-    border-radius: 16px;
-    box-shadow: var(--glass-shadow);
-    min-height: 530px;
-    overflow: hidden;
-    border: none;
-    background: var(--glass-bg) !important;
+.container {
+    background: var(--bg-color);
+    min-height: 100vh;
 }
 
 .main-table :deep(.el-table__inner-wrapper) {
@@ -303,6 +288,12 @@ export default {
 }
 
 .container {
+    --el-color-primary: var(--color-accent);
+    --el-color-primary-light-3: color-mix(in srgb, var(--color-accent) 70%, white);
+    --el-color-primary-light-5: color-mix(in srgb, var(--color-accent) 50%, white);
+    --el-color-primary-light-7: color-mix(in srgb, var(--color-accent) 30%, white);
+    --el-color-primary-light-9: color-mix(in srgb, var(--color-accent) 12%, white);
+    --el-color-primary-dark-2: var(--color-accent-hover, var(--color-accent));
     background: var(--admin-container-bg-color);
     min-height: 100vh;
     color: var(--admin-container-color);
@@ -314,8 +305,8 @@ export default {
     position: sticky;
     top: 12px;
     z-index: 200;
-    width: min(1180px, calc(100% - 24px));
-    margin: 12px auto 18px;
+    width: min(1080px, calc(100% - 32px));
+    margin: 10px auto 16px;
     padding: 8px 12px;
     border-radius: var(--radius-xl);
     background: var(--color-surface);
@@ -359,43 +350,6 @@ export default {
     margin: 26px auto 0;
 }
 
-.settings-section-nav {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    margin-bottom: var(--space-5);
-    padding: var(--space-2);
-    border-radius: var(--radius-xl);
-    background: var(--color-surface-soft);
-    box-shadow: var(--shadow-as-border);
-    overflow-x: auto;
-}
-
-.settings-switch {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    flex: 0 0 auto;
-    min-height: var(--control-height-sm);
-    border: none;
-    border-radius: 999px;
-    padding: 0 var(--space-3);
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    box-shadow: var(--shadow-as-border);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 650;
-}
-
-.settings-switch:hover,
-.settings-switch.is-active {
-    color: var(--color-accent-contrast);
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-}
 
 @media (max-width: 768px) {
     .app-topbar {

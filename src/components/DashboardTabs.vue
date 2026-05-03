@@ -1,24 +1,18 @@
 <template>
     <div class="dashboard-shell-nav">
-        <BaseButton class="brand-pill" variant="secondary" type="button" @click="goHome" aria-label="ImgHub">
-            <IconCloudUpload class="brand-icon" :size="22" :stroke-width="1.9" />
-            <span class="brand-copy">
-                <span class="eyebrow">ImgHub</span>
-                <strong>{{ activeMeta.label }}</strong>
-            </span>
-        </BaseButton>
+        <div class="brand-mark" aria-label="CF ImgBed X">CF ImgBed X</div>
 
         <nav class="primary-nav" aria-label="Primary">
             <BaseButton
                 v-for="item in navItems"
                 :key="item.key"
                 type="button"
-                :variant="activeTab === item.key ? 'secondary' : 'ghost'"
+                variant="ghost"
                 class="nav-item"
                 :class="{ 'is-active': activeTab === item.key }"
                 @click="handleTabClick(item.route)"
             >
-                <component :is="item.icon" :size="18" :stroke-width="1.8" />
+                <component :is="item.icon" :size="19" :stroke-width="1.8" />
                 <span>{{ item.label }}</span>
             </BaseButton>
         </nav>
@@ -34,7 +28,7 @@
 <script>
 import AdminToggleDark from './dashboard/AdminToggleDark.vue';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
-import { IconCloudUpload, IconPhoto, IconSettings } from '@tabler/icons-vue';
+import { IconCloudUpload, IconPhoto, IconSettings, IconUserCog } from '@tabler/icons-vue';
 
 export default {
     name: 'DashboardTabs',
@@ -54,17 +48,12 @@ export default {
             return [
                 { key: 'home', route: '/', icon: IconCloudUpload, label: '主页' },
                 { key: 'gallery', route: '/dashboard', icon: IconPhoto, label: '图库' },
-                { key: 'settings', route: '/systemConfig', icon: IconSettings, label: '设置' }
+                { key: 'settings', route: '/systemConfig', icon: IconSettings, label: '设置' },
+                { key: 'users', route: '/customerConfig', icon: IconUserCog, label: '用户' }
             ];
-        },
-        activeMeta() {
-            return this.navItems.find(item => item.key === this.activeTab) || this.navItems[0];
         }
     },
     methods: {
-        goHome() {
-            this.handleTabClick('/');
-        },
         handleTabClick(route) {
             if (this.$route.path === route) return;
             this.$router.push(route);
@@ -76,58 +65,30 @@ export default {
 <style scoped>
 .dashboard-shell-nav {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
     align-items: center;
     gap: 14px;
     width: 100%;
+    min-height: 46px;
 }
 
-.brand-pill {
-    gap: 10px;
-    min-width: 0;
-    background: transparent;
-    box-shadow: none;
-    padding: 7px 12px 7px 8px;
-    border-radius: var(--radius-sm);
-}
-
-.brand-pill:hover {
-    background: var(--color-surface-soft);
-    box-shadow: none;
-}
-
-.brand-icon {
-    color: var(--color-accent-contrast);
-    background: var(--color-accent);
-    border-radius: 50%;
-    padding: 6px;
-}
-
-.brand-copy {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.05;
+.brand-mark {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    color: var(--color-text);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     white-space: nowrap;
-}
-
-.eyebrow {
-    color: var(--color-text-muted);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.brand-copy strong {
-    font-size: 14px;
-    font-weight: 600;
 }
 
 .primary-nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 12px;
     min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -139,25 +100,41 @@ export default {
 
 .nav-item {
     flex: 0 0 auto;
-    min-height: 32px;
-    padding: 0 12px;
+    min-width: 88px;
+    min-height: 38px;
+    padding: 0 16px;
     font-size: 14px;
-    font-weight: 500;
-    border-radius: var(--radius-sm);
+    font-weight: 650;
+    line-height: 1;
+    border-radius: 999px;
     color: var(--color-text-muted);
 }
 
+.nav-item :deep(.base-button__icon),
+.nav-item :deep(.base-button__label) {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.nav-item :deep(svg) {
+    display: block;
+}
+
 .nav-item.is-active {
-    box-shadow: none;
-    color: var(--color-text);
+    color: var(--color-accent-contrast);
+    background: var(--color-accent);
+    box-shadow: var(--shadow-as-border);
 }
 
 .nav-controls {
+    justify-self: end;
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
     min-width: max-content;
+    min-height: 46px;
 }
 
 .tabs-language-switcher {
@@ -168,32 +145,34 @@ export default {
 
 @media (max-width: 860px) {
     .dashboard-shell-nav {
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-            "brand controls"
-            "nav nav";
+        grid-template-columns: 1fr;
+        gap: 6px;
     }
 
-    .brand-pill { grid-area: brand; width: fit-content; }
-    .primary-nav { grid-area: nav; justify-content: flex-start; padding-bottom: 2px; }
-    .nav-controls { grid-area: controls; }
+    .brand-mark {
+        justify-self: center;
+        min-height: 30px;
+        font-size: 14px;
+    }
+
+    .primary-nav { justify-content: center; }
+    .nav-controls {
+        justify-self: center;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 560px) {
-    .dashboard-shell-nav {
-        gap: 10px;
-    }
-
-    .brand-copy strong {
-        max-width: 120px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .primary-nav {
+        width: 100%;
+        gap: 8px;
     }
 
     .nav-item {
-        flex: 1 0 auto;
-        padding: 0 12px;
-        font-size: 13px;
+        flex: 1 0 0;
+        min-width: 0;
+        padding: 0 10px;
+        font-size: 12px;
     }
 }
 </style>

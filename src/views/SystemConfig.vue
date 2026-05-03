@@ -13,10 +13,6 @@
         </header>
         <main class="settings-layout">
             <section class="settings-section-nav">
-                <button class="settings-switch" type="button" @click="$router.push('/customerConfig')">
-                    <font-awesome-icon icon="user-cog" />
-                    <span>用户管理</span>
-                </button>
                 <SysConfigTabs
                     v-model:activeIndex="activeIndex"
                     v-model:isCollapse="isSidebarCollapse"
@@ -127,24 +123,26 @@ export default {
 </script>
 <style scoped>
 .container {
-    background: var(--admin-container-bg-color);
+    background: var(--bg-color);
     min-height: 100vh;
-    color: var(--admin-container-color);
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
+}
+
+.app-topbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: min(1080px, calc(100% - 32px));
+    margin: 10px auto 16px;
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
 }
 
 .header-content {
-    position: sticky;
-    top: 10px;
-    z-index: 2001;
-    width: min(1180px, calc(100% - 24px));
-    margin: 10px auto 0;
-    padding: 10px 14px;
-    border-radius: var(--radius-xl);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-as-border-strong);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .icon-action {
@@ -188,29 +186,6 @@ export default {
     overflow-x: auto;
 }
 
-.settings-switch {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    flex: 0 0 auto;
-    min-height: var(--control-height-sm);
-    border: none;
-    border-radius: 999px;
-    padding: 0 var(--space-3);
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    box-shadow: var(--shadow-as-border);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 650;
-}
-
-.settings-switch:hover {
-    color: var(--color-text);
-    background: var(--color-surface-soft);
-}
 
 .settings-subnav {
     flex: 1 1 auto;
@@ -221,24 +196,6 @@ export default {
 }
 
 @media (max-width: 768px) {
-.app-topbar {
-    position: sticky;
-    top: 12px;
-    z-index: 200;
-    width: min(1180px, calc(100% - 24px));
-    margin: 12px auto 18px;
-    padding: 8px 12px;
-    border-radius: var(--radius-xl);
-    background: var(--color-surface);
-    box-shadow: var(--shadow-as-border);
-}
-
-.header-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
     .app-topbar {
         top: 6px;
         width: calc(100% - 16px);

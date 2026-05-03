@@ -74,28 +74,38 @@ export default {
     gap: 7px;
     flex: 0 0 auto;
     min-height: 34px;
-    border: 1px solid transparent;
-    border-radius: 999px;
+    border: none;
+    border-radius: var(--radius-sm);
     padding: 0 12px;
     background: transparent;
     color: var(--color-text-muted);
     cursor: pointer;
     font-family: inherit;
     font-size: 13px;
-    font-weight: 650;
-    transition: color var(--motion-fast) var(--motion-ease), background var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease);
+    font-weight: 500;
+    line-height: 1;
+}
+
+.sys-tab svg,
+.sys-tab span {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.sys-tab svg {
+    display: block;
 }
 
 .sys-tab:hover {
     color: var(--color-text);
     background: var(--color-surface-soft);
-    border-color: var(--color-border);
 }
 
 .sys-tab.is-active {
     color: var(--color-accent-contrast);
     background: var(--color-accent);
-    border-color: var(--color-accent);
+    box-shadow: var(--shadow-as-border-strong);
 }
 
 @media (max-width: 768px) {

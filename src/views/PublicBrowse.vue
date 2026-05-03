@@ -1176,8 +1176,8 @@ export default {
     top: 12px;
     z-index: 200;
     width: min(1180px, calc(100% - 24px));
-    margin: 12px auto 18px;
-    padding: 8px 12px;
+    margin: 8px auto 14px;
+    padding: 5px 10px;
     border-radius: var(--radius-xl);
     background: var(--color-surface);
     box-shadow: var(--shadow-as-border);
@@ -1987,7 +1987,7 @@ color: rgba(255, 255, 255, 0.85);
         top: 6px;
         width: calc(100% - 16px);
         border-radius: 18px;
-        padding: 8px;
+        padding: 5px 8px;
     }
     
     .header-left .logo {

@@ -2,15 +2,13 @@
     <div class="container">
     <div class="upload-home">
         <header class="app-topbar">
-            <DashboardTabs activeTab="home">
-                <template #actions>
-                    <BaseButton class="nav-action" icon="book" variant="ghost" size="md" @click="handleDesktopMenuCommand('viewDocs')">
-                        <font-awesome-icon icon="book" />
-                        <span>文档</span>
-                    </BaseButton>
-                    <BaseButton class="nav-action danger" icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
-                </template>
-            </DashboardTabs>
+            <div class="header-content">
+                <DashboardTabs activeTab="home">
+                    <template #actions>
+                        <BaseButton class="nav-action danger" icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
+                    </template>
+                </DashboardTabs>
+            </div>
         </header>
 
         <section class="upload-workspace-panel">
@@ -67,7 +65,6 @@
                 </BaseButton>
             </div>
         </section>
-        <Logo :useConfigLink="true" />
         <div class="header">
             <h1 class="title"><a class="main-title" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank">{{ ownerName }}</a> ImgHub</h1>
         </div>
@@ -495,12 +492,18 @@ export default {
     position: sticky;
     top: 12px;
     z-index: 200;
-    width: min(1180px, calc(100% - 24px));
-    margin: 12px auto 18px;
+    width: min(1080px, calc(100% - 32px));
+    margin: 10px auto 16px;
     padding: 8px 12px;
     border-radius: var(--radius-xl);
     background: var(--color-surface);
     box-shadow: var(--shadow-as-border);
+}
+
+.header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .upload-workspace-panel {

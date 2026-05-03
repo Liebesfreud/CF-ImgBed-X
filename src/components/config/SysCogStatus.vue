@@ -948,18 +948,25 @@ export default {
   background: var(--glass-bg-hover);
 }
 
-.card-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-right: 20px;
-  background: linear-gradient(135deg, #60A5FA, #93C5FD);
-  color: white;
-}
+  .card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-right: 20px;
+    background: var(--color-surface-soft);
+    color: var(--color-text);
+    box-shadow: var(--shadow-as-border);
+  }
+
+  .overview-card:hover .card-icon {
+    color: var(--color-accent-contrast);
+    background: var(--color-accent);
+    box-shadow: var(--shadow-as-border-strong);
+  }
 
 .card-content {
   flex: 1;
@@ -1432,7 +1439,7 @@ html.dark .legend-item:hover {
 }
 
 .file-card-header .fa-icon {
-  color: #60A5FA;
+  color: var(--color-accent);
 }
 
 .file-card-header.warning .fa-icon {

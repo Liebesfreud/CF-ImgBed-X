@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-        <el-container>
-            <el-header>
+        <header class="app-topbar">
             <div class="header-content">
                 <DashboardTabs activeTab="gallery">
                     <template #actions>
@@ -11,7 +10,8 @@
                     </template>
                 </DashboardTabs>
             </div>
-            </el-header>
+        </header>
+        <el-container>
             <el-main class="main-container">
             <section class="gallery-toolbar">
                 <div class="search-area">
@@ -2021,8 +2021,8 @@ box-shadow: var(--dialog-box-shadow);
     position: sticky;
     top: 12px;
     z-index: 200;
-    width: min(1180px, calc(100% - 24px));
-    margin: 12px auto 18px;
+    width: min(1080px, calc(100% - 32px));
+    margin: 10px auto 16px;
     padding: 8px 12px;
     border-radius: var(--radius-xl);
     background: var(--color-surface);
