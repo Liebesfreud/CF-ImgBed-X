@@ -131,9 +131,8 @@ export default {
     padding: 10px 12px;
     border-radius: 16px;
     background: var(--upload-list-item-bg, linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%));
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 8px var(--upload-list-item-shadow, rgba(0, 0, 0, 0.04));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+box-shadow: 0 2px 8px var(--upload-list-item-shadow, rgba(0, 0, 0, 0.04));
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .upload-list-item:hover {
     border-color: var(--upload-list-item-hover-border, rgba(64, 158, 255, 0.25));
@@ -181,8 +180,7 @@ export default {
     border-radius: 10px;
     margin-bottom: 8px;
     border: 1px solid var(--file-name-border, rgba(64, 158, 255, 0.12));
-    backdrop-filter: blur(4px);
-    transition: all 0.3s ease;
+transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 .upload-list-item-name-wrapper:hover {
     background: var(--file-name-hover-bg, linear-gradient(135deg, rgba(64, 158, 255, 0.12) 0%, rgba(64, 158, 255, 0.06) 100%));
@@ -274,7 +272,7 @@ export default {
 
 /* URL Input Styles */
 .upload-list-item-url :deep(.el-input) {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .upload-list-item-url :deep(.el-input:hover) {
     transform: translateY(-1px);
@@ -282,7 +280,7 @@ export default {
 .upload-list-item-url :deep(.el-input__wrapper) {
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--el-fill-color-blank);
     border: 1px solid var(--el-border-color-lighter);
     overflow: hidden;
@@ -316,7 +314,7 @@ export default {
     font-size: 13px;
     font-family: 'Courier New', Monaco, monospace;
     color: var(--el-text-color-regular);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     padding-left: 12px;
     position: relative;
     z-index: 1;
@@ -335,7 +333,7 @@ export default {
     margin: 0;
     border-radius: 9px 0 0 9px;
     box-shadow: none;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     letter-spacing: 0.5px;
     position: relative;
     z-index: 1;
@@ -348,7 +346,7 @@ export default {
     height: 60%; width: 1px;
     background: var(--el-color-primary-light-7);
     opacity: 0.3;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 .upload-list-item-url :deep(.el-input:hover .el-input-group__prepend) {
     background: var(--el-color-primary-light-8);
@@ -380,7 +378,7 @@ export default {
     border: none;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 16px;
     position: relative;
     overflow: hidden;

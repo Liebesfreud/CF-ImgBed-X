@@ -254,7 +254,7 @@ export default {
 .header-icon {
     font-size: 1.5em;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     color: var(--admin-container-color);
     outline: none;
 }
@@ -265,7 +265,7 @@ export default {
 }
 
 .filter-badge :deep(.el-badge__content) {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
     border: none;
     font-size: 10px;
     height: 16px;
@@ -313,7 +313,7 @@ export default {
     height: 26px;
     padding: 0 6px;
     border-radius: 4px;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 .filter-options :deep(.el-checkbox:hover) {
@@ -326,7 +326,7 @@ export default {
 }
 
 .filter-options :deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
-    color: #0ea5e9;
+    color: var(--color-accent);
 }
 
 /* 渠道分组样式 */
@@ -348,8 +348,8 @@ export default {
 }
 
 .filter-options :deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
-    background-color: #0ea5e9;
-    border-color: #0ea5e9;
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
 .filter-actions {
@@ -364,12 +364,12 @@ export default {
     border: 1px solid var(--el-border-color);
     color: var(--el-text-color-regular);
     border-radius: 6px;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 .filter-actions .el-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-    border-color: #38bdf8;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    border-color: var(--color-accent);
     color: white;
 }
 

@@ -4,9 +4,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 import 'element-plus/es/components/message-box/style/css'
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons'; // 引入所有 solid 图标
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import TablerCompatIcon from '@/components/TablerCompatIcon.vue';
+import BaseButton from '@/components/BaseButton.vue';
 
 import App from './App.vue'
 import router from './router'
@@ -20,13 +19,11 @@ import './styles/global.css'
 // OverlayScrollbars 悬浮滚动条
 import 'overlayscrollbars/overlayscrollbars.css'
 
-
-library.add(fas);
-
 const app = createApp(App);
 const head = createHead(); // 创建 head 对象
 
-app.component('font-awesome-icon', FontAwesomeIcon);
+app.component('font-awesome-icon', TablerCompatIcon);
+app.component('BaseButton', BaseButton);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }

@@ -257,7 +257,7 @@ export default {
     color: var(--login-title-color);
     font-family: 'Righteous', 'Noto Sans SC', sans-serif;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     letter-spacing: 2px;
 }
 @media (max-width: 768px) {
@@ -283,8 +283,7 @@ export default {
     border-radius: 12px;
     box-shadow: var(--login-container-box-shadow);
     background-color: var(--login-container-bg-color);
-    backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
+transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     padding: 40px 0;
     gap: 20px;
     position: relative;
@@ -324,7 +323,7 @@ export default {
     width: 100%;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-icon {
@@ -337,7 +336,7 @@ export default {
     font-weight: 600;
     color: var(--login-title-color);
     text-align: left;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     letter-spacing: 0.5px;
     position: relative;
     display: flex;
@@ -383,7 +382,7 @@ export default {
     letter-spacing: 2px;
     border-radius: 12px;
     background-color: var(--login-submit-btn-bg-color);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     overflow: hidden;
     position: relative;
@@ -456,9 +455,8 @@ export default {
     border: 2px solid transparent;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 12px 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(10px);
-    position: relative;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+position: relative;
     overflow: hidden;
 }
 
@@ -547,11 +545,10 @@ export default {
     top: 30px;
     right: 30px;
     border: none;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     background-color: var(--toolbar-button-bg-color);
     box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
+border-radius: 12px;
 }
 .toggle-dark:hover {
     transform: scale(1.05);
@@ -561,11 +558,10 @@ export default {
     position: fixed;
     top: 30px;
     right: 80px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     background-color: var(--toolbar-button-bg-color);
     box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
+border-radius: 12px;
     width: 2.5rem;
     height: 2.5rem;
     display: flex;

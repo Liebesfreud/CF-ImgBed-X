@@ -243,7 +243,7 @@ export default {
     min-width: 0;
 }
 .list-col-name:hover {
-    color: #38bdf8;
+    color: var(--color-accent);
 }
 .filename-ellipsis {
     display: flex;
@@ -301,15 +301,15 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     background: transparent;
 }
 .custom-checkbox:hover {
-    border-color: #38bdf8;
+    border-color: var(--color-accent);
 }
 .custom-checkbox.checked {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-    border-color: #38bdf8;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    border-color: var(--color-accent);
 }
 .custom-checkbox .check-icon {
     font-size: 10px;
@@ -363,10 +363,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 .list-action-btn:hover {
-    background: #38bdf8;
+    background: var(--color-accent);
     color: white;
 }
 .list-action-danger:hover {

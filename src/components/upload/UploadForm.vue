@@ -1541,8 +1541,7 @@ beforeDestroy() {
     justify-content: center;
     border-radius: 15px;
     background-color: var(--upload-list-card-bg-color);
-    backdrop-filter: blur(10px);
-    border: var(--upload-list-card-border);
+border: var(--upload-list-card-border);
     box-shadow: var(--upload-list-card-box-shadow) !important;
     transition: height 0.3s ease;
     overflow: hidden;
@@ -1573,32 +1572,19 @@ beforeDestroy() {
     height: 40vh;
 }
 
-/* 上传时列表卡片边框效果 - 与流光颜色一致 */
+/* 上传时列表卡片边框效果：Vercel shadow-as-border + restrained blue focus */
 .upload-list-card.is-uploading {
-    border: 1px solid var(--el-upload-dragger-uniform-color, #409eff) !important;
-    box-shadow: 0 0 20px color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 30%, transparent),
-                0 0 40px color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 15%, transparent),
-                inset 0 0 20px color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 8%, transparent) !important;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 1px rgba(10, 114, 239, 0.42), 0 8px 24px rgba(10, 114, 239, 0.10), 0 0 0 1px #ffffff inset !important;
 }
 
-/* 拖拽上传卡片包装器 - 用于悬浮光斑效果 */
 .upload-card-wrapper {
     position: relative;
     overflow: visible;
 }
 
-/* 悬浮光斑效果 */
 .upload-card-glow {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.2) 0%, transparent 70%);
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
+    display: none;
 }
 
 .upload-card {
@@ -1620,15 +1606,16 @@ beforeDestroy() {
     justify-content: center;
     align-items: center;
     height: 45vh;
-    border-radius: 15px;
-    border: var(--el-upload-dragger-border);
-    opacity: 0.7;
+    border-radius: 16px;
+    border: none;
+    opacity: 1;
     background-color: var(--el-upload-dragger-bg-color);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    box-shadow: var(--shadow-as-border);
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), opacity var(--motion-base) var(--motion-ease);
 }
+:deep(.el-upload:focus-visible .el-upload-dragger),
 :deep(.el-upload:focus .el-upload-dragger) {
-    border-color: var(--el-upload-dragger-border-color);
+    box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
 }
 :deep(.el-upload-dragger:hover) {
     opacity: 0.8;
@@ -1679,10 +1666,12 @@ beforeDestroy() {
     z-index: 1;
 }
 .el-upload__text {
-    font-weight: bold;
-    font-size: medium;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
     user-select: none;
-    transition: all 0.3s ease;
+    color: var(--color-text);
+    transition: color var(--motion-base) var(--motion-ease), opacity var(--motion-base) var(--motion-ease);
 }
 @media (max-width: 768px) {
     .el-upload__text {
@@ -1715,13 +1704,12 @@ beforeDestroy() {
     justify-content: center;
     align-items: center;
     height: 45vh;
-    border-radius: 15px;
-    border: var(--el-upload-dragger-border);
-    box-shadow: none;
-    opacity: 0.7;
+    border-radius: 16px;
+    border: none;
+    box-shadow: var(--shadow-as-border);
+    opacity: 1;
     background-color: var(--el-upload-dragger-bg-color);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), opacity var(--motion-base) var(--motion-ease);
     box-sizing: border-box;
 }
 .paste-card:hover {
@@ -1779,10 +1767,10 @@ beforeDestroy() {
 .upload-card-textarea {
     width: 50vw;
     height: 70%;
-    border-radius: 16px;
-    background: var(--textarea-bg, linear-gradient(135deg, rgba(64, 158, 255, 0.03) 0%, rgba(64, 158, 255, 0.01) 100%));
-    backdrop-filter: blur(12px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: var(--shadow-as-border);
+    transition: box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
     box-sizing: border-box;
     display: flex;
     position: relative;
@@ -1791,41 +1779,25 @@ beforeDestroy() {
     height: 50%;
 }
 
-.upload-card-textarea::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 17px;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(64, 158, 255, 0.3) 0%, rgba(64, 158, 255, 0.1) 50%, rgba(64, 158, 255, 0.3) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
+.upload-card-textarea:hover {
+    box-shadow: var(--shadow-as-border-strong);
 }
 
-.upload-card-textarea:hover::before {
-    opacity: 1;
-}
-
-.upload-card-textarea:focus-within::before {
-    opacity: 1;
-    background: linear-gradient(135deg, rgba(64, 158, 255, 0.6) 0%, rgba(64, 158, 255, 0.2) 50%, rgba(64, 158, 255, 0.6) 100%);
+.upload-card-textarea:focus-within {
+    box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
 }
 
 :deep(.el-textarea__inner) {
-    border-radius: 16px;
-    background: var(--textarea-inner-bg, rgba(0, 0, 0, 0.02));
-    backdrop-filter: blur(12px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 14px;
+    background: #ffffff;
+    transition: box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
     resize: none;
-    border: 1px solid transparent;
+    border: none;
     padding: 16px 20px;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.6;
     color: var(--el-text-color-primary);
+    box-shadow: none;
 }
 
 :deep(.el-textarea__inner::placeholder) {
@@ -1835,15 +1807,13 @@ beforeDestroy() {
 }
 
 :deep(.el-textarea__inner:hover) {
-    background: var(--textarea-inner-hover-bg, rgba(64, 158, 255, 0.03));
+    background: #ffffff;
 }
 
 :deep(.el-textarea__inner:focus) {
     border-color: transparent;
-    box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.15),
-                0 4px 20px rgba(64, 158, 255, 0.1),
-                inset 0 1px 3px rgba(0, 0, 0, 0.05);
-    background: var(--textarea-inner-focus-bg, rgba(64, 158, 255, 0.02));
+    box-shadow: none;
+    background: #ffffff;
 }
 
 /* Modern Scrollbar Styles */
@@ -1859,13 +1829,13 @@ beforeDestroy() {
 }
 
 .upload-card-textarea ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(64, 158, 255, 0.4) 0%, rgba(64, 158, 255, 0.6) 100%);
+    background: rgba(0, 0, 0, 0.22);
     border-radius: 6px;
-    transition: background 0.3s ease;
+    transition: background-color var(--motion-base) var(--motion-ease);
 }
 
 .upload-card-textarea ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(64, 158, 255, 0.6) 0%, rgba(64, 158, 255, 0.8) 100%);
+    background: rgba(0, 0, 0, 0.34);
 }
 .paste-card-actions {
     display: flex;
@@ -1879,42 +1849,30 @@ beforeDestroy() {
 .paste-card-upload-button {
     min-width: 100px;
     height: 42px;
-    border-radius: 14px !important;
+    border-radius: 10px !important;
     font-weight: 600;
     font-size: 15px;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%) !important;
+    letter-spacing: -0.01em;
+    background: #171717 !important;
     border: none !important;
-    box-shadow: 0 4px 15px rgba(64, 158, 255, 0.35),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: var(--shadow-as-border);
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease) !important;
     position: relative;
     overflow: hidden;
 }
 
-.paste-card-upload-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.6s ease;
-}
-
 .paste-card-upload-button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(64, 158, 255, 0.45),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-as-border-strong);
+    background: #000000 !important;
 }
 
-.paste-card-upload-button:hover::before {
-    left: 100%;
+.paste-card-upload-button:focus-visible {
+    box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
 }
 
 .paste-card-upload-button:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: translateY(0);
 }
 
 /* 上传状态下缩小按钮 */
@@ -1923,7 +1881,7 @@ beforeDestroy() {
     height: 32px;
     border-radius: 10px !important;
     font-size: 13px;
-    letter-spacing: 1px;
+    letter-spacing: -0.01em;
 }
 
 .upload-card-busy .paste-card-actions {
@@ -1932,14 +1890,15 @@ beforeDestroy() {
 
 /* Modern Radio Button Group */
 .paste-card-method-group {
-    background: var(--paste-method-group-bg, rgba(64, 158, 255, 0.08));
-    border-radius: 14px;
+    background: var(--paste-method-group-bg, #fafafa);
+    border-radius: 12px;
     padding: 4px;
-    border: 1px solid var(--paste-method-group-border, rgba(64, 158, 255, 0.15));
+    border: none;
+    box-shadow: var(--shadow-as-border);
 }
 .paste-card-method-group :deep(.el-radio-button__inner) {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 10px !important;
+    transition: color var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
+    border-radius: 9px !important;
     border: none !important;
     background: transparent;
     font-weight: 500;
@@ -1956,14 +1915,14 @@ beforeDestroy() {
 }
 
 .paste-card-method-group :deep(.el-radio-button__inner:hover) {
-    background: var(--paste-method-hover-bg, rgba(64, 158, 255, 0.12));
-    color: var(--el-color-primary);
+    background: #f0f0f0;
+    color: #171717;
 }
 
 .paste-card-method-group :deep(.el-radio-button__original-radio:checked + .el-radio-button__inner) {
-    background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%) !important;
+    background: #171717 !important;
     color: white !important;
-    box-shadow: 0 3px 10px rgba(64, 158, 255, 0.35);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* Mobile responsive for paste card */
@@ -1993,7 +1952,7 @@ beforeDestroy() {
     :deep(.el-textarea__inner) {
         border-radius: 10px;
         padding: 8px 10px;
-        font-size: 12px;
+        font-size: 16px;
     }
 
     .paste-card-actions {
@@ -2007,7 +1966,7 @@ beforeDestroy() {
         min-width: 55px;
         border-radius: 8px !important;
         font-size: 12px;
-        letter-spacing: 0.5px;
+        letter-spacing: -0.01em;
         padding: 0 10px;
     }
 
@@ -2038,79 +1997,33 @@ beforeDestroy() {
     position: sticky;
     top: 0;
     z-index: 1;
-    border-radius: 15px;
-    transition: all 0.3s ease;
+    border-radius: 14px;
+    transition: background-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
 }
 .upload-list-dashboard.list-scrolled {
     background-color: var(--upload-list-dashboard-bg-color);
     box-shadow: var(--upload-list-dashboard-shadow);
 }
 
-/* Enhanced Starry Sky Effect */
 :deep(.el-upload-dragger) {
     position: relative;
     overflow: hidden;
 }
 
-/* Layer 1: Distant stars (Small, slow, dense) */
 :deep(.el-upload-dragger::before) {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-image: 
-        radial-gradient(2px 2px at 10% 10%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 20% 30%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 30% 10%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 40% 30%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 50% 10%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 60% 30%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 70% 10%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 80% 30%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 90% 10%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2px 2px at 15% 70%, var(--el-upload-dragger-uniform-color) 50%, transparent 0);
-    background-size: 200px 200px;
+    background: linear-gradient(90deg, #ff5b4f, #de1d8d, #0a72ef);
     opacity: 0;
-    z-index: 0;
-    transition: opacity 0.6s ease;
+    transform: translateY(calc(100% - 3px));
+    transition: opacity var(--motion-base) var(--motion-ease);
 }
 
-/* Layer 2: Close stars (Larger, faster, sparse) */
-:deep(.el-upload-dragger::after) {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: 
-        radial-gradient(3px 3px at 15% 15%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(3px 3px at 50% 50%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(3px 3px at 85% 85%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2.5px 2.5px at 35% 65%, var(--el-upload-dragger-uniform-color) 50%, transparent 0),
-        radial-gradient(2.5px 2.5px at 65% 35%, var(--el-upload-dragger-uniform-color) 50%, transparent 0);
-    background-size: 150px 150px;
-    opacity: 0;
-    z-index: 0;
-    transition: opacity 0.6s ease;
-}
-
-.upload-card:hover :deep(.el-upload-dragger::before) {
-    opacity: 0.3;
-    animation: starScroll 60s linear infinite;
-}
-
-.upload-card:hover :deep(.el-upload-dragger::after) {
-    opacity: 0.6;
-    animation: starScroll 40s linear infinite, starPulse 4s ease-in-out infinite;
-}
-
-@keyframes starScroll {
-    from { background-position: 0 0; }
-    to { background-position: 100px 100px; }
-}
-
-@keyframes starPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 0.3; }
+.upload-card:hover :deep(.el-upload-dragger::before),
+:deep(.el-upload-dragger.is-dragover::before) {
+    opacity: 1;
 }
 
 /* ============================================
@@ -2121,16 +2034,16 @@ beforeDestroy() {
     align-items: center;
     gap: 6px;
     padding: 4px;
-    background: var(--modern-action-group-bg, rgba(64, 158, 255, 0.08));
-    border-radius: 14px;
-    border: 1px solid var(--modern-action-group-border, rgba(64, 158, 255, 0.15));
-    box-shadow: 0 2px 8px var(--modern-action-group-shadow, rgba(0, 0, 0, 0.06));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--modern-action-group-bg, #fafafa);
+    border-radius: 12px;
+    border: none;
+    box-shadow: var(--shadow-as-border);
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
 }
 
 .modern-action-group:hover {
-    background: var(--modern-action-group-hover-bg, rgba(64, 158, 255, 0.12));
-    box-shadow: 0 4px 16px var(--modern-action-group-hover-shadow, rgba(64, 158, 255, 0.15));
+    background: #f4f4f5;
+    box-shadow: var(--shadow-as-border-strong);
     transform: translateY(-1px);
 }
 
@@ -2141,55 +2054,37 @@ beforeDestroy() {
     width: 36px;
     height: 36px;
     border: none;
-    border-radius: 10px;
-    background: var(--modern-action-btn-bg, linear-gradient(135deg, #409eff 0%, #66b1ff 100%));
+    border-radius: 9px;
+    background: #171717;
     color: white;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
     font-size: 14px;
-    box-shadow: 0 2px 6px rgba(64, 158, 255, 0.25);
+    box-shadow: var(--shadow-as-border);
     position: relative;
     overflow: hidden;
-    outline: none !important;
 }
 
-.modern-action-btn:focus,
 .modern-action-btn:focus-visible {
-    outline: none !important;
-}
-
-.modern-action-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+    box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
 }
 
 .modern-action-btn:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(64, 158, 255, 0.4);
-}
-
-.modern-action-btn:hover::before {
-    left: 100%;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-as-border-strong);
+    background: #000000;
 }
 
 .modern-action-btn:active {
-    transform: translateY(0) scale(0.98);
-    box-shadow: 0 1px 4px rgba(64, 158, 255, 0.3);
+    transform: translateY(0);
 }
 
 .modern-action-btn-danger {
-    background: var(--modern-action-btn-danger-bg, linear-gradient(135deg, #f56c6c 0%, #f78989 100%));
-    box-shadow: 0 2px 6px rgba(245, 108, 108, 0.25);
+    background: #ff5b4f;
 }
 
 .modern-action-btn-danger:hover {
-    box-shadow: 0 4px 12px rgba(245, 108, 108, 0.4);
+    background: #e5483d;
 }
 
 /* Dropdown Menu Styles */
@@ -2217,9 +2112,11 @@ beforeDestroy() {
     align-items: center;
     gap: 8px;
     padding: 6px 14px;
-    background: var(--dashboard-title-bg, linear-gradient(135deg, rgba(64, 158, 255, 0.06) 0%, transparent 100%));
-    border-radius: 12px;
+    background: var(--dashboard-title-bg, #fafafa);
+    border-radius: 10px;
     color: var(--el-text-color-primary);
+    letter-spacing: -0.01em;
+    box-shadow: var(--shadow-as-border);
 }
 
 .upload-list-dashboard-title .el-icon {

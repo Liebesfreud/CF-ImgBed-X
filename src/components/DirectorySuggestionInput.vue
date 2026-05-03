@@ -187,8 +187,7 @@ export default {
     border-radius: 12px;
     border: none;
     background-color: var(--popper-bg-color);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--popper-shadow);
+box-shadow: var(--popper-shadow);
     padding: 6px 0;
     overflow: hidden;
 }

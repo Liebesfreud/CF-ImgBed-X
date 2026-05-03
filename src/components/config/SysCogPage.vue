@@ -205,12 +205,10 @@ mounted() {
 .first-settings :deep(.el-form) {
     padding: 16px 20px;
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    border: none;
     box-shadow: var(--glass-shadow);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .first-settings :deep(.el-form:hover) {

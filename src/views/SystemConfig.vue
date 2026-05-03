@@ -1,21 +1,31 @@
 <template>
     <div class="container">
-        <el-header>
+        <header class="app-topbar">
             <div class="header-content">
-                <DashboardTabs activeTab="systemConfig"></DashboardTabs>
-                <div class="header-action">
-                    <el-tooltip :disabled="disableTooltip" :content="$t('sysConfig.logout')" placement="bottom">
-                        <font-awesome-icon icon="sign-out-alt" class="header-icon" @click="handleLogout"></font-awesome-icon>
-                    </el-tooltip>
-                </div>
+                <DashboardTabs activeTab="settings">
+                    <template #actions>
+                        <el-tooltip :disabled="disableTooltip" :content="$t('sysConfig.logout')" placement="bottom">
+                            <BaseButton class="nav-action danger" icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
+                        </el-tooltip>
+                    </template>
+                </DashboardTabs>
             </div>
-        </el-header>
-        <SysConfigTabs
-            v-model:activeIndex="activeIndex"
-            v-model:isCollapse="isSidebarCollapse"
-        />
-        <!-- 根据锚点动态渲染子页面 -->
-        <component :is="currentComponent" :class="['main-container', { 'collapsed': isSidebarCollapse }]" />
+        </header>
+        <main class="settings-layout">
+            <section class="settings-section-nav">
+                <button class="settings-switch" type="button" @click="$router.push('/customerConfig')">
+                    <font-awesome-icon icon="user-cog" />
+                    <span>用户管理</span>
+                </button>
+                <SysConfigTabs
+                    v-model:activeIndex="activeIndex"
+                    v-model:isCollapse="isSidebarCollapse"
+                    class="settings-subnav"
+                />
+            </section>
+            <!-- 根据锚点动态渲染子页面 -->
+            <component :is="currentComponent" class="main-container" />
+        </main>
     </div>
 </template>
 <script>
@@ -119,7 +129,6 @@ export default {
 .container {
     background: var(--admin-container-bg-color);
     min-height: 100vh;
-    font-family: 'Arial', sans-serif;
     color: var(--admin-container-color);
     margin: 0;
     padding: 0;
@@ -127,116 +136,119 @@ export default {
 }
 
 .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 24px;
-    /* macOS 风格毛玻璃效果 */
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    /* 顶部边框形成玻璃边缘光泽 */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    /* 悬浮阴影效果 */
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.1),
-        0 1px 3px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 16px;
-    position: fixed;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(95% - 16px);
+    position: sticky;
+    top: 10px;
     z-index: 2001;
-    min-height: 45px;
+    width: min(1180px, calc(100% - 24px));
+    margin: 10px auto 0;
+    padding: 10px 14px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border-strong);
 }
 
-/* 深色模式毛玻璃效果 */
-html.dark .header-content {
-    background: rgba(30, 30, 30, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.3),
-        0 1px 3px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+.icon-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+    border: none;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease);
 }
 
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        top: 6px;
-        width: calc(100% - 32px);
-        border-radius: 14px;
-        padding: 6px 12px;
-        gap: 4px;
-    }
-    
-    .header-icon {
-        font-size: 0.95em;
-    }
-}
-
-.header-content:hover {
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.12),
-        0 2px 6px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    transform: translateX(-50%) translateY(-1px);
-}
-
-html.dark .header-content:hover {
-    background: rgba(35, 35, 35, 0.85);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.4),
-        0 2px 6px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+.icon-action:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-as-border-strong);
 }
 
 .header-icon {
-    font-size: 1.5em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--admin-container-color);
-    outline: none;
+    color: currentColor;
 }
 
-.header-icon:hover {
-    color: #B39DDB; /* 使用柔和的淡紫色 */
-    transform: scale(1.2);
+.settings-layout {
+    width: min(1120px, calc(100% - 32px));
+    margin: 22px auto 0;
+    padding-bottom: 48px;
 }
 
-.header-action {
+.settings-section-nav {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+    padding: var(--space-2);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-as-border);
+    overflow-x: auto;
+}
+
+.settings-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    min-height: var(--control-height-sm);
+    border: none;
+    border-radius: 999px;
+    padding: 0 var(--space-3);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    box-shadow: var(--shadow-as-border);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.settings-switch:hover {
+    color: var(--color-text);
+    background: var(--color-surface-soft);
+}
+
+.settings-subnav {
+    flex: 1 1 auto;
 }
 
 .main-container {
-  margin-top: 60px;
-  transition: margin-left 0.3s ease, width 0.3s ease; /* 添加过渡效果 */
-  width: calc(100% - 280px); /* 默认宽度（侧边栏展开时） */
-  margin-left: 170px; /* 默认左边距（侧边栏展开时） */
+    width: 100%;
 }
 
-.main-container.collapsed {
-  width: calc(100% - 150px); /* 折叠时的宽度 */
-  margin-left: 80px; /* 折叠时的左边距 */
-}
-
-/* 移动端不压缩内容，但让出折叠侧边栏宽度 */
 @media (max-width: 768px) {
-  .main-container,
-  .main-container.collapsed {
-    width: auto;
-    margin-left: 65px;
-    margin-right: 15px;
-    padding: 0;
-    min-height: calc(100vh - 60px);
-    box-sizing: border-box;
-  }
+.app-topbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: min(1180px, calc(100% - 24px));
+    margin: 12px auto 18px;
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
+}
+
+.header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .app-topbar {
+        top: 6px;
+        width: calc(100% - 16px);
+        border-radius: 18px;
+        padding: 8px;
+    }
+
+    .settings-layout {
+        width: calc(100% - 20px);
+        margin-top: 18px;
+    }
 }
 </style>

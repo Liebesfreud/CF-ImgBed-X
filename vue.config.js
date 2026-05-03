@@ -22,9 +22,6 @@ module.exports = defineConfig({
       '/api': {
         target: process.env.VUE_APP_BACKEND_URL,
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
       },
     },
   },

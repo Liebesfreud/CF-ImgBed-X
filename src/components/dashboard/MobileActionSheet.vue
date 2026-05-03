@@ -92,9 +92,7 @@ export default {
     width: 100%;
     max-width: 100%;
     background: var(--bottom-sheet-bg, rgba(255, 255, 255, 0.95));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px 20px 0 0;
+border-radius: 20px 20px 0 0;
     max-height: 70vh;
     overflow: hidden;
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.15);
@@ -146,7 +144,7 @@ html.dark .bottom-sheet-title {
     padding: 16px 20px;
     border-radius: 14px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     background: var(--bottom-sheet-item-bg, rgba(0, 0, 0, 0.04));
     color: var(--el-text-color-primary);
 }
@@ -164,7 +162,7 @@ html.dark .bottom-sheet-item:active {
     font-size: 20px;
     width: 28px;
     text-align: center;
-    color: #38bdf8;
+    color: var(--color-accent);
 }
 .bottom-sheet-danger {
     color: var(--el-color-danger);
@@ -173,8 +171,8 @@ html.dark .bottom-sheet-item:active {
     color: var(--el-color-danger);
 }
 /* 动画 */
-.bottom-sheet-enter-active { transition: all 0.3s ease-out; }
-.bottom-sheet-leave-active { transition: all 0.2s ease-in; }
+.bottom-sheet-enter-active { transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out, transform 0.3s ease-out, color 0.3s ease-out, border-color 0.3s ease-out, opacity 0.3s ease-out; }
+.bottom-sheet-leave-active { transition: background-color 0.2s ease-in, box-shadow 0.2s ease-in, transform 0.2s ease-in, color 0.2s ease-in, border-color 0.2s ease-in, opacity 0.2s ease-in; }
 .bottom-sheet-enter-active .bottom-sheet { animation: slideUp 0.3s ease-out; }
 .bottom-sheet-leave-active .bottom-sheet { animation: slideDown 0.2s ease-in; }
 .bottom-sheet-enter-from, .bottom-sheet-leave-to { opacity: 0; }

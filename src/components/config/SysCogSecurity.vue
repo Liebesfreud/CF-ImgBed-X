@@ -840,13 +840,11 @@ mounted() {
 .first-settings :deep(.el-form) {
     padding: 16px 20px;
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
-    margin-bottom: 20px;
+    border-radius: var(--radius-md);
+    border: none;
+    margin-bottom: var(--space-5);
     box-shadow: var(--glass-shadow);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .first-settings :deep(.el-form:hover) {
@@ -927,9 +925,7 @@ mounted() {
     overflow: hidden;
     box-shadow: var(--glass-shadow);
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+    border: none;
 }
 
 .token-table :deep(.el-table__header-wrapper) {
@@ -1068,7 +1064,7 @@ mounted() {
 
 /* 确认密码框的动画效果 */
 .fade-slide-enter-active, .fade-slide-leave-active {
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .fade-slide-enter-from {
@@ -1089,7 +1085,6 @@ mounted() {
 :deep(.el-dialog) {
     border-radius: 12px;
     background-color: var(--dialog-bg-color);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--dialog-box-shadow);
+box-shadow: var(--dialog-box-shadow);
 }
 </style>

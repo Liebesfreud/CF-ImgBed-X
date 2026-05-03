@@ -75,7 +75,6 @@ export default {
     bottom: 0;
     background: rgba(0, 0, 0, 0.4);
     z-index: 2000;
-    backdrop-filter: blur(4px);
 }
 .mobile-drawer {
     position: absolute;
@@ -100,13 +99,13 @@ html.dark .mobile-drawer {
     align-items: center;
     justify-content: space-between;
     padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%);
+    background: var(--color-surface-soft);
     border-bottom: 1px solid var(--el-border-color-lighter);
 }
 .mobile-drawer-title {
     font-size: 15px;
     font-weight: 600;
-    color: #38bdf8;
+    color: var(--color-accent);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -116,7 +115,7 @@ html.dark .mobile-drawer {
     display: inline-block;
     width: 4px;
     height: 16px;
-    background: linear-gradient(180deg, #38bdf8 0%, rgba(14, 165, 233, 0.5) 100%);
+    background: var(--color-accent);
     border-radius: 2px;
 }
 .mobile-drawer-close {
@@ -129,7 +128,7 @@ html.dark .mobile-drawer {
     color: var(--el-text-color-secondary);
     cursor: pointer;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     background: transparent;
 }
 .mobile-drawer-close:active {
@@ -148,7 +147,7 @@ html.dark .mobile-drawer {
     padding: 14px 16px;
     margin: 2px 0;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     color: var(--el-text-color-primary);
     border-radius: 10px;
     font-size: 14px;
@@ -158,8 +157,8 @@ html.dark .mobile-drawer {
     transform: scale(0.98);
 }
 .mobile-drawer-item.active {
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(14, 165, 233, 0.12) 100%);
-    color: #38bdf8;
+    background: var(--color-surface-soft);
+    color: var(--color-accent);
     font-weight: 600;
 }
 .mobile-drawer-item-icon {
@@ -170,7 +169,7 @@ html.dark .mobile-drawer {
 }
 .mobile-drawer-item.active .mobile-drawer-item-icon {
     opacity: 1;
-    color: #38bdf8;
+    color: var(--color-accent);
 }
 .mobile-drawer-back {
     display: flex;
@@ -181,7 +180,7 @@ html.dark .mobile-drawer {
     border-radius: 10px;
     background: var(--el-fill-color-lighter);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     color: var(--el-text-color-secondary);
     font-size: 14px;
 }

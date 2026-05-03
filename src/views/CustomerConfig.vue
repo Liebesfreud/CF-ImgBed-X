@@ -1,16 +1,27 @@
 <template>
     <div class="container">
-        <el-header>
+        <header class="app-topbar">
             <div class="header-content">
-                <DashboardTabs activeTab="customerConfig"></DashboardTabs>
-                <div class="header-action">
-                    <el-tooltip :disabled="disableTooltip" :content="$t('sysConfig.logout')" placement="bottom">
-                        <font-awesome-icon icon="sign-out-alt" class="header-icon" @click="handleLogout"></font-awesome-icon>
-                    </el-tooltip>
-                </div>
+                <DashboardTabs activeTab="settings">
+                    <template #actions>
+                        <el-tooltip :disabled="disableTooltip" :content="$t('sysConfig.logout')" placement="bottom">
+                            <BaseButton class="nav-action danger" icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
+                        </el-tooltip>
+                    </template>
+                </DashboardTabs>
             </div>
-        </el-header>
+        </header>
         <div class="main-container">
+            <section class="settings-section-nav">
+                <button class="settings-switch is-active" type="button">
+                    <font-awesome-icon icon="user-cog" />
+                    <span>用户管理</span>
+                </button>
+                <button class="settings-switch" type="button" @click="$router.push('/systemConfig')">
+                    <font-awesome-icon icon="cog" />
+                    <span>系统设置</span>
+                </button>
+            </section>
             <el-table :data="paginatedData" :default-sort="{ prop: 'count', order: 'descending' }" row-key="ip" class="main-table" table-layout="fixed" v-loading="loading" @expand-change="handleExpandChange">
                 <el-table-column type="expand">
                     <template v-slot="props">
@@ -255,10 +266,8 @@ export default {
     box-shadow: var(--glass-shadow);
     min-height: 530px;
     overflow: hidden;
-    border: 1px solid var(--glass-border);
+    border: none;
     background: var(--glass-bg) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
 }
 
 .main-table :deep(.el-table__inner-wrapper) {
@@ -296,111 +305,109 @@ export default {
 .container {
     background: var(--admin-container-bg-color);
     min-height: 100vh;
-    font-family: 'Arial', sans-serif;
     color: var(--admin-container-color);
     margin: 0;
     padding: 0;
 }
 
+.app-topbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: min(1180px, calc(100% - 24px));
+    margin: 12px auto 18px;
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
+}
+
 .header-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 10px 24px;
-    /* macOS 风格毛玻璃效果 */
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    /* 顶部边框形成玻璃边缘光泽 */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    /* 悬浮阴影效果 */
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.1),
-        0 1px 3px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 16px;
-    position: fixed;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(95% - 16px);
-    z-index: 2001;
-    min-height: 45px;
 }
 
-/* 深色模式毛玻璃效果 */
-html.dark .header-content {
-    background: rgba(30, 30, 30, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.3),
-        0 1px 3px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+.icon-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+    border: none;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease);
 }
 
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        top: 6px;
-        width: calc(100% - 32px);
-        border-radius: 14px;
-        padding: 6px 12px;
-        gap: 4px;
-    }
-    
-    .header-icon {
-        font-size: 0.95em;
-    }
-}
-
-.header-content:hover {
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.12),
-        0 2px 6px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    transform: translateX(-50%) translateY(-1px);
-}
-
-html.dark .header-content:hover {
-    background: rgba(35, 35, 35, 0.85);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.4),
-        0 2px 6px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+.icon-action:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-as-border-strong);
 }
 
 .header-icon {
-    font-size: 1.5em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--admin-container-color);
-    outline: none;
-}
-
-.header-icon:hover {
-    color: #B39DDB; /* 使用柔和的淡紫色 */
-    transform: scale(1.2);
-}
-
-.header-action {
-    display: flex;
-    gap: 10px;
+    color: currentColor;
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
+    align-items: stretch;
+    width: min(1180px, calc(100% - 32px));
+    margin: 26px auto 0;
+}
+
+.settings-section-nav {
+    display: flex;
     align-items: center;
-    margin-top: 20px;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+    padding: var(--space-2);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-as-border);
+    overflow-x: auto;
+}
+
+.settings-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    min-height: var(--control-height-sm);
+    border: none;
+    border-radius: 999px;
+    padding: 0 var(--space-3);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    box-shadow: var(--shadow-as-border);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.settings-switch:hover,
+.settings-switch.is-active {
+    color: var(--color-accent-contrast);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
 @media (max-width: 768px) {
+    .app-topbar {
+        top: 6px;
+        width: calc(100% - 16px);
+        border-radius: 18px;
+        padding: 8px;
+    }
+
     .main-container {
-        margin-top: 35px;
+        width: calc(100% - 20px);
+        margin-top: 18px;
     }
 }
 
@@ -429,31 +436,31 @@ html.dark .header-content:hover {
     font-weight: 500;
     border: none;
     box-shadow: var(--admin-dashboard-btn-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pagination-container :deep(.el-pager li:hover) {
-    color: #38bdf8;
+    color: var(--color-accent);
     transform: translateY(-2px);
     box-shadow: var(--admin-dashboard-btn-hover-shadow);
 }
 
 .pagination-container :deep(.el-pager li.is-active) {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent)) !important;
     color: white !important;
     border-radius: 10px;
     box-shadow: 
         var(--admin-dashboard-btn-shadow),
-        0 4px 12px rgba(56, 189, 248, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pagination-container :deep(.el-pager li.is-active:hover) {
     transform: translateY(-2px) !important;
     box-shadow: 
         var(--admin-dashboard-btn-hover-shadow),
-        0 6px 16px rgba(56, 189, 248, 0.4),
+        0 6px 16px rgba(0, 0, 0, 0.16),
         inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
@@ -465,12 +472,12 @@ html.dark .header-content:hover {
     height: 36px;
     border: none;
     box-shadow: var(--admin-dashboard-btn-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pagination-container :deep(.btn-prev:hover),
 .pagination-container :deep(.btn-next:hover) {
-    color: #38bdf8;
+    color: var(--color-accent);
     transform: translateY(-2px);
     box-shadow: var(--admin-dashboard-btn-hover-shadow);
 }
@@ -481,7 +488,7 @@ html.dark .header-content:hover {
     box-shadow: var(--admin-dashboard-btn-shadow);
     color: var(--admin-dashboard-btn-color);
     border: none;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     margin-left: 0;
     border-radius: 8px;
     padding: 8px 20px;

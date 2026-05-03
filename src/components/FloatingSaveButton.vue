@@ -1,21 +1,28 @@
 <template>
-    <transition name="fade-up">
-        <div 
+    <transition name="fade-down">
+        <button
             v-show="visible"
-            class="floating-save-btn" 
+            class="floating-save-btn"
             :class="{ 'is-loading': loading }"
+            type="button"
             @click="handleClick"
         >
-            <font-awesome-icon v-if="loading" icon="spinner" spin />
-            <font-awesome-icon v-else icon="save" />
+            <IconLoader2 v-if="loading" class="save-icon is-spin" :size="18" :stroke-width="1.9" />
+            <IconDeviceFloppy v-else class="save-icon" :size="18" :stroke-width="1.9" />
             <span class="save-text">{{ loading ? $t('floatingSave.saving') : $t('floatingSave.save') }}</span>
-        </div>
+        </button>
     </transition>
 </template>
 
 <script>
+import { IconDeviceFloppy, IconLoader2 } from '@tabler/icons-vue';
+
 export default {
     name: 'FloatingSaveButton',
+    components: {
+        IconDeviceFloppy,
+        IconLoader2
+    },
     emits: ['click'],
     props: {
         loading: {
@@ -37,10 +44,9 @@ export default {
             immediate: true,
             handler(val) {
                 if (val) {
-                    // 延迟显示，等待 Element Plus 加载遮罩淡出动画完成
                     setTimeout(() => {
                         this.visible = true;
-                    }, 600);
+                    }, 250);
                 } else {
                     this.visible = false;
                 }
@@ -60,94 +66,76 @@ export default {
 <style scoped>
 .floating-save-btn {
     position: fixed;
-    right: var(--floating-btn-right, 24px);
-    bottom: var(--floating-btn-bottom, 24px);
-    display: flex;
+    top: var(--floating-btn-top, 76px);
+    right: var(--floating-btn-right, 32px);
+    bottom: auto;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 10px 18px;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 16px;
+    border: 1px solid var(--color-accent);
     background: var(--floating-btn-bg);
     color: var(--floating-btn-color);
-    border-radius: 50px;
+    border-radius: 999px;
     cursor: pointer;
     box-shadow: var(--floating-btn-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 100;
-    font-weight: 500;
+    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), opacity var(--motion-base) var(--motion-ease);
+    z-index: 2003;
+    font-family: inherit;
+    font-weight: 700;
     font-size: 13px;
     user-select: none;
 }
 
 .floating-save-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: var(--floating-btn-shadow-hover);
 }
 
 .floating-save-btn:active {
-    transform: translateY(-1px);
-    box-shadow: var(--floating-btn-shadow);
+    transform: translateY(0);
 }
 
 .floating-save-btn.is-loading {
-    cursor: not-allowed;
-    opacity: 0.8;
+    cursor: progress;
+    opacity: 0.84;
 }
 
-.floating-save-btn.is-loading:hover {
-    transform: none;
+.save-icon {
+    flex-shrink: 0;
 }
 
-.floating-save-btn svg {
-    font-size: 14px;
+.is-spin {
+    animation: save-spin 1s linear infinite;
 }
 
-/* 淡入上移动画 */
-.fade-up-enter-active {
-    transition: all 0.3s ease-out;
+.fade-down-enter-active,
+.fade-down-leave-active {
+    transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
 }
 
-.fade-up-leave-active {
-    transition: all 0.2s ease-in;
-}
-
-.fade-up-enter-from {
+.fade-down-enter-from,
+.fade-down-leave-to {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(-8px);
 }
 
-.fade-up-leave-to {
-    opacity: 0;
-    transform: translateY(10px);
+@keyframes save-spin {
+    to { transform: rotate(360deg); }
 }
 
-/* 移动端适配 */
-@media (max-width: 768px) {
+@media (max-width: 980px) {
     .floating-save-btn {
-        right: 16px;
-        bottom: 16px;
-        padding: 10px 16px;
-        font-size: 12px;
-    }
-    
-    .floating-save-btn svg {
-        font-size: 12px;
+        top: var(--floating-btn-mobile-top, 118px);
+        right: 18px;
     }
 }
 
 @media (max-width: 480px) {
     .floating-save-btn {
         right: 12px;
-        bottom: 12px;
-        padding: 12px;
-        border-radius: 50%;
-    }
-    
-    .save-text {
-        display: none;
-    }
-    
-    .floating-save-btn svg {
-        font-size: 16px;
+        padding: 0 12px;
     }
 }
 </style>

@@ -1,41 +1,43 @@
 <template>
   <div class="public-browse">
-    <!-- 顶部导航栏 -->
-    <header class="header">
-      <div class="header-left">
-        <a class="logo" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank" rel="noopener">{{ siteName }}</a>
-      </div>
-      <div class="header-center">
-        <div class="breadcrumb">
-          <span class="breadcrumb-item" @click="goToRoot">{{ rootDirName }}</span>
-          <template v-for="(part, index) in pathParts" :key="index">
-            <span class="breadcrumb-sep">/</span>
-            <span class="breadcrumb-item" @click="goToPath(index)">{{ part }}</span>
-          </template>
+    <!--  -->
+    <header class="app-topbar">
+      <div class="header-content">
+        <div class="header-left">
+          <a class="logo" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank" rel="noopener">{{ siteName }}</a>
         </div>
-      </div>
-      <div class="header-right">
-        <!-- 搜索框：默认只显示放大镜，点击展开 -->
-        <div class="search-box" :class="{ expanded: searchExpanded }">
-          <span class="search-icon" @click="toggleSearch" v-if="!searchExpanded">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          </span>
-          <template v-else>
-            <input 
-              type="text" 
-              v-model="searchInput" 
-              @keyup.enter="handleSearch"
-              :placeholder="$t('publicBrowse.searchPlaceholder')"
-              class="search-input"
-              ref="searchInputRef"
-            />
-            <span class="search-icon" @click="handleSearch">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <div class="header-center">
+          <div class="breadcrumb">
+            <span class="breadcrumb-item" @click="goToRoot">{{ rootDirName }}</span>
+            <template v-for="(part, index) in pathParts" :key="index">
+              <span class="breadcrumb-sep">/</span>
+              <span class="breadcrumb-item" @click="goToPath(index)">{{ part }}</span>
+            </template>
+          </div>
+        </div>
+        <div class="header-right">
+          <!-- ĬֻʾŴ󾵣չ -->
+          <div class="search-box" :class="{ expanded: searchExpanded }">
+            <span class="search-icon" @click="toggleSearch" v-if="!searchExpanded">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </span>
-          </template>
+            <template v-else>
+              <input 
+                type="text" 
+                v-model="searchInput" 
+                @keyup.enter="handleSearch"
+                :placeholder="$t('publicBrowse.searchPlaceholder')"
+                class="search-input"
+                ref="searchInputRef"
+              />
+              <span class="search-icon" @click="handleSearch">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              </span>
+            </template>
+          </div>
+          <ToggleDark class="theme-toggle-btn" />
+          <span class="file-count">{{ $t('publicBrowse.fileCount', { count: totalCount }) }}</span>
         </div>
-        <ToggleDark class="theme-toggle-btn" />
-        <span class="file-count">{{ $t('publicBrowse.fileCount', { count: totalCount }) }}</span>
       </div>
     </header>
 
@@ -48,7 +50,7 @@
     <!-- 错误提示 -->
     <div v-else-if="error" class="error-container">
       <p>{{ error }}</p>
-      <button v-if="canRetry" @click="loadFiles" class="retry-btn">{{ $t('publicBrowse.retry') }}</button>
+      <BaseButton v-if="canRetry" class="retry-btn" variant="primary" @click="loadFiles">{{ $t('publicBrowse.retry') }}</BaseButton>
       <div class="error-credit">
         <p>{{ $t('publicBrowse.creditText') }}</p>
         <div class="error-credit-links">
@@ -126,12 +128,12 @@
               <!-- 悬浮操作层 -->
               <div class="overlay">
                 <div class="overlay-actions">
-                  <button class="action-btn" @click.stop="copyLink(file.name)" :title="$t('publicBrowse.copyLink')">
+                  <BaseButton class="action-btn" variant="secondary" size="sm" :aria-label="$t('publicBrowse.copyLink')" @click.stop="copyLink(file.name)">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                  </button>
-                  <button class="action-btn" @click.stop="downloadFile(file.name)" :title="$t('publicBrowse.downloadBtn')">
+                  </BaseButton>
+                  <BaseButton class="action-btn" variant="secondary" size="sm" :aria-label="$t('publicBrowse.downloadBtn')" @click.stop="downloadFile(file.name)">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                  </button>
+                  </BaseButton>
                 </div>
               </div>
             </div>
@@ -161,9 +163,9 @@
 
     <!-- 图片预览弹窗 -->
     <div v-if="previewVisible" class="preview-modal" @click.self="closePreview">
-      <button class="preview-close" @click.stop="closePreview">
+      <BaseButton class="preview-close" variant="secondary" aria-label="Close" @click.stop="closePreview">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      </button>
+      </BaseButton>
       
       <!-- 桌面端：简单单图显示（用 v-if 而非 CSS 隐藏，避免全屏时问题） -->
       <div v-if="!isMobile" class="preview-content" @click.stop @wheel.prevent="handleWheel">
@@ -283,17 +285,17 @@
       </div>
       
       <!-- 桌面端按钮 -->
-      <button class="preview-prev" @click.stop="prevImage" v-if="!isMobile && previewIndex > 0">
+      <BaseButton class="preview-prev" variant="secondary" aria-label="Previous" @click.stop="prevImage" v-if="!isMobile && previewIndex > 0">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      </button>
-      <button class="preview-next" @click.stop="nextImage" v-if="!isMobile && previewIndex < mediaFiles.length - 1">
+      </BaseButton>
+      <BaseButton class="preview-next" variant="secondary" aria-label="Next" @click.stop="nextImage" v-if="!isMobile && previewIndex < mediaFiles.length - 1">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-      </button>
+      </BaseButton>
       
       <!-- 桌面端旋转按钮 -->
-      <button class="rotate-btn" @click.stop="rotateImage" v-if="!isMobile" :title="$t('publicBrowse.rotate90')">
+      <BaseButton class="rotate-btn" variant="secondary" :aria-label="$t('publicBrowse.rotate90')" @click.stop="rotateImage" v-if="!isMobile">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.89 8.53l1.41-1.42C19.2 8.27 19.76 9.61 19.93 11h-2.02c-.14-.87-.49-1.72-1.02-2.47zM17.91 13h2.02c-.17 1.39-.72 2.73-1.62 3.89l-1.41-1.42c.52-.75.87-1.59 1.01-2.47zm-1.01 5.32c-1.16.9-2.51 1.44-3.9 1.61V17.9c.87-.15 1.71-.49 2.46-1.03l1.44 1.45zM11 4.07V1l4.55 4.55L11 10V6.09c-2.84.48-5 2.94-5 5.91s2.16 5.43 5 5.91v2.02c-3.95-.49-7-3.85-7-7.93s3.05-7.44 7-7.93z"/></svg>
-      </button>
+      </BaseButton>
       
       <!-- 页码指示器 -->
       <div class="page-indicator">
@@ -1169,34 +1171,39 @@ export default {
   color: #fff;
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  background: rgba(15, 15, 15, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #1a1a1a;
-  position: relative;
+.app-topbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: min(1180px, calc(100% - 24px));
+    margin: 12px auto 18px;
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
 .header-left {
-  flex: 0 0 auto;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    flex: 0 0 auto;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .header-right {
-  flex: 0 0 auto;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    flex: 0 0 auto;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 /* 搜索框：默认只显示放大镜图标 */
@@ -1209,7 +1216,7 @@ export default {
   width: 28px;
   height: 28px;
   padding: 0;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
   cursor: pointer;
 }
 
@@ -1316,14 +1323,14 @@ export default {
   z-index: 0;
 }
 
-.logo {
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
+  .logo {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
 
 .logo:hover {
   opacity: 0.8;
@@ -1467,7 +1474,7 @@ export default {
   border-radius: 12px;
   border: 1px solid #1a1a1a;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
 }
 
 .folder-card:hover {
@@ -1647,9 +1654,8 @@ export default {
   border: none;
   border-radius: 50%;
   background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-  transition: all 0.2s;
+cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1682,8 +1688,7 @@ export default {
   bottom: 24px;
   right: 24px;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  color: rgba(255, 255, 255, 0.85);
+color: rgba(255, 255, 255, 0.85);
   padding: 6px 12px;
   border-radius: 16px;
   font-size: 12px;
@@ -1977,14 +1982,17 @@ export default {
 }
 
 /* 手机端 */
-@media (max-width: 600px) {
-  .header {
-    padding: 10px 12px;
-  }
-  
-  .header-left .logo {
-    font-size: 16px;
-  }
+  @media (max-width: 600px) {
+    .app-topbar {
+        top: 6px;
+        width: calc(100% - 16px);
+        border-radius: 18px;
+        padding: 8px;
+    }
+    
+    .header-left .logo {
+      font-size: 16px;
+    }
   
   .breadcrumb {
     font-size: 12px;
@@ -2057,7 +2065,7 @@ export default {
   border-radius: 20px;
   font-size: 14px;
   opacity: 0;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
   z-index: 9999;
   pointer-events: none;
 }
@@ -2073,14 +2081,13 @@ export default {
   color: #333;
 }
 
-:root:not(.dark) .header {
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom-color: #e0e0e0;
-}
-
-:root:not(.dark) .logo {
-  color: #333;
-}
+  :root:not(.dark) .app-topbar {
+    background: var(--color-surface);
+  }
+  
+  :root:not(.dark) .logo {
+    color: var(--color-text);
+  }
 
 :root:not(.dark) .breadcrumb-item {
   color: #666;

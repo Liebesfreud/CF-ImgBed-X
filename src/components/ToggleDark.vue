@@ -112,7 +112,7 @@ export default {
 }
 
 .theme_toggle_circle2 {
-  transition: all 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out, box-shadow 0.5s ease-in-out, transform 0.5s ease-in-out, color 0.5s ease-in-out, border-color 0.5s ease-in-out, opacity 0.5s ease-in-out;
   fill: var(--theme-toggle-bg-color);
 }
 

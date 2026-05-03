@@ -316,8 +316,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(20px);
-    background: var(--admin-container-bg-color);
+background: var(--admin-container-bg-color);
     z-index: -1;
     /* 强制创建独立的合成层，提升渲染稳定性 */
     will-change: transform;
@@ -368,10 +367,9 @@ export default {
 .header-right .el-button {
     background-color: var(--toolbar-button-bg-color);
     box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    border: none;
+border: none;
     color: var(--theme-toggle-color);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .header-right .el-button:hover {
@@ -404,7 +402,6 @@ export default {
     box-shadow: var(--toolbar-button-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
-    backdrop-filter: blur(10px);
 }
 
 .grid-item:hover {
@@ -458,7 +455,6 @@ export default {
 }
 
 .grid-actions .el-button {
-    backdrop-filter: blur(10px);
 }
 
 .grid-info {
@@ -495,9 +491,8 @@ export default {
     background: var(--toolbar-button-bg-color);
     border-radius: 12px;
     box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    border: none;
-    transition: all 0.3s ease;
+border: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .list-item:hover {
@@ -557,7 +552,6 @@ export default {
 }
 
 .list-actions .el-button {
-    backdrop-filter: blur(10px);
 }
 
 .empty-state {

@@ -1258,13 +1258,11 @@ mounted() {
 .channel-group {
     margin-bottom: 32px;
     background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    border: none;
     overflow: hidden;
     box-shadow: var(--glass-shadow);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .channel-group:hover {
@@ -1320,12 +1318,10 @@ mounted() {
 /* 单个渠道卡片 */
 .channel-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 10px;
-    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    border: none;
     border-left: 3px solid var(--el-border-color-light);
-    transition: all 0.25s ease;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
     overflow: hidden;
     position: relative;
     display: flex;
@@ -1344,7 +1340,7 @@ mounted() {
     transform: translate(-50%, -50%);
     transition: opacity 0.3s ease;
     z-index: 0;
-    background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.08) 0%, transparent 70%);
 }
 
 .channel-card.telegram .card-glow {

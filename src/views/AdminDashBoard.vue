@@ -3,7 +3,17 @@
         <el-container>
             <el-header>
             <div class="header-content">
-                <DashboardTabs activeTab="dashboard"></DashboardTabs>
+                <DashboardTabs activeTab="gallery">
+                    <template #actions>
+                        <el-tooltip :disabled="disableTooltip" :content="$t('dashboard.logout')" placement="bottom">
+                            <BaseButton icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
+                        </el-tooltip>
+                    </template>
+                </DashboardTabs>
+            </div>
+            </el-header>
+            <el-main class="main-container">
+            <section class="gallery-toolbar">
                 <div class="search-area">
                     <div class="search-card">
                         <el-input v-model="tempSearch" size="small" :placeholder="$t('dashboard.searchPlaceholder')" @keyup.enter="handleSearch">
@@ -12,7 +22,6 @@
                             </template>
                         </el-input>
                     </div>
-                    <!-- 筛选下拉菜单 -->
                     <FilterDropdown
                         v-model:filters="filters"
                         :channelNameOptions="channelNameOptions"
@@ -20,80 +29,72 @@
                     />
                 </div>
                 <div class="actions">
-                <el-dropdown @command="sort" :hide-on-click="false">
-                    <span class="el-dropdown-link">
-                        <font-awesome-icon :icon="sortIcon" class="header-icon"></font-awesome-icon>
-                    </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item command="dateDesc">{{ $t('dashboard.sortByDateDesc') }}</el-dropdown-item>
-                            <el-dropdown-item command="nameAsc">{{ $t('dashboard.sortByNameAsc') }}</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-                <el-tooltip :disabled="disableTooltip" :content="$t('dashboard.selectPage')" placement="bottom">
-                    <font-awesome-icon :icon="selectPageIcon" class="header-icon" @click="handleSelectPage"></font-awesome-icon>
-                </el-tooltip>
-                <el-dropdown @command="handleBatchAction" :hide-on-click="false" :disabled="selectedFiles.length === 0">
-                    <span class="el-dropdown-link">
-                        <font-awesome-icon icon="ellipsis-h" class="header-icon" :class="{ disabled: selectedFiles.length === 0 }"></font-awesome-icon>
-                    </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item command="copy">
-                                <font-awesome-icon icon="copy" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.copy') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item command="delete">
-                                <font-awesome-icon icon="trash-alt" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.delete') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item command="download">
-                                <font-awesome-icon icon="download" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.download') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item command="move">
-                                <font-awesome-icon icon="file-export" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.move') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item command="tagManagement">
-                                <font-awesome-icon icon="tags" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.tagManagement') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item command="ban">
-                                <font-awesome-icon icon="ban" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.addToBlacklist') }}
-                            </el-dropdown-item>
-                            <el-dropdown-item command="white">
-                                <font-awesome-icon icon="user-plus" class="batch-action-item-icon"></font-awesome-icon>
-                                {{ $t('dashboard.addToWhitelist') }}
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
-                <el-tooltip :disabled="disableTooltip" :content="$t('dashboard.linkFormat')" placement="bottom">
-                    <span class="el-dropdown-link">
-                        <font-awesome-icon icon="link" class="header-icon" @click="showUrlDialog = true"></font-awesome-icon>
-                    </span>
-                </el-tooltip>
-                <el-tooltip :disabled="disableTooltip" :content="viewMode === 'card' ? $t('dashboard.listView') : $t('dashboard.cardView')" placement="bottom">
-                    <font-awesome-icon :icon="viewMode === 'card' ? 'list' : 'th-large'" class="header-icon" @click="toggleViewMode"></font-awesome-icon>
-                </el-tooltip>
-                <el-tooltip :disabled="disableTooltip" :content="$t('dashboard.logout')" placement="bottom">
-                    <font-awesome-icon icon="sign-out-alt" class="header-icon" @click="handleLogout"></font-awesome-icon>
-                </el-tooltip>
+                    <el-dropdown @command="sort" :hide-on-click="false">
+                        <BaseButton class="toolbar-button" :icon="sortIcon" variant="secondary">
+                            {{ $t('dashboard.sortByDateDesc') }}
+                        </BaseButton>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item command="dateDesc">{{ $t('dashboard.sortByDateDesc') }}</el-dropdown-item>
+                                <el-dropdown-item command="nameAsc">{{ $t('dashboard.sortByNameAsc') }}</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <BaseButton class="toolbar-button" :icon="selectPageIcon" variant="secondary" @click="handleSelectPage">
+                        {{ $t('dashboard.selectPage') }}
+                    </BaseButton>
+                    <el-dropdown @command="handleBatchAction" :hide-on-click="false" :disabled="selectedFiles.length === 0">
+                        <BaseButton class="toolbar-button" icon="ellipsis-h" variant="secondary" :disabled="selectedFiles.length === 0">
+                            {{ $t('dashboard.actions') }}
+                        </BaseButton>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item command="copy">
+                                    <font-awesome-icon icon="copy" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.copy') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="delete">
+                                    <font-awesome-icon icon="trash-alt" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.delete') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="download">
+                                    <font-awesome-icon icon="download" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.download') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="move">
+                                    <font-awesome-icon icon="file-export" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.move') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="tagManagement">
+                                    <font-awesome-icon icon="tags" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.tagManagement') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="ban">
+                                    <font-awesome-icon icon="ban" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.addToBlacklist') }}
+                                </el-dropdown-item>
+                                <el-dropdown-item command="white">
+                                    <font-awesome-icon icon="user-plus" class="batch-action-item-icon"></font-awesome-icon>
+                                    {{ $t('dashboard.addToWhitelist') }}
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                    <BaseButton class="toolbar-button" icon="link" @click="showUrlDialog = true">
+                        {{ $t('dashboard.linkFormat') }}
+                    </BaseButton>
+                    <BaseButton class="toolbar-button" :icon="viewMode === 'card' ? 'list' : 'th-large'" @click="toggleViewMode">
+                        {{ viewMode === 'card' ? $t('dashboard.listView') : $t('dashboard.cardView') }}
+                    </BaseButton>
                 </div>
-            </div>
-            </el-header>
-            <el-main class="main-container">
+            </section>
             <!-- 目录导航 -->
             <div class="breadcrumb-container">
                 <!-- 移动端目录按钮 -->
-                <div class="mobile-directory-trigger" @click="showMobileDirectoryDrawer = true">
-                    <font-awesome-icon icon="folder-open" class="mobile-directory-icon"/>
+                <BaseButton class="mobile-directory-trigger" icon="folder-open" @click="showMobileDirectoryDrawer = true">
                     <span class="mobile-directory-path">{{ currentPath && currentPath.split('/').filter(Boolean).length > 0 ? currentPath.split('/').filter(Boolean).pop() : $t('dashboard.rootDirectory') }}</span>
                     <font-awesome-icon icon="chevron-down" class="mobile-directory-arrow"/>
-                </div>
+                </BaseButton>
                 <!-- 桌面端面包屑 -->
                 <div class="breadcrumb desktop-only">
                     <el-breadcrumb separator="/">
@@ -764,12 +765,12 @@ methods: {
     // 获取标签颜色
     getTagColor(index) {
         const colors = [
-            'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-            'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-            'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-            'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-            'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'
+            'linear-gradient(135deg, #171717 0%, #404040 100%)',
+            'linear-gradient(135deg, #525252 0%, #737373 100%)',
+            'linear-gradient(135deg, #262626 0%, #525252 100%)',
+            'linear-gradient(135deg, #404040 0%, #a3a3a3 100%)',
+            'linear-gradient(135deg, #171717 0%, #737373 100%)',
+            'linear-gradient(135deg, #525252 0%, #d4d4d4 100%)'
         ];
         return colors[index % colors.length];
     },
@@ -1996,7 +1997,6 @@ mounted() {
 .container {
     background: var(--admin-container-bg-color);
     min-height: 100vh;
-    font-family: 'Arial', sans-serif;
     color: var(--admin-container-color);
     margin: 0;
     padding: 0;
@@ -2014,66 +2014,56 @@ mounted() {
 :deep(.el-dialog) {
     border-radius: 12px;
     background-color: var(--dialog-bg-color);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--dialog-box-shadow);
+box-shadow: var(--dialog-box-shadow);
+}
+
+.app-topbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: min(1180px, calc(100% - 24px));
+    margin: 12px auto 18px;
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
 }
 
 .header-content {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 10px 24px;
-    /* macOS 风格毛玻璃效果 */
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    /* 顶部边框形成玻璃边缘光泽 */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    /* 悬浮阴影效果 */
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.1),
-        0 1px 3px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 16px;
-    position: fixed;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(95% - 16px);
-    z-index: 2001;
-    min-height: 45px;
 }
 
-/* 深色模式毛玻璃效果 */
-html.dark .header-content {
-    background: rgba(30, 30, 30, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.3),
-        0 1px 3px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+.icon-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-height-md);
+    height: var(--control-height-md);
+    border: none;
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: transform var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease);
 }
 
+.icon-action:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-as-border-strong);
+}
+
+.header-icon {
+    color: currentColor;
+}
 
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
+    .app-topbar {
         top: 6px;
-        width: calc(100% - 32px);
-        border-radius: 14px;
-        padding: 6px 12px;
-        gap: 4px;
-    }
-    
-    .header-icon {
-        font-size: 0.95em;
-    }
-    
-    .header-content .actions {
-        gap: 10px;
+        width: calc(100% - 16px);
+        border-radius: 18px;
+        padding: 8px;
     }
     
     .search-card :deep(.el-input__inner) {
@@ -2089,36 +2079,6 @@ html.dark .header-content {
     .search-card :deep(.el-input__inner:focus) {
         width: 65vw;
     }
-}
-
-.header-content:hover {
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.12),
-        0 2px 6px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    transform: translateX(-50%) translateY(-1px);
-}
-
-html.dark .header-content:hover {
-    background: rgba(35, 35, 35, 0.85);
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.4),
-        0 2px 6px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.header-icon {
-    font-size: 1.5em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--admin-container-color);
-    outline: none;
-}
-
-.header-icon:hover {
-    color: var(--admin-purple); /* 使用柔和的淡紫色 */
-    transform: scale(1.2);
 }
 
 
@@ -2154,7 +2114,7 @@ html.dark .header-content:hover {
     padding: 4px 10px;
     border-radius: 12px;
     border: 1px solid var(--el-border-color-lighter);
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -2183,45 +2143,84 @@ html.dark .header-content:hover {
 }
 
 
-.header-content .actions {
+.gallery-toolbar {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    padding: var(--space-3);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-as-border);
+}
+
+.actions {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 
-@media (max-width: 768px) {
-    .header-content .actions {
-        margin-top: 10px;
-    }
+.actions::-webkit-scrollbar {
+    display: none;
 }
 
-.header-content .actions i {
-    font-size: 1.5em;
+.toolbar-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: var(--control-height-md);
+    border: none;
+    border-radius: 999px;
+    padding: 0 var(--space-3);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    box-shadow: var(--shadow-as-border);
     cursor: pointer;
-    transition: color 0.3s, transform 0.3s;
-    color: var(--admin-container-color);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    white-space: nowrap;
+    transition: color var(--motion-fast) var(--motion-ease), background-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease), opacity var(--motion-fast) var(--motion-ease);
 }
 
-.header-content .actions i:hover {
-    color: var(--admin-purple); /* 使用柔和的淡紫色 */
-    transform: scale(1.2);
+.toolbar-button:hover:not(.disabled) {
+    color: var(--color-text);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-as-border-strong);
+    transform: translateY(-1px);
 }
 
-.header-content .actions .el-dropdown-link i {
-    color: var(--admin-container-color);
-}
-
-.header-content .actions .el-dropdown-link i:hover {
-    color: var(--admin-purple); /* 使用柔和的淡紫色 */
-}
-
-.header-content .actions .disabled {
-    color: #bbb;
+.toolbar-button.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
     pointer-events: none;
 }
 
-.header-content .actions .enabled {
-    color: var(--admin-purple); /* 使用柔和的淡紫色 */
+@media (max-width: 1080px) {
+    .gallery-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .gallery-toolbar {
+        border-radius: 18px;
+        padding: 10px;
+    }
+
+    .toolbar-button span {
+        display: none;
+    }
 }
 
 .batch-action-item-icon {
@@ -2231,17 +2230,20 @@ html.dark .header-content:hover {
 
 /* 搜索区域样式（包含搜索框和筛选按钮） */
 .search-area {
-    margin-left: auto;
-    margin-right: 20px;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
+    min-width: 250px;
+}
+@media (max-width: 1080px) {
+    .search-area {
+        justify-content: stretch;
+        min-width: 0;
+    }
 }
 @media (max-width: 768px) {
     .search-area {
-        margin-right: 0;
-        margin-left: 0;
-        margin-top: 10px;
         gap: 6px;
     }
 }
@@ -2274,7 +2276,7 @@ html.dark .header-content:hover {
     font-size: 14px;
     opacity: 0.6;
     letter-spacing: 0.5px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .search-card :deep(.el-input__inner:focus::placeholder) {
@@ -2299,7 +2301,7 @@ html.dark .header-content:hover {
 .search-icon {
     cursor: pointer;
     color: var(--admin-container-color);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     font-size: 1.3em;
     opacity: 0;
     transform: scale(0.8);
@@ -2324,13 +2326,16 @@ html.dark .header-content:hover {
 .main-container {
     display: flex;
     flex-direction: column;
-    padding: 20px 60px;
-    min-height: calc(100vh - 80px);
+    width: min(1320px, calc(100% - 32px));
+    margin: 24px auto 0;
+    padding: 0 0 42px;
+    min-height: calc(100vh - 110px);
 }
 
 @media (max-width: 768px) {
     .main-container {
-        margin-top: 12vh;
+        width: calc(100% - 20px);
+        margin-top: 16px;
     }
 }
 
@@ -2433,18 +2438,18 @@ html.dark .header-content:hover {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     background: transparent;
 }
 
 .custom-checkbox:hover {
-    border-color: #38bdf8;
+    border-color: var(--color-accent);
 }
 
 .custom-checkbox.checked,
 .custom-checkbox.indeterminate {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-    border-color: #38bdf8;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    border-color: var(--color-accent);
 }
 
 .custom-checkbox .check-icon {
@@ -2491,31 +2496,31 @@ html.dark .header-content:hover {
     font-weight: 500;
     border: none;
     box-shadow: var(--admin-dashboard-btn-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pagination-container :deep(.el-pager li:hover) {
-    color: #38bdf8;
+    color: var(--color-accent);
     transform: translateY(-2px);
     box-shadow: var(--admin-dashboard-btn-hover-shadow);
 }
 
 .pagination-container :deep(.el-pager li.is-active) {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent)) !important;
     color: white !important;
     border-radius: 10px;
     box-shadow: 
         var(--admin-dashboard-btn-shadow),
-        0 4px 12px rgba(56, 189, 248, 0.3),
+        0 4px 12px rgba(0, 0, 0, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pagination-container :deep(.el-pager li.is-active:hover) {
     transform: translateY(-2px) !important;
     box-shadow: 
         var(--admin-dashboard-btn-hover-shadow),
-        0 6px 16px rgba(56, 189, 248, 0.4),
+        0 6px 16px rgba(0, 0, 0, 0.16),
         inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
@@ -2527,12 +2532,12 @@ html.dark .header-content:hover {
     height: 36px;
     border: none;
     box-shadow: var(--admin-dashboard-btn-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pagination-container :deep(.btn-prev:hover),
 .pagination-container :deep(.btn-next:hover) {
-    color: #38bdf8;
+    color: var(--color-accent);
     transform: translateY(-2px);
     box-shadow: var(--admin-dashboard-btn-hover-shadow);
 }
@@ -2580,7 +2585,7 @@ html.dark .header-content:hover {
 }
 
 .page-jump .jump-btn {
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
     border: none;
     border-radius: 8px;
     padding: 0 12px;
@@ -2588,13 +2593,13 @@ html.dark .header-content:hover {
     font-size: 12px;
     font-weight: 600;
     color: white;
-    box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
-    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .page-jump .jump-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
 }
 
 /* 移动端分页适配 */
@@ -2625,7 +2630,7 @@ html.dark .header-content:hover {
     cursor: pointer;
     background: var(--admin-dashboard-btn-bg-color);
     box-shadow: var(--admin-dashboard-btn-shadow);
-    color: #38bdf8;
+    color: var(--color-accent);
     border: none;
     border-radius: 10px;
     width: 36px;
@@ -2636,32 +2641,32 @@ html.dark .header-content:hover {
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .refresh-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--admin-dashboard-btn-hover-shadow);
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
     color: white;
 }
 
 .load-more {
     cursor: pointer;
-    background: linear-gradient(135deg, #0ea5e9, #38bdf8);
-    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     color: white;
     border: none;
     border-radius: 10px;
     height: 36px;
     padding: 0 16px;
     font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .load-more:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 :deep(.btn-prev){
@@ -2683,9 +2688,8 @@ html.dark .header-content:hover {
 @media (min-width: 768px) {
     :deep(.el-pagination.is-background .btn-prev), :deep(.el-pagination.is-background .btn-next) {
         background-color: var(--admin-dashboard-btn-bg-color);
-        backdrop-filter: blur(10px);
-        box-shadow: var(--admin-dashboard-btn-shadow);
-        transition: all 0.3s ease;
+box-shadow: var(--admin-dashboard-btn-shadow);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     }
     :deep(.el-pagination.is-background .btn-prev:hover), :deep(.el-pagination.is-background .btn-next:hover) {
         transform: translateY(-10%);
@@ -2703,7 +2707,7 @@ html.dark .header-content:hover {
     border-radius: 6px;
     font-size: 0.95em;
     box-shadow: var(--admin-dashboard-stats-shadow);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .breadcrumb:hover {
@@ -2713,7 +2717,7 @@ html.dark .header-content:hover {
 
 .breadcrumb-home-icon {
     font-size: 14px;
-    color: #38bdf8;
+    color: var(--color-accent);
     transition: color 0.2s ease;
 }
 
@@ -2738,7 +2742,7 @@ html.dark .header-content:hover {
     border-radius: 8px;
     border: 1px solid var(--el-border-color-lighter);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 .mobile-directory-trigger:active {
@@ -2747,7 +2751,7 @@ html.dark .header-content:hover {
 
 .mobile-directory-icon {
     font-size: 12px;
-    color: #38bdf8;
+    color: var(--color-accent);
 }
 
 .mobile-directory-path {

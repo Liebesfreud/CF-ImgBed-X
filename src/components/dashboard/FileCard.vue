@@ -291,7 +291,6 @@ export default {
     height: auto;
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(4px);
 }
 .fail-tag {
     background-color: rgba(220, 53, 69, 0.6);
@@ -304,7 +303,6 @@ export default {
     height: auto;
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(4px);
 }
 .primary-tag {
     background-color: rgba(250, 82, 194, 0.6);
@@ -319,7 +317,6 @@ export default {
     height: auto;
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(4px);
 }
 .file-preview {
     display: flex;
@@ -373,7 +370,7 @@ export default {
     align-items: center;
     opacity: 0;
     transform: translateY(4px);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
 }
 .el-card:hover .action-bar {
@@ -397,7 +394,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     font-size: clamp(11px, 1.1vw, 14px);
 }
 .action-btn:hover {

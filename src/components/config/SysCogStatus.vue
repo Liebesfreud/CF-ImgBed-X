@@ -932,15 +932,13 @@ export default {
 
 .overview-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
   display: flex;
   align-items: center;
   box-shadow: var(--glass-shadow);
-  transition: all 0.3s ease;
-  border: 1px solid var(--glass-border);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+  border: none;
   cursor: pointer;
 }
 
@@ -999,13 +997,11 @@ export default {
 
 .chart-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
   box-shadow: var(--glass-shadow);
-  transition: all 0.3s ease;
-  border: 1px solid var(--glass-border);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+  border: none;
 }
 
 .chart-card:hover {
@@ -1160,7 +1156,7 @@ export default {
   padding: 8px 12px;
   background: rgba(0, 0, 0, 0.03);
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
 .legend-item:hover {
@@ -1212,13 +1208,11 @@ html.dark .legend-item:hover {
 
 .action-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
   box-shadow: var(--glass-shadow);
-  border: 1px solid var(--glass-border);
-  transition: all 0.3s ease;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
 }
 
 .action-card:hover {
@@ -1263,7 +1257,7 @@ html.dark .legend-item:hover {
   margin-left: 0;
   font-weight: 600;
   font-size: 14px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 150px;
   width: 150px;
   height: 52px;
@@ -1310,13 +1304,13 @@ html.dark .legend-item:hover {
 }
 
 .rebuild-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-accent-foreground, #fff);
 }
 
 .rebuild-btn:hover {
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.45);
-  background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+  box-shadow: var(--shadow-md);
+  background: var(--color-accent-hover, #404040);
 }
 
 .backup-btn {
@@ -1369,12 +1363,10 @@ html.dark .legend-item:hover {
 .file-info-card {
   position: relative;
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--glass-shadow);
-  border: 1px solid var(--glass-border);
-  transition: all 0.3s ease;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
   height: 300px;
   overflow: hidden;
   cursor: pointer;
@@ -1628,7 +1620,7 @@ html.dark .legend-item:hover {
   border-radius: 10px;
   padding: 10px 24px;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
   color: #EF4444;
@@ -1695,20 +1687,20 @@ html.dark .legend-item:hover {
   border-radius: 10px;
   padding: 10px 24px;
   font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 100px;
 }
 
 .error-actions .el-button--primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--color-accent);
   border: none;
-  color: #fff;
+  color: var(--color-accent-foreground, #fff);
 }
 
 .error-actions .el-button--primary:hover {
-  background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+  background: var(--color-accent-hover, #404040);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-md);
 }
 
 .error-actions .el-button--default {

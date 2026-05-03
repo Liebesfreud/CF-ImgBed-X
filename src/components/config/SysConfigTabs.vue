@@ -1,258 +1,112 @@
 <template>
-<div class="sidebar-container" ref="sidebar" :class="{ 'is-collapsed': isCollapse }" :style="sidebarStyle">
-    <div class="menu-list">
-        <div 
-            v-for="item in menuItems" 
+    <div class="sys-config-tabs" role="navigation" :aria-label="$t('dashboardTabs.systemSettings')">
+        <button
+            v-for="item in menuItems"
             :key="item.index"
-            class="menu-item"
+            type="button"
+            class="sys-tab"
             :class="{ 'is-active': activeIndex === item.index }"
             @click="handleSelect(item.index)"
         >
-            <font-awesome-icon :icon="item.icon" class="menu-icon" />
-            <span class="menu-text">{{ $t(item.titleKey) }}</span>
-        </div>
+            <component :is="item.icon" :size="18" :stroke-width="1.8" />
+            <span>{{ $t(item.titleKey) }}</span>
+        </button>
     </div>
-
-    <div class="toggle-button" @click="toggleCollapse">
-        <font-awesome-icon :icon="isCollapse ? 'angle-double-right' : 'angle-double-left'"></font-awesome-icon>
-    </div>
-</div>
 </template>
 
 <script>
+import { IconChartBar, IconCloudUpload, IconLayoutGrid, IconSettings, IconShield } from '@tabler/icons-vue';
+
 export default {
-name: 'SysConfigTabs',
-props: {
-    activeIndex: {
-        type: String,
-        default: 'status'
-    },
-    isCollapse: {
-        type: Boolean,
-        default: false
-    }
-},
-data() {
-    return {
-        expandedWidth: null,
-        menuItems: [
-            { index: 'status', icon: 'chart-bar', titleKey: 'sysConfigTabs.systemStatus' },
-            { index: 'upload', icon: 'cloud-upload', titleKey: 'sysConfigTabs.uploadSettings' },
-            { index: 'security', icon: 'shield', titleKey: 'sysConfigTabs.securitySettings' },
-            { index: 'page', icon: 'pager', titleKey: 'sysConfigTabs.pageSettings' },
-            { index: 'others', icon: 'cog', titleKey: 'sysConfigTabs.otherSettings' }
-        ]
-    };
-},
-computed: {
-    collapsedWidth() {
-        return window.innerWidth <= 768 ? 50 : 56;
-    },
-    sidebarStyle() {
-        if (this.isCollapse) {
-            return { width: this.collapsedWidth + 'px' };
+    name: 'SysConfigTabs',
+    props: {
+        activeIndex: {
+            type: String,
+            default: 'status'
+        },
+        isCollapse: {
+            type: Boolean,
+            default: false
         }
-        return this.expandedWidth ? { width: this.expandedWidth + 'px' } : {};
-    }
-},
-watch: {
-    '$i18n.locale'() {
-        this.$nextTick(() => this.measureWidth());
-    }
-},
-methods: {
-    toggleCollapse() {
-        this.$emit('update:isCollapse', !this.isCollapse);
     },
-    checkMobile() {
-        const isMobile = window.innerWidth <= 768;
-        this.$emit('update:isCollapse', isMobile);
+    data() {
+        return {
+            menuItems: [
+                { index: 'status', icon: IconChartBar, titleKey: 'sysConfigTabs.systemStatus' },
+                { index: 'upload', icon: IconCloudUpload, titleKey: 'sysConfigTabs.uploadSettings' },
+                { index: 'security', icon: IconShield, titleKey: 'sysConfigTabs.securitySettings' },
+                { index: 'page', icon: IconLayoutGrid, titleKey: 'sysConfigTabs.pageSettings' },
+                { index: 'others', icon: IconSettings, titleKey: 'sysConfigTabs.otherSettings' }
+            ]
+        };
     },
-    handleSelect(index) {
-        this.$emit('update:activeIndex', index);
-    },
-    measureWidth() {
-        const el = this.$refs.sidebar;
-        if (!el) return;
-        // Temporarily expand to measure natural content width
-        const prevWidth = el.style.width;
-        const prevTransition = el.style.transition;
-        const wasCollapsed = el.classList.contains('is-collapsed');
-        el.style.transition = 'none';
-        if (wasCollapsed) {
-            el.classList.remove('is-collapsed');
+    methods: {
+        handleSelect(index) {
+            this.$emit('update:activeIndex', index);
+            this.$emit('update:isCollapse', false);
         }
-        el.style.width = 'auto';
-        // Force reflow to apply changes
-        void el.offsetWidth;
-        const natural = el.scrollWidth;
-        // Restore original state
-        el.style.width = prevWidth;
-        if (wasCollapsed) {
-            el.classList.add('is-collapsed');
-        }
-        void el.offsetWidth;
-        el.style.transition = prevTransition;
-        this.expandedWidth = natural;
     },
-},
-mounted() {
-    this.checkMobile();
-    this.$nextTick(() => this.measureWidth());
-    window.addEventListener('resize', this.checkMobile);
-},
-beforeDestroy() {
-    window.removeEventListener('resize', this.checkMobile);
-}
+    mounted() {
+        this.$emit('update:isCollapse', false);
+    }
 };
 </script>
 
 <style scoped>
-.sidebar-container {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 50%;
-    left: 8px;
-    transform: translateY(-50%);
-    z-index: 2001;
-    max-width: 200px;
-    /* macOS 风格毛玻璃效果 */
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.1),
-        0 1px 3px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    transition: width 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-.sidebar-container.is-collapsed {
-    width: 56px;
-}
-
-/* 深色模式 */
-html.dark .sidebar-container {
-    background: rgba(30, 30, 30, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 
-        0 4px 30px rgba(0, 0, 0, 0.3),
-        0 1px 3px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.sidebar-container:hover {
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.12),
-        0 2px 6px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-html.dark .sidebar-container:hover {
-    box-shadow: 
-        0 8px 40px rgba(0, 0, 0, 0.4),
-        0 2px 6px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.menu-list {
-    padding: 8px;
-}
-
-.menu-item {
+.sys-config-tabs {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding: 12px 12px 12px 0;
-    height: 42px;
-    box-sizing: border-box;
-    border-radius: 10px;
+    gap: 6px;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 2px;
+    scrollbar-width: none;
+}
+
+.sys-config-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.sys-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    min-height: 34px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0 12px;
+    background: transparent;
+    color: var(--color-text-muted);
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-    color: var(--admin-container-color, #333);
-    gap: 0;
-    overflow: hidden;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 650;
+    transition: color var(--motion-fast) var(--motion-ease), background var(--motion-fast) var(--motion-ease), border-color var(--motion-fast) var(--motion-ease);
 }
 
-.menu-item:hover {
-    background: rgba(0, 0, 0, 0.06);
+.sys-tab:hover {
+    color: var(--color-text);
+    background: var(--color-surface-soft);
+    border-color: var(--color-border);
 }
 
-html.dark .menu-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+.sys-tab.is-active {
+    color: var(--color-accent-contrast);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
-.menu-item.is-active {
-    background: linear-gradient(135deg, rgba(64, 158, 255, 0.15), rgba(56, 189, 248, 0.25));
-    color: #409EFF;
-}
-
-html.dark .menu-item.is-active {
-    background: linear-gradient(135deg, rgba(64, 158, 255, 0.2), rgba(56, 189, 248, 0.35));
-}
-
-.menu-icon {
-    width: 40px;
-    min-width: 40px;
-    font-size: 16px;
-    flex-shrink: 0;
-    text-align: center;
-}
-
-.menu-text {
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    opacity: 1;
-    transition: opacity 0.2s ease 0.05s, max-width 0.25s ease;
-}
-
-.sidebar-container.is-collapsed .menu-text {
-    opacity: 0;
-    max-width: 0;
-    transition: opacity 0.1s ease, max-width 0.2s ease;
-}
-
-.toggle-button {
-    padding: 12px;
-    text-align: center;
-    cursor: pointer;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
-    color: var(--admin-container-color, #333);
-}
-
-html.dark .toggle-button {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.toggle-button:hover {
-    background: rgba(0, 0, 0, 0.04);
-}
-
-html.dark .toggle-button:hover {
-    background: rgba(255, 255, 255, 0.06);
-}
-
-/* 移动端 */
 @media (max-width: 768px) {
-    .sidebar-container {
-        left: 4px;
-        max-width: 170px;
+    .sys-config-tabs {
+        width: 100%;
     }
-    
-    .sidebar-container.is-collapsed {
-        width: 50px;
-    }
-    
-    .menu-icon {
-        width: 34px;
-        min-width: 34px;
+
+    .sys-tab {
+        min-height: 32px;
+        padding: 0 10px;
+        font-size: 12px;
     }
 }
 </style>

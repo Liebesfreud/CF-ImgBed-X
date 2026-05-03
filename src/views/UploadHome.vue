@@ -1,135 +1,72 @@
-<template>
+﻿<template>
     <div class="container">
     <div class="upload-home">
-        <!-- 桌面端按钮 -->
-        <ToggleDark class="toggle-dark-button desktop-only"/>
-        <el-dropdown class="more-dropdown desktop-only" trigger="click" @command="handleDesktopMenuCommand">
-            <el-button class="more-button">
-                <font-awesome-icon icon="ellipsis-v" size="lg"/>
-            </el-button>
-            <template #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item command="showHistory">
-                        <font-awesome-icon icon="history" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $t('upload.history') }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="showAnnouncement" :disabled="!announcementAvailable">
-                        <font-awesome-icon icon="bullhorn" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $t('upload.announcement') }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="toggleLanguage">
-                        <font-awesome-icon icon="globe" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $i18n.locale === 'zh-CN' ? 'English' : '简体中文' }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="viewDocs">
-                        <font-awesome-icon icon="book" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $t('upload.viewDocs') }}
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </template>
-        </el-dropdown>
-        <div class="upload-folder-container" :class="{ 'no-announcement': !announcementAvailable }">
-            <div class="upload-folder" :class="{ 'active': isFolderInputActive }">
-                <DirectorySuggestionInput
-                    v-if="showDirectorySuggestions"
-                    v-model="uploadFolder"
-                    class="inner-folder-input"
-                    :placeholder="$t('upload.folderPlaceholder')"
-                    @focus="handleFolderInputFocus"
-                    @blur="handleFolderInputBlur"
-                    @select="handleDirectorySelect"
-                />
-                <el-input
-                    v-else
-                    class="inner-folder-input"
-                    v-model="uploadFolder"
-                    :placeholder="$t('upload.folderPlaceholder')"
-                    @focus="handleFolderInputFocus"
-                    @blur="handleFolderInputBlur"
-                />
-            </div>
-            <DirectoryTreePicker
-                v-if="showDirectorySuggestions"
-                :current-directory="uploadFolder"
-                source="upload"
-                @select="handleDirectorySelect"
-            >
-                <template #trigger>
-                    <el-button class="directory-tree-trigger">
-                        <font-awesome-icon icon="folder-tree" />
-                    </el-button>
+        <header class="app-topbar">
+            <DashboardTabs activeTab="home">
+                <template #actions>
+                    <BaseButton class="nav-action" icon="book" variant="ghost" size="md" @click="handleDesktopMenuCommand('viewDocs')">
+                        <font-awesome-icon icon="book" />
+                        <span>文档</span>
+                    </BaseButton>
+                    <BaseButton class="nav-action danger" icon="sign-out-alt" variant="ghost" size="md" aria-label="Logout" @click="handleLogout" />
                 </template>
-            </DirectoryTreePicker>
-        </div>
-        <el-tooltip :content="$t('upload.switchUploadMethod')" placement="bottom" :disabled="disableTooltip">
-            <el-button class="upload-method-button desktop-only" @click="handleChangeUploadMethod">
-                <font-awesome-icon v-if="uploadMethod === 'default'"  icon="folder-open" class="upload-method-icon" size="lg"/>
-                <font-awesome-icon v-else-if="uploadMethod === 'paste'" icon="paste" class="upload-method-icon" size="lg"/>
-            </el-button>
-        </el-tooltip>
+            </DashboardTabs>
+        </header>
 
-        <!-- 移动端更多按钮 -->
-        <el-dropdown class="mobile-more-dropdown mobile-only" trigger="click" @command="handleMobileMenuCommand">
-            <el-button class="mobile-more-button">
-                <font-awesome-icon icon="ellipsis-v" size="lg"/>
-            </el-button>
-            <template #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item command="toggleTheme">
-                        <font-awesome-icon :icon="getThemeIcon()" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ getThemeText() }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="toggleUploadMethod">
-                        <font-awesome-icon :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload') }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="showHistory">
-                        <font-awesome-icon icon="history" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $t('upload.history') }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="showAnnouncement" :disabled="!announcementAvailable">
-                        <font-awesome-icon icon="bullhorn" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $t('upload.announcement') }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="toggleLanguage">
-                        <font-awesome-icon icon="globe" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $i18n.locale === 'zh-CN' ? 'English' : '简体中文' }}
-                    </el-dropdown-item>
-                    <el-dropdown-item command="viewDocs">
-                        <font-awesome-icon icon="book" style="width: 16px; margin-right: 8px; text-align: center;"/>
-                        {{ $t('upload.viewDocs') }}
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </template>
-        </el-dropdown>
-        <div class="toolbar-manage">
-            <el-button class="toolbar-manage-button" :class="{ 'active': isToolBarOpen}" size="large" @click="handleOpenToolbar" circle>
-                <font-awesome-icon v-if="!isToolBarOpen"  icon="bars" class="manage-icon" size="lg"/>
-                <font-awesome-icon v-else icon="times" class="manage-icon" size="lg"/>
-            </el-button>
-        </div>
-        <div class="toolbar">
-            <el-tooltip :disabled="disableTooltip" :content="$t('upload.settings')" placement="top">
-                <el-button class="toolbar-button compress-button" :class="{ 'active': isToolBarOpen}" size="large" @click="openCompressDialog" circle>
-                    <font-awesome-icon icon="cloud-upload" class="compress-icon" size="lg"/>
-                </el-button>
-            </el-tooltip>
-            <el-tooltip :disabled="disableTooltip" :content="$t('upload.linkFormat')" placement="left">
-                <el-button class="toolbar-button link-button" :class="{ 'active': isToolBarOpen}" size="large" @click="openUrlDialog" circle>
-                    <font-awesome-icon icon="link" class="link-icon" size="lg"/>
-                </el-button>
-            </el-tooltip>
-            <el-tooltip :disabled="disableTooltip" :content="$t('upload.manage')" placement="left">
-                <el-button class="toolbar-button config-button" :class="{ 'active': isToolBarOpen}" size="large" @click="handleManage" circle>
-                    <font-awesome-icon icon="cog" class="config-icon" size="lg"/>
-                </el-button>
-            </el-tooltip>
-            <el-tooltip :disabled="disableTooltip" :content="$t('upload.logout')" placement="left">
-                <el-button class="toolbar-button sign-out-button" :class="{ 'active': isToolBarOpen}" size="large" @click="handleLogout" circle>
-                    <font-awesome-icon icon="sign-out-alt" class="sign-out-icon" size="lg"/>
-                </el-button>
-            </el-tooltip>
-        </div>
+        <section class="upload-workspace-panel">
+            <div class="upload-folder-container topbar-folder" :class="{ 'no-announcement': !announcementAvailable }">
+                <div class="upload-folder" :class="{ 'active': isFolderInputActive }">
+                    <DirectorySuggestionInput
+                        v-if="showDirectorySuggestions"
+                        v-model="uploadFolder"
+                        class="inner-folder-input"
+                        :placeholder="$t('upload.folderPlaceholder')"
+                        @focus="handleFolderInputFocus"
+                        @blur="handleFolderInputBlur"
+                        @select="handleDirectorySelect"
+                    />
+                    <el-input
+                        v-else
+                        class="inner-folder-input"
+                        v-model="uploadFolder"
+                        :placeholder="$t('upload.folderPlaceholder')"
+                        @focus="handleFolderInputFocus"
+                        @blur="handleFolderInputBlur"
+                    />
+                </div>
+                <DirectoryTreePicker
+                    v-if="showDirectorySuggestions"
+                    :current-directory="uploadFolder"
+                    source="upload"
+                    @select="handleDirectorySelect"
+                >
+                    <template #trigger>
+                        <el-button class="directory-tree-trigger">
+                            <font-awesome-icon icon="folder-tree" />
+                        </el-button>
+                    </template>
+                </DirectoryTreePicker>
+            </div>
+
+            <div class="upload-page-actions ui-scroll-actions" :aria-label="$t('upload.settings')">
+                <BaseButton class="page-action primary" :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" variant="secondary" @click="handleChangeUploadMethod">
+                    <font-awesome-icon :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" />
+                    {{ uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload') }}
+                </BaseButton>
+                <BaseButton class="page-action" icon="cloud-upload" variant="secondary" @click="openCompressDialog">
+                    {{ $t('upload.settings') }}
+                </BaseButton>
+                <BaseButton class="page-action" icon="link" variant="secondary" @click="openUrlDialog">
+                    {{ $t('upload.linkFormat') }}
+                </BaseButton>
+                <BaseButton class="page-action" icon="history" variant="secondary" @click="showHistory = true">
+                    {{ $t('upload.history') }}
+                </BaseButton>
+                <BaseButton class="page-action" icon="bullhorn" variant="secondary" :disabled="!announcementAvailable" @click="handleShowAnnouncement">
+                    {{ $t('upload.announcement') }}
+                </BaseButton>
+            </div>
+        </section>
         <Logo :useConfigLink="true" />
         <div class="header">
             <h1 class="title"><a class="main-title" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank">{{ ownerName }}</a> ImgHub</h1>
@@ -233,9 +170,8 @@
 <script>
 import UploadForm from '@/components/upload/UploadForm.vue'
 import Footer from '@/components/Footer.vue'
-import ToggleDark from '@/components/ToggleDark.vue'
 import Logo from '@/components/Logo.vue'
-import { setLocale } from '@/locales'
+import DashboardTabs from '@/components/DashboardTabs.vue'
 import UploadHistory from '@/components/upload/UploadHistory.vue'
 import UploadSettingsDialog from '@/components/upload/UploadSettingsDialog.vue'
 import DirectoryTreePicker from '@/components/DirectoryTreePicker.vue'
@@ -254,27 +190,25 @@ export default {
             selectedUrlForm: ref(''),
             showUrlDialog: false,
             showCompressDialog: false,
-            customerCompress: true, //上传前压缩
-            compressQuality: 4, //压缩后大小
-            compressBar: 5, //压缩阈值
-            convertToWebp: false, //转换为WebP格式
-            serverCompress: true, //服务器端压缩
-            uploadChannel: '', //上传渠道
-            channelName: '', //指定的渠道名称
-            availableChannels: {}, //可用渠道列表
-            uploadNameType: '', //上传文件命名方式
-            customUrlPrefix: '', //自定义链接前缀
-            useCustomUrl: 'false', //是否启用自定义链接格式
-            autoRetry: true, //失败自动切换
+            customerCompress: true, //涓婁紶鍓嶅帇缂?
+            compressQuality: 4, //鍘嬬缉鍚庡ぇ灏?
+            compressBar: 5, //鍘嬬缉闃堝€?
+            convertToWebp: false, //杞崲涓篧ebP鏍煎紡
+            serverCompress: true, //鏈嶅姟鍣ㄧ鍘嬬缉
+            uploadChannel: '', //涓婁紶娓犻亾
+            channelName: '', //鎸囧畾鐨勬笭閬撳悕绉?
+            availableChannels: {}, //鍙敤娓犻亾鍒楄〃
+            uploadNameType: '', //涓婁紶鏂囦欢鍛藉悕鏂瑰紡
+            customUrlPrefix: '', //鑷畾涔夐摼鎺ュ墠缂€
+            useCustomUrl: 'false', //鏄惁鍚敤鑷畾涔夐摼鎺ユ牸寮?
+            autoRetry: true, //澶辫触鑷姩鍒囨崲
             useDefaultWallPaper: false,
-            isToolBarOpen: false, //是否打开工具栏
-            uploadMethod: 'default', //上传方式
-            uploadFolder: '', // 上传文件夹
+            uploadMethod: 'default', //涓婁紶鏂瑰紡
+            uploadFolder: '', // 涓婁紶鏂囦欢澶?
             isFolderInputActive: false,
-            showAnnouncementDialog: false, // 控制公告弹窗的显示
-            announcementContent: '', // 公告内容
+            showAnnouncementDialog: false, // 鎺у埗鍏憡寮圭獥鐨勬樉绀?
+            announcementContent: '', // 鍏憡鍐呭
             showHistory: false,
-            themeMode: 'auto', // 主题模式：light, dark, auto
         }
     },
     watch: {
@@ -285,12 +219,12 @@ export default {
             this.updateCompressConfig('compressQuality', val)
         },
         compressBar(val) {
-            // 确保值在有效范围内
+            // 纭繚鍊煎湪鏈夋晥鑼冨洿鍐?
             if (val === null || val === undefined || val < 1) {
                 this.compressBar = 1
                 return
             }
-            // 确保期望大小不超过压缩阈值
+            // 纭繚鏈熸湜澶у皬涓嶈秴杩囧帇缂╅槇鍊?
             if (this.compressQuality > val) {
                 this.compressQuality = val
             }
@@ -304,19 +238,19 @@ export default {
         },
         uploadChannel(val) {
             this.updateStoreUploadChannel(val)
-            // 切换渠道类型时，检查持久化的渠道名是否在新渠道列表中
+            // 鍒囨崲娓犻亾绫诲瀷鏃讹紝妫€鏌ユ寔涔呭寲鐨勬笭閬撳悕鏄惁鍦ㄦ柊娓犻亾鍒楄〃涓?
             const newChannelList = this.availableChannels[val] || []
             const savedChannelName = this.storeChannelName
             if (savedChannelName && newChannelList.some(ch => ch.name === savedChannelName)) {
-                // 持久化的渠道名在新渠道列表中，恢复它
+                // 鎸佷箙鍖栫殑娓犻亾鍚嶅湪鏂版笭閬撳垪琛ㄤ腑锛屾仮澶嶅畠
                 this.channelName = savedChannelName
             } else {
-                // 否则清空
+                // 鍚﹀垯娓呯┖
                 this.channelName = ''
             }
         },
         channelName(val) {
-            // 确保清空时保存空字符串而不是null
+            // 纭繚娓呯┖鏃朵繚瀛樼┖瀛楃涓茶€屼笉鏄痭ull
             this.$store.commit('setStoreChannelName', val || '')
         },
         uploadNameType(val) {
@@ -332,14 +266,14 @@ export default {
             this.$store.commit('setStoreAutoRetry', val)
         },
         uploadFolder(val) {
-            // 实时输入时用非 strict 模式，不检查末尾的单独 . 以允许继续输入如 .123
+            // 瀹炴椂杈撳叆鏃剁敤闈?strict 妯″紡锛屼笉妫€鏌ユ湯灏剧殑鍗曠嫭 . 浠ュ厑璁哥户缁緭鍏ュ .123
             if (this.validateUploadFolder(val, false)) {
-                // 非 strict 通过后，再用 strict 模式静默检查，只有完全合法才更新 store
+                // 闈?strict 閫氳繃鍚庯紝鍐嶇敤 strict 妯″紡闈欓粯妫€鏌ワ紝鍙湁瀹屽叏鍚堟硶鎵嶆洿鏂?store
                 const strictResult = validateFolderPath(val, { strict: true })
                 if (strictResult.valid) {
                     this.$store.commit('setStoreUploadFolder', val)
                 }
-                // strict 不通过时不更新 store，等失焦时提示并回滚
+                // strict 涓嶉€氳繃鏃朵笉鏇存柊 store锛岀瓑澶辩劍鏃舵彁绀哄苟鍥炴粴
             } else {
                 this.$nextTick(() => {
                     this.uploadFolder = this.storeUploadFolder
@@ -359,62 +293,50 @@ export default {
             return window.innerWidth < 768
         },
         urlPrefix() {
-            // 全局自定义链接前缀
+            // 鍏ㄥ眬鑷畾涔夐摼鎺ュ墠缂€
             return this.userConfig?.urlPrefix || `${window.location.protocol}//${window.location.host}/file/`
         },
         announcementAvailable() {
             return !!this.userConfig?.announcement
         },
-        // 是否显示目录候选项（从 userConfig 获取）
+        // 鏄惁鏄剧ず鐩綍鍊欓€夐」锛堜粠 userConfig 鑾峰彇锛?
         showDirectorySuggestions() {
             return this.userConfig?.showDirectorySuggestions ?? false
         },
-        // 当前渠道类型对应的渠道列表
+        // 褰撳墠娓犻亾绫诲瀷瀵瑰簲鐨勬笭閬撳垪琛?
         currentChannelList() {
             return this.availableChannels[this.uploadChannel] || []
         }
     },
     mounted() {
-        // 初始化背景图，启用自动创建元素
+        // 鍒濆鍖栬儗鏅浘锛屽惎鐢ㄨ嚜鍔ㄥ垱寤哄厓绱?
         this.initializeBackground('uploadBkImg', '.container', false, true)
 
-        // 读取用户选择的链接格式
+        // 璇诲彇鐢ㄦ埛閫夋嫨鐨勯摼鎺ユ牸寮?
         this.selectedUrlForm = this.uploadCopyUrlForm || 'url'
-        // 读取用户选择的压缩设置（优先用户设置，其次系统默认配置）
+        // 璇诲彇鐢ㄦ埛閫夋嫨鐨勫帇缂╄缃紙浼樺厛鐢ㄦ埛璁剧疆锛屽叾娆＄郴缁熼粯璁ら厤缃級
         this.customerCompress = this.compressConfig.customerCompress ?? this.parseBoolean(this.userConfig?.defaultCustomerCompress, true)
         this.compressQuality = this.compressConfig.compressQuality ?? this.parseNumber(this.userConfig?.defaultCompressQuality, 4)
         this.compressBar = this.compressConfig.compressBar ?? this.parseNumber(this.userConfig?.defaultCompressBar, 5)
         this.serverCompress = this.compressConfig.serverCompress ?? true
         this.convertToWebp = this.compressConfig.convertToWebp ?? this.parseBoolean(this.userConfig?.defaultConvertToWebp, false)
-        // 读取用户选择的上传渠道
+        // 璇诲彇鐢ㄦ埛閫夋嫨鐨勪笂浼犳笭閬?
         this.uploadChannel = this.storeUploadChannel || this.userConfig?.defaultUploadChannel || 'telegram'
-        // 用户定义的失败自动切换
+        // 鐢ㄦ埛瀹氫箟鐨勫け璐ヨ嚜鍔ㄥ垏鎹?
         this.autoRetry = this.storeAutoRetry
-        // 读取用户选择的上传文件命名方式
+        // 璇诲彇鐢ㄦ埛閫夋嫨鐨勪笂浼犳枃浠跺懡鍚嶆柟寮?
         this.uploadNameType = this.storeUploadNameType || this.userConfig?.defaultUploadNameType || 'default'
-        // 读取用户自定义链接格式
+        // 璇诲彇鐢ㄦ埛鑷畾涔夐摼鎺ユ牸寮?
         this.customUrlPrefix = this.customUrlSettings.customUrlPrefix
         this.useCustomUrl = this.customUrlSettings.useCustomUrl
-        // 读取用户偏好的上传方式
+        // 璇诲彇鐢ㄦ埛鍋忓ソ鐨勪笂浼犳柟寮?
         this.uploadMethod = this.storeUploadMethod
-        // 获取可用渠道列表
+        // 鑾峰彇鍙敤娓犻亾鍒楄〃
         this.fetchAvailableChannels()
-        // 读取用户设置的上传文件夹
+        // 璇诲彇鐢ㄦ埛璁剧疆鐨勪笂浼犳枃浠跺す
         this.uploadFolder = this.storeUploadFolder || this.userConfig?.defaultUploadFolder || ''
 
-        // 从 Vuex store 读取主题模式状态
-        const cusDarkMode = this.$store.getters.cusDarkMode
-        const useDarkMode = this.$store.getters.useDarkMode
-        
-        if (!cusDarkMode) {
-            this.themeMode = 'auto'
-        } else if (useDarkMode) {
-            this.themeMode = 'dark'
-        } else {
-            this.themeMode = 'light'
-        }
-
-        // 首次访问公告
+        // 棣栨璁块棶鍏憡
         const visited = localStorage.getItem('visitedUploadHome')
         const announcement = this.userConfig?.announcement
         if (!visited && announcement) {
@@ -426,44 +348,44 @@ export default {
     components: {
         UploadForm,
         Footer,
-        ToggleDark,
         Logo,
+        DashboardTabs,
         UploadHistory,
         UploadSettingsDialog,
         DirectoryTreePicker,
         DirectorySuggestionInput
     },
     methods: {
-        // 获取可用渠道列表
+        // 鑾峰彇鍙敤娓犻亾鍒楄〃
         async fetchAvailableChannels() {
             try {
                 const response = await axios.get('/api/channels', { withAuthCode: true })
                 if (response.data) {
                     this.availableChannels = response.data
-                    // 恢复渠道名称：优先持久化的值，其次系统默认配置
+                    // 鎭㈠娓犻亾鍚嶇О锛氫紭鍏堟寔涔呭寲鐨勫€硷紝鍏舵绯荤粺榛樿閰嶇疆
                     const savedChannelName = this.storeChannelName
                     const defaultChannelName = this.userConfig?.defaultChannelName
                     const currentChannelList = this.availableChannels[this.uploadChannel] || []
                     
-                    // 如果用户主动清空过（savedChannelName === ''），则保持为空
-                    // 如果从未选择过（savedChannelName === null/undefined），则使用默认值
+                    // 濡傛灉鐢ㄦ埛涓诲姩娓呯┖杩囷紙savedChannelName === ''锛夛紝鍒欎繚鎸佷负绌?
+                    // 濡傛灉浠庢湭閫夋嫨杩囷紙savedChannelName === null/undefined锛夛紝鍒欎娇鐢ㄩ粯璁ゅ€?
                     if (savedChannelName && currentChannelList.some(ch => ch.name === savedChannelName)) {
                         this.channelName = savedChannelName
                     } else if (savedChannelName === '' || savedChannelName === null || savedChannelName === undefined) {
-                        // 用户主动清空或从未选择，检查是否使用默认值
+                        // 鐢ㄦ埛涓诲姩娓呯┖鎴栦粠鏈€夋嫨锛屾鏌ユ槸鍚︿娇鐢ㄩ粯璁ゅ€?
                         if (savedChannelName !== '' && defaultChannelName && currentChannelList.some(ch => ch.name === defaultChannelName)) {
                             this.channelName = defaultChannelName
                         }
-                        // 如果 savedChannelName === ''，说明用户主动清空，保持为空
+                        // 濡傛灉 savedChannelName === ''锛岃鏄庣敤鎴蜂富鍔ㄦ竻绌猴紝淇濇寔涓虹┖
                     }
                 }
             } catch (error) {
                 console.error('Failed to fetch available channels:', error)
             }
         },
-        // 验证上传文件夹路径的合法性
+        // 楠岃瘉涓婁紶鏂囦欢澶硅矾寰勭殑鍚堟硶鎬?
         validateUploadFolder(path, strict = true) {
-            // 自动补全前导 /
+            // 鑷姩琛ュ叏鍓嶅 /
             if (path && !path.startsWith('/')) {
                 path = '/' + path
                 this.uploadFolder = path
@@ -480,11 +402,11 @@ export default {
         },
         handleFolderInputBlur() {
             this.isFolderInputActive = false
-            // 失焦时自动补全前导 /
+            // 澶辩劍鏃惰嚜鍔ㄨˉ鍏ㄥ墠瀵?/
             if (this.uploadFolder && !this.uploadFolder.startsWith('/')) {
                 this.uploadFolder = '/' + this.uploadFolder
             }
-            // 失焦时做完整校验（包括末尾单独的 .）
+            // 澶辩劍鏃跺仛瀹屾暣鏍￠獙锛堝寘鎷湯灏惧崟鐙殑 .锛?
             if (!this.validateUploadFolder(this.uploadFolder, true)) {
                 this.$nextTick(() => {
                     this.uploadFolder = this.storeUploadFolder
@@ -494,14 +416,14 @@ export default {
         handleManage() {
             this.$router.push('/dashboard')
         },
-        // 解析布尔值
+        // 瑙ｆ瀽甯冨皵鍊?
         parseBoolean(value, defaultValue) {
             if (value === undefined || value === null) return defaultValue
             if (typeof value === 'boolean') return value
             if (typeof value === 'string') return value === 'true'
             return defaultValue
         },
-        // 解析数字
+        // 瑙ｆ瀽鏁板瓧
         parseNumber(value, defaultValue) {
             if (value === undefined || value === null) return defaultValue
             const num = parseFloat(value)
@@ -532,74 +454,14 @@ export default {
         updateStoreUploadNameType(value) {
             this.$store.commit('setStoreUploadNameType', value)
         },
-        handleOpenToolbar () {
-            this.isToolBarOpen = !this.isToolBarOpen
-            // 等过渡动画结束，向active类添加pointer-events属性，使其可以点击
-            setTimeout(() => {
-                const buttons = document.querySelectorAll('.toolbar-button')
-                buttons.forEach(button => {
-                    button.style.pointerEvents = this.isToolBarOpen? 'auto' : 'none'
-                })
-            }, 300)
-        },
         handleChangeUploadMethod() {
             this.uploadMethod = this.uploadMethod === 'default'? 'paste' : 'default'
             this.$store.commit('setUploadMethod', this.uploadMethod)
         },
-        handleMobileMenuCommand(command) {
-            if (command === 'toggleTheme') {
-                // 循环切换：auto -> light -> dark -> auto
-                if (this.themeMode === 'auto') {
-                    // 切换到亮色
-                    this.themeMode = 'light'
-                    this.$store.commit('setCusDarkMode', true)
-                    this.$store.commit('setUseDarkMode', false)
-                } else if (this.themeMode === 'light') {
-                    // 切换到暗色
-                    this.themeMode = 'dark'
-                    this.$store.commit('setCusDarkMode', true)
-                    this.$store.commit('setUseDarkMode', true)
-                } else {
-                    // 切换到自动
-                    this.themeMode = 'auto'
-                    this.$store.commit('setCusDarkMode', false)
-                }
-            } else if (command === 'toggleUploadMethod') {
-                this.handleChangeUploadMethod()
-            } else if (command === 'viewDocs') {
-                window.open('https://cfbed.sanyue.de/qa/', '_blank')
-            } else if (command === 'showHistory') {
-                this.showHistory = true
-            } else if (command === 'showAnnouncement') {
-                this.handleShowAnnouncement()
-            } else if (command === 'toggleLanguage') {
-                const next = this.$i18n.locale === 'zh-CN' ? 'en' : 'zh-CN'
-                setLocale(next)
-            }
-        },
         handleDesktopMenuCommand(command) {
             if (command === 'viewDocs') {
                 window.open('https://cfbed.sanyue.de/qa/', '_blank')
-            } else if (command === 'showHistory') {
-                this.showHistory = true
-            } else if (command === 'showAnnouncement') {
-                this.handleShowAnnouncement()
-            } else if (command === 'toggleLanguage') {
-                const next = this.$i18n.locale === 'zh-CN' ? 'en' : 'zh-CN'
-                setLocale(next)
             }
-        },
-        getThemeIcon() {
-            // 显示下一个模式的图标
-            if (this.themeMode === 'auto') return 'sun'  // auto -> light
-            if (this.themeMode === 'light') return 'moon'  // light -> dark
-            return 'adjust'  // dark -> auto
-        },
-        getThemeText() {
-            // 显示下一个模式的文字
-            if (this.themeMode === 'auto') return this.$t('theme.lightMode')
-            if (this.themeMode === 'light') return this.$t('theme.darkMode')
-            return this.$t('theme.autoMode')
         },
         handleShowAnnouncement() {
             const announcement = this.userConfig?.announcement
@@ -610,11 +472,11 @@ export default {
                 this.$message.info(this.$t('upload.noAnnouncement'))
             }
         },
-        // 处理目录选择
+        // 澶勭悊鐩綍閫夋嫨
         handleDirectorySelect(path) {
-            // 填入选择的目录路径
+            // 濉叆閫夋嫨鐨勭洰褰曡矾寰?
             this.uploadFolder = path
-            // 触发路径验证逻辑
+            // 瑙﹀彂璺緞楠岃瘉閫昏緫
             if (this.validateUploadFolder(path, true)) {
                 this.$store.commit('setStoreUploadFolder', path)
             }
@@ -629,425 +491,119 @@ export default {
     min-height: 100vh;
 }
 
-/* 定义顺时针和逆时针旋转动画 */
-.rotate {
-    animation: spin 2s ease-in-out; /* 动画时长为2秒，执行一次 */
+.app-topbar {
+    position: sticky;
+    top: 12px;
+    z-index: 200;
+    width: min(1180px, calc(100% - 24px));
+    margin: 12px auto 18px;
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
 }
 
-/* 定义放大缩小动画 */
-.scale {
-    animation: scale 0.5s ease-in-out; /* 动画时长为0.5秒，执行一次 */
-}
-
-/* 关键帧：先顺时针旋转，再逆时针旋转 */
-@keyframes spin {
-    0% {
-        transform: rotate(0deg); /* 初始位置 */
-    }
-    25% {
-        transform: rotate(5deg); /* 顺时针旋转20度 */
-    }
-    50% {
-        transform: rotate(0deg); /* 顺时针旋转回到初始位置 */
-    }
-    75% {
-        transform: rotate(-3deg); /* 逆时针旋转20度 */
-    }
-    100% {
-        transform: rotate(0deg); /* 逆时针旋转回到初始位置 */
-    }
-}
-
-@keyframes streamer {
-    0% {
-        background-position: 200% center;
-    }
-    100% {
-        background-position: -200% center;
-    }
-}
-
-
-/* 关键帧：旋转抖动 */
-@keyframes rotate-shake {
-    0% {
-        transform: rotate(0deg); /* 初始位置 */
-    }
-    50% {
-        transform: rotate(10deg); /* 旋转10度 */
-    }
-    100% {
-        transform: rotate(0deg); /* 回到初始位置 */
-    }
-}
-
-/* 关键帧：左右抖动 */
-@keyframes shake {
-    0% {
-        transform: translateX(0); /* 初始位置 */
-    }
-    50% {
-        transform: translateX(-1px); /* 向右移动3像素 */
-    }
-    100% {
-        transform: translateX(0); /* 回到初始位置 */
-    }
-}
-
-/* 关键帧：放大缩小 */
-@keyframes scale {
-    0% {
-        transform: scale(1); /* 初始大小 */
-    }
-    50% {
-        transform: scale(1.1); /* 放大到1.2倍 */
-    }
-    100% {
-        transform: scale(1); /* 回到初始大小 */
-    }
-}
-
-
-/* 桌面端和移动端显示控制 */
-.desktop-only {
-    display: inline-block;
-}
-.mobile-only {
-    display: none;
-}
-@media (max-width: 768px) {
-    .desktop-only {
-        display: none !important;
-    }
-    .mobile-only {
-        display: flex !important;
-    }
-}
-
-.toggle-dark-button {
-    border: none;
-    transition: all 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    position: fixed;
-    top: 30px;
-    right: 80px;
-}
-
-.more-dropdown {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    z-index: 100;
-}
-.more-dropdown .more-button {
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    justify-content: center;
+.upload-workspace-panel {
+    display: grid;
+    grid-template-columns: minmax(220px, 360px) minmax(0, 1fr);
     align-items: center;
-    border: none;
-    transition: all 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    color: var(--theme-toggle-color);
-    border-radius: 12px;
-    outline: none;
-    padding: 0;
-}
-.more-dropdown .more-button:hover {
-    transform: scale(1.05);
-    box-shadow: var(--toolbar-button-shadow-hover);
+    gap: var(--space-3);
+    width: min(1080px, calc(100% - 32px));
+    margin: 0 auto var(--space-6);
+    padding: 8px 12px;
+    border-radius: var(--radius-xl);
+    background: transparent;
+    box-shadow: none;
 }
 
-.upload-method-button {
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    transition: all 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    color: var(--theme-toggle-color);
-    border-radius: 12px;
-    position: fixed;
-    top: 30px;
-    right: 130px;
-    outline: none;
-}
-@media (max-width: 768px) {
-    .upload-method-button {
-        width: 2rem;
-        height: 2rem;
-    }
-}
-.upload-method-icon {
-    outline: none;
-}
-
-/* 移动端更多按钮 */
-.mobile-more-dropdown {
-    position: fixed;
-    top: 30px;
-    right: 30px;
-    z-index: 100;
-}
-.mobile-more-button {
-    width: 2rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    transition: all 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    color: var(--theme-toggle-color);
-    border-radius: 12px;
-    outline: none;
-    padding: 0;
-}
-.mobile-more-button:hover {
-    transform: scale(1.05);
-    box-shadow: var(--toolbar-button-shadow-hover);
-}
-
-/* 上传文件输入框容器样式 */
 .upload-folder-container {
     display: flex;
     align-items: center;
-    position: fixed;
-    top: 30px;
-    right: 180px;
-    z-index: 100;
-}
-.upload-folder-container.no-announcement {
-    right: 180px;
-}
-@media (max-width: 768px) {
-    .upload-folder-container {
-        right: 70px;
-    }
-    .upload-folder-container.no-announcement {
-        right: 70px;
-    }
+    min-width: 0;
 }
 
-/* 上传文件输入框样式 */
 .upload-folder {
-    width: 100px;
-    height: 2.5rem;
-    border-radius: 12px;
-    transition: all 0.3s ease, width 0.4s ease;
-}
-.upload-folder.active {
-    width: 200px;
-}
-@media (max-width: 768px) {
-    .upload-folder {
-        width: 80px;
-        height: 2rem;
-    }
-    .upload-folder.active {
-        width: 120px;
-    }
+    width: 100%;
+    height: 38px;
+    border-radius: 999px;
+    transition: box-shadow var(--motion-base) var(--motion-ease);
 }
 
-/* 目录树触发按钮 */
-.directory-tree-trigger {
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    margin-left: 10px;
-    transition: all 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    color: var(--theme-toggle-color);
-    border-radius: 12px;
-    outline: none;
-}
-.directory-tree-trigger:hover {
-    transform: scale(1.05);
-    box-shadow: var(--toolbar-button-shadow-hover);
-}
-@media (max-width: 768px) {
-    .directory-tree-trigger {
-        width: 2rem;
-        height: 2rem;
-    }
-}
-
-.upload-folder :deep(.inner-folder-input) {
+.upload-folder :deep(.inner-folder-input),
+.upload-folder :deep(.el-input) {
     width: 100%;
     height: 100%;
 }
 
-.upload-folder :deep(.el-input) {
-    height: 100%;
-}
-
 .upload-folder :deep(.el-input__wrapper) {
-    border-radius: 12px;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    border: none;
     height: 100%;
-}
-
-.toolbar-manage {
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    z-index: 200;
-}
-.toolbar-manage-button {
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
     border: none;
-    transition: all 0.3s ease, border-radius 0.4s ease;
-    margin-left: 0;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    color: var(--toolbar-button-color);
-    outline: none;
-    border-radius: 12px;
-}
-.toolbar-manage-button.active {
-    border-radius: 50%;
 }
 
-.toolbar {
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    display: flex;
-    flex-direction: column;
+.upload-folder :deep(.el-input__inner) {
+    font-size: 14px;
+}
+
+.directory-tree-trigger {
+    display: inline-flex;
     align-items: center;
-    z-index: 100;
-}
-
-.toolbar-button {
+    justify-content: center;
+    width: var(--control-height-lg);
+    height: var(--control-height-lg);
+    margin-left: var(--space-2);
     border: none;
-    transition: all 0.3s ease;
-    margin-left: 0;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-    backdrop-filter: blur(10px);
-    color: var(--toolbar-button-color);
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-as-border);
 }
 
-/* 按钮悬停效果 */
-.toggle-dark-button:hover,
-.info-container:hover,
-.upload-method-button:hover,
-.toolbar-manage-button:hover,
-.toolbar-button:hover {
-    transform: scale(1.05);
-    box-shadow: var(--toolbar-button-shadow-hover);
-}
-.upload-folder:hover {
-    box-shadow: var(--toolbar-button-shadow-hover);
+.upload-page-actions {
+    justify-content: flex-end;
 }
 
-/* 按钮形成扇形 */
-.compress-button {
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    opacity: 0;
-    transition: all 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    pointer-events: none;
-}
-.compress-button.active {
-    transform: translateY(-75px);
-    opacity: 1;
-}
 
-.link-button {
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    opacity: 0;
-    transition: all 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    pointer-events: none;
-}
-.link-button.active {
-    transform: translateY(-58px) translateX(-50px);
-    opacity: 1;
-}
-
-.config-button {
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    opacity: 0;
-    transition: all 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    pointer-events: none;
-}
-.config-button.active {
-    transform: translateY(-11px) translateX(-75px);
-    opacity: 1;
-}
-
-.sign-out-button {
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    opacity: 0;
-    transition: all 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    pointer-events: none;
-}
-.sign-out-button.active {
-    transform: translateY(42px) translateX(-68px);
-    opacity: 1;
-}
-
-/* 非移动端时的图标动画样式 */
-@media (min-width: 768px) {
-    .compress-button:hover {
-        transform: translateY(-77px);
-    }
-    .link-button:hover {
-        transform: translateY(-60px) translateX(-52px);
-    }
-    .config-button:hover {
-        transform: translateY(-12px) translateX(-77px);
-    }
-    .sign-out-button:hover {
-        transform: translateY(44px) translateX(-70px);
+@media (max-width: 980px) {
+    .upload-workspace-panel {
+        grid-template-columns: 1fr;
     }
 
-    .compress-icon:hover {
-        animation: scale 0.5s ease-in-out;
-    }
-    .config-icon:hover {
-        animation: spin 0.5s ease-in-out;
-    }
-    .link-icon:hover {
-        animation: rotate-shake 0.5s ease-in-out;
-    }
-    .sign-out-icon:hover {
-        animation: shake 0.5s ease-in-out;
+    .upload-page-actions {
+        justify-content: flex-start;
     }
 }
 
+@media (max-width: 560px) {
+    .app-topbar {
+        width: calc(100% - 16px);
+        top: 6px;
+        border-radius: 18px;
+        padding: 8px;
+    }
+
+    .upload-workspace-panel {
+        width: calc(100% - 20px);
+        border-radius: 18px;
+    }
+
+    .upload-page-actions :deep(.base-button) {
+        min-height: 34px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .upload-page-actions :deep(.base-button__label) {
+        display: none;
+    }
+}
 
 :deep(.el-dialog) {
     border-radius: 12px;
     background-color: var(--dialog-bg-color);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--dialog-box-shadow);
+box-shadow: var(--dialog-box-shadow);
 }
 .dialog-action {
     display: flex;
@@ -1060,29 +616,22 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
-    margin-top: 5vh;
+    padding: 24px 15px 10px;
+    margin-top: 0;
     color: var(--upload-header-color);
     user-select: none;
     text-decoration: none;
     position: relative;
-    top: -3vh;
-    transition: all 0.3s ease;
 }
 .title {
-    font-size: 2.5rem;
-    font-weight: 400;
-    font-family: 'Righteous', 'Noto Sans SC', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: 650;
     position: relative;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: float 4s ease-in-out infinite;
-    letter-spacing: 3px;
-}
-.title:hover {
-    transform: scale(1.08) translateY(-3px);
-    filter: drop-shadow(0 0 20px var(--el-upload-dragger-uniform-color));
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+    text-wrap: balance;
 }
 .title::after {
     content: '';
@@ -1090,86 +639,43 @@ export default {
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 0;
-    height: 3px;
-    background: linear-gradient(90deg, 
-        transparent, 
-        var(--el-upload-dragger-uniform-color), 
-        transparent);
-    border-radius: 3px;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 10px var(--el-upload-dragger-uniform-color);
-}
-.title:hover::after {
-    width: 80%;
+    width: 72%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.18), transparent);
 }
 
-/* 动态流光标题 */
 .main-title {
-    background: var(--upload-main-title-color);
-    background-size: 200% auto;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
+    color: var(--upload-main-title-color);
     text-decoration: none;
     display: inline-block;
-    animation: titleShimmer 3s ease-in-out infinite;
     position: relative;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
-}
-
-
-
-.title:hover .main-title {
-    animation: titleShimmer 1s ease-in-out infinite;
-    filter: brightness(1.2);
-}
-
-/* 漂浮动画 */
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-/* 标题流光动画 */
-@keyframes titleShimmer {
-    0% {
-        background-position: 200% center;
-    }
-    100% {
-        background-position: -200% center;
-    }
 }
 
 @media (max-width: 768px) {
     .title {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-    }
-    .title:hover {
-        transform: scale(1.05) translateY(-2px);
+        font-size: 2.25rem;
+        letter-spacing: -0.045em;
     }
 }
 
 .upload-home {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     min-height: 94vh;
-    background-color: var(--admin-container-bg-color);
+    background:
+        radial-gradient(circle at 50% 0%, rgba(10, 114, 239, 0.05), transparent 30%),
+        var(--admin-container-bg-color);
 }
 .upload {
     margin-bottom: 5px;
     position: relative;
-    top: -3vh;
 }
 
 .footer {
     height: 6vh;
 }
 </style>
+
+
