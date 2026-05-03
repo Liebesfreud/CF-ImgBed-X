@@ -11,62 +11,9 @@
             </div>
         </header>
 
-        <section class="upload-workspace-panel">
-            <div class="upload-folder-container topbar-folder" :class="{ 'no-announcement': !announcementAvailable }">
-                <div class="upload-folder" :class="{ 'active': isFolderInputActive }">
-                    <DirectorySuggestionInput
-                        v-if="showDirectorySuggestions"
-                        v-model="uploadFolder"
-                        class="inner-folder-input"
-                        :placeholder="$t('upload.folderPlaceholder')"
-                        @focus="handleFolderInputFocus"
-                        @blur="handleFolderInputBlur"
-                        @select="handleDirectorySelect"
-                    />
-                    <el-input
-                        v-else
-                        class="inner-folder-input"
-                        v-model="uploadFolder"
-                        :placeholder="$t('upload.folderPlaceholder')"
-                        @focus="handleFolderInputFocus"
-                        @blur="handleFolderInputBlur"
-                    />
-                </div>
-                <DirectoryTreePicker
-                    v-if="showDirectorySuggestions"
-                    :current-directory="uploadFolder"
-                    source="upload"
-                    @select="handleDirectorySelect"
-                >
-                    <template #trigger>
-                        <el-button class="directory-tree-trigger">
-                            <font-awesome-icon icon="folder-tree" />
-                        </el-button>
-                    </template>
-                </DirectoryTreePicker>
-            </div>
 
-            <div class="upload-page-actions ui-scroll-actions" :aria-label="$t('upload.settings')">
-                <BaseButton class="page-action primary" :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" variant="secondary" @click="handleChangeUploadMethod">
-                    <font-awesome-icon :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" />
-                    {{ uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload') }}
-                </BaseButton>
-                <BaseButton class="page-action" icon="cloud-upload" variant="secondary" @click="openCompressDialog">
-                    {{ $t('upload.settings') }}
-                </BaseButton>
-                <BaseButton class="page-action" icon="link" variant="secondary" @click="openUrlDialog">
-                    {{ $t('upload.linkFormat') }}
-                </BaseButton>
-                <BaseButton class="page-action" icon="history" variant="secondary" @click="showHistory = true">
-                    {{ $t('upload.history') }}
-                </BaseButton>
-                <BaseButton class="page-action" icon="bullhorn" variant="secondary" :disabled="!announcementAvailable" @click="handleShowAnnouncement">
-                    {{ $t('upload.announcement') }}
-                </BaseButton>
-            </div>
-        </section>
         <div class="header">
-            <h1 class="title"><a class="main-title" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank">{{ ownerName }}</a> ImgHub</h1>
+            <h1 class="title"><a class="main-title" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank">ImgBed X</a></h1>
         </div>
         <UploadForm 
             :selectedUrlForm="selectedUrlForm" 
@@ -85,7 +32,66 @@
             :uploadFolder="uploadFolder"
             :convertToWebp="convertToWebp"
             class="upload"
-        />
+        >
+            <template #dashboard-actions>
+                <div class="upload-folder-container dashboard-folder" :class="{ 'no-announcement': !announcementAvailable }">
+                    <div class="upload-folder" :class="{ 'active': isFolderInputActive }">
+                        <DirectorySuggestionInput
+                            v-if="showDirectorySuggestions"
+                            v-model="uploadFolder"
+                            class="inner-folder-input"
+                            :placeholder="$t('upload.folderPlaceholder')"
+                            @focus="handleFolderInputFocus"
+                            @blur="handleFolderInputBlur"
+                            @select="handleDirectorySelect"
+                        />
+                        <el-input
+                            v-else
+                            class="inner-folder-input"
+                            v-model="uploadFolder"
+                            :placeholder="$t('upload.folderPlaceholder')"
+                            @focus="handleFolderInputFocus"
+                            @blur="handleFolderInputBlur"
+                        />
+                    </div>
+                    <DirectoryTreePicker
+                        v-if="showDirectorySuggestions"
+                        :current-directory="uploadFolder"
+                        source="upload"
+                        @select="handleDirectorySelect"
+                    >
+                        <template #trigger>
+                            <el-button class="directory-tree-trigger">
+                                <font-awesome-icon icon="folder-tree" />
+                            </el-button>
+                        </template>
+                    </DirectoryTreePicker>
+                </div>
+                <div class="upload-page-actions ui-scroll-actions" :aria-label="$t('upload.settings')">
+                    <BaseButton class="page-action primary" :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" variant="secondary" @click="handleChangeUploadMethod">
+                        <font-awesome-icon :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" />
+                        <span class="action-label">{{ uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload') }}</span>
+                    </BaseButton>
+                    <BaseButton class="page-action" icon="cloud-upload" variant="secondary" @click="openCompressDialog">
+                        <font-awesome-icon icon="cloud-upload" class="action-icon-only"/>
+                        <span class="action-label">{{ $t('upload.settings') }}</span>
+                    </BaseButton>
+                    <BaseButton class="page-action" icon="link" variant="secondary" @click="openUrlDialog">
+                        <font-awesome-icon icon="link" class="action-icon-only"/>
+                        <span class="action-label">{{ $t('upload.linkFormat') }}</span>
+                    </BaseButton>
+                    
+                    <div class="secondary-actions">
+                        <BaseButton class="page-action icon-only-btn" variant="secondary" @click="showHistory = true" :aria-label="$t('upload.history')">
+                            <font-awesome-icon icon="history" />
+                        </BaseButton>
+                        <BaseButton class="page-action icon-only-btn" variant="secondary" :disabled="!announcementAvailable" @click="handleShowAnnouncement" :aria-label="$t('upload.announcement')">
+                            <font-awesome-icon icon="bullhorn" />
+                        </BaseButton>
+                    </div>
+                </div>
+            </template>
+        </UploadForm>
         <el-dialog :title="$t('settings.linkFormatTitle')" v-model="showUrlDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
             <div class="dialog-section">
                 <div class="section-header">
@@ -484,7 +490,7 @@ export default {
 
 <style scoped>
 .container {
-    background: var(--bg-color);
+    background: transparent;
     min-height: 100vh;
 }
 
@@ -508,7 +514,7 @@ export default {
 
 .upload-workspace-panel {
     display: grid;
-    grid-template-columns: minmax(220px, 360px) minmax(0, 1fr);
+    grid-template-columns: minmax(220px, 360px);
     align-items: center;
     gap: var(--space-3);
     width: min(1080px, calc(100% - 32px));
@@ -519,63 +525,130 @@ export default {
     box-shadow: none;
 }
 
-.upload-folder-container {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-}
+  .upload-folder-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+  }
+  
+  .dashboard-folder {
+      flex: 1 1 200px;
+      max-width: 400px;
+  }
+  
+  .upload-folder {
+      width: 100%;
+      height: 36px;
+      border-radius: 999px;
+      transition: box-shadow var(--motion-base) var(--motion-ease);
+  }
+  
+  .upload-folder :deep(.inner-folder-input),
+  .upload-folder :deep(.el-input) {
+      width: 100%;
+      height: 100%;
+  }
 
-.upload-folder {
-    width: 100%;
-    height: 38px;
-    border-radius: 999px;
-    transition: box-shadow var(--motion-base) var(--motion-ease);
-}
+  .upload-folder :deep(.el-input__wrapper) {
+      background: var(--input-bg, #ffffff);
+      border-radius: 999px;
+      box-shadow: var(--shadow-as-border);
+      transition: all 0.3s ease;
+      padding: 0 16px;
+      height: 36px;
+  }
 
-.upload-folder :deep(.inner-folder-input),
-.upload-folder :deep(.el-input) {
-    width: 100%;
-    height: 100%;
-}
+  .upload-folder :deep(.el-input__wrapper.is-focus) {
+      box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
+  }
 
-.upload-folder :deep(.el-input__wrapper) {
-    height: 100%;
-    border-radius: 999px;
-    background-color: var(--color-surface);
-    box-shadow: var(--shadow-as-border);
-    border: none;
-}
+  .upload-folder :deep(.el-input__inner) {
+      color: var(--el-text-color-primary);
+      font-size: 14px;
+  }
 
-.upload-folder :deep(.el-input__inner) {
-    font-size: 14px;
-}
+  .upload-folder :deep(.el-input__inner::placeholder) {
+      color: var(--el-text-color-placeholder);
+  }
+  
+  .directory-tree-trigger {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px !important;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #171717;
+      color: white;
+      border: none;
+      box-shadow: var(--shadow-as-border);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+  }
 
-.directory-tree-trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--control-height-lg);
-    height: var(--control-height-lg);
-    margin-left: var(--space-2);
-    border: none;
-    border-radius: 999px;
-    background-color: var(--color-surface);
-    color: var(--color-text);
-    box-shadow: var(--shadow-as-border);
-}
+  .directory-tree-trigger:hover,
+  .directory-tree-trigger:focus {
+      background: #000000;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-as-border-strong);
+  }
 
-.upload-page-actions {
-    justify-content: flex-end;
-}
-
-
-@media (max-width: 980px) {
+  .directory-tree-trigger:active {
+      transform: translateY(0);
+  }
+  
+  .upload-page-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+  }
+  
+  .secondary-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--modern-action-group-bg, #fafafa);
+      padding: 4px;
+      border-radius: 999px;
+      box-shadow: var(--shadow-as-border);
+  }
+  
+  .icon-only-btn {
+      width: 32px !important;
+      height: 32px !important;
+      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-width: unset !important;
+  }
+  
+  .icon-only-btn :deep(.base-button__content) {
+      margin: 0 !important;
+  }
+  
+  .action-icon-only {
+      display: none;
+  }
+  
+  /* Remove old workspace-panel styles */
+  .upload-workspace-panel {
+      display: none;
+  }
+  
+  .upload-page-actions {
+      justify-content: flex-end;
+  }
+  
+  
+  @media (max-width: 980px) {
     .upload-workspace-panel {
         grid-template-columns: 1fr;
-    }
-
-    .upload-page-actions {
-        justify-content: flex-start;
     }
 }
 
@@ -654,6 +727,12 @@ box-shadow: var(--dialog-box-shadow);
     position: relative;
 }
 
+:global(html.dark) .main-title,
+:global(.dark) .main-title,
+:global(html.dark) .title .main-title {
+    color: #fff !important;
+}
+
 @media (max-width: 768px) {
     .title {
         font-size: 2.25rem;
@@ -667,9 +746,7 @@ box-shadow: var(--dialog-box-shadow);
     justify-content: flex-start;
     align-items: center;
     min-height: 94vh;
-    background:
-        radial-gradient(circle at 50% 0%, rgba(10, 114, 239, 0.05), transparent 30%),
-        var(--admin-container-bg-color);
+    background: radial-gradient(circle at 50% 0%, rgba(10, 114, 239, 0.05), transparent 30%);
 }
 .upload {
     margin-bottom: 5px;

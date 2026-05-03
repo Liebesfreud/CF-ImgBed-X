@@ -123,9 +123,10 @@ export default {
 </script>
 <style scoped>
 .container {
-    background: var(--bg-color);
+    background: transparent;
     min-height: 100vh;
 }
+
 
 .app-topbar {
     position: sticky;

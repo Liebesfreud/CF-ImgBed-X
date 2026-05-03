@@ -294,7 +294,7 @@ export default {
     --el-color-primary-light-7: color-mix(in srgb, var(--color-accent) 30%, white);
     --el-color-primary-light-9: color-mix(in srgb, var(--color-accent) 12%, white);
     --el-color-primary-dark-2: var(--color-accent-hover, var(--color-accent));
-    background: var(--admin-container-bg-color);
+    background: transparent;
     min-height: 100vh;
     color: var(--admin-container-color);
     margin: 0;

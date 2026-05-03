@@ -21,7 +21,7 @@
                 :show-file-list="false"
                 >
                 <el-icon class="el-icon--upload" :class="{'upload-list-busy': fileList.length}">
-                    <CameraFilled/>
+                    <UploadFilled/>
                 </el-icon>
                 <div class="el-upload__text" :class="{'upload-list-busy': fileList.length}" v-html="$t('upload.dragUploadText')"></div>
             </el-upload>
@@ -68,6 +68,7 @@
                             <el-icon><Failed /></el-icon>{{ uploadErrorCount }}
                         </el-text>
                         <div class="upload-list-dashboard-action">
+                            <slot name="dashboard-actions"></slot>
                             <div class="modern-action-group">
                                 <el-tooltip :disabled="disableTooltip" :content="$t('upload.copyAll')" placement="top">
                                     <button class="modern-action-btn" @click="copyAll">
@@ -1511,39 +1512,28 @@ beforeDestroy() {
 </script>
 
 <style scoped> 
-@property --border-angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-}
-
-@keyframes borderRotate {
-    0% {
-        --border-angle: 0deg;
-    }
-    100% {
-        --border-angle: 360deg;
-    }
-}
 .upload-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: min(1080px, calc(100% - 32px));
+    margin-inline: auto;
+    box-sizing: border-box;
 }
 .upload-list-card {
-    width: 55vw;
-    height: 7vh;
+    width: 100%;
+    min-height: 52px;
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 15px;
+    border-radius: 16px;
     background-color: var(--upload-list-card-bg-color);
-border: var(--upload-list-card-border);
+    border: var(--upload-list-card-border);
     box-shadow: var(--upload-list-card-box-shadow) !important;
-    transition: height 0.3s ease;
+    transition: min-height 0.3s ease;
     overflow: hidden;
 }
 .upload-list-card :deep(.el-card__body) {
@@ -1552,24 +1542,21 @@ border: var(--upload-list-card-border);
     overflow: hidden;
 }
 .upload-list-container {
-    width: 55vw;
-    height: 7vh;
-    transition: height 0.3s ease;
+    width: 100%;
+    min-height: 52px;
+    transition: min-height 0.3s ease;
     overflow: hidden;
 }
-@media (max-width: 768px) {
-    .upload-list-card {
-        width: 70vw;
-    }
-    .upload-list-container {
-        width: 70vw;
+@media (max-width: 560px) {
+    .upload-form {
+        width: calc(100% - 20px);
     }
 }
 .upload-list-card.upload-list-busy {
-    height: 40vh;
+    min-height: 40vh;
 }
 .upload-list-container.upload-list-busy {
-    height: 40vh;
+    min-height: 40vh;
 }
 
 /* 上传时列表卡片边框效果：Vercel shadow-as-border + restrained blue focus */
@@ -1581,6 +1568,8 @@ border: var(--upload-list-card-border);
 .upload-card-wrapper {
     position: relative;
     overflow: visible;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .upload-card-glow {
@@ -1588,13 +1577,17 @@ border: var(--upload-list-card-border);
 }
 
 .upload-card {
-    width: 55vw;
-    padding: 20px;
+    width: 100%;
+    padding: 0;
     background: none;
+    box-sizing: border-box;
 }
-@media (max-width: 768px) {
+.upload-card :deep(.el-upload) {
+    width: 100%;
+}
+@media (max-width: 560px) {
     .upload-card {
-        width: 70vw;
+        padding: 0;
     }
 }
 .upload-card-busy :deep(.el-upload-dragger) {
@@ -1602,6 +1595,8 @@ border: var(--upload-list-card-border);
 }
 :deep(.el-upload-dragger)  {
     display: flex;
+    width: 100%;
+    box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -1629,41 +1624,9 @@ border: var(--upload-list-card-border);
     border-color: transparent !important;
 }
 
-/* 上传时的边缘流光旋转效果 */
 .upload-card.is-uploading {
     position: relative;
     background: none;
-}
-
-.upload-card.is-uploading::before {
-    content: '';
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-    border-radius: 15px;
-    padding: 2px;
-    background: conic-gradient(
-        from var(--border-angle),
-        transparent 0deg,
-        transparent 30deg,
-        var(--el-upload-dragger-uniform-color, #409eff) 60deg,
-        color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 70%, white) 90deg,
-        transparent 120deg,
-        transparent 180deg,
-        color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 70%, white) 210deg,
-        var(--el-upload-dragger-uniform-color, #409eff) 240deg,
-        transparent 270deg,
-        transparent 360deg
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    animation: borderRotate 2s linear infinite;
-    pointer-events: none;
-    z-index: 1;
 }
 .el-upload__text {
     font-weight: 600;
@@ -1717,39 +1680,10 @@ border: var(--upload-list-card-border);
     box-shadow: var(--el-upload-dragger-hover-box-shadow);
 }
 
-/* 粘贴卡片上传时的边缘流光效果 */
 .paste-card.is-uploading {
     position: relative;
     border-color: transparent !important;
     overflow: visible;
-}
-
-.paste-card.is-uploading::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 15px;
-    padding: 2px;
-    background: conic-gradient(
-        from var(--border-angle),
-        transparent 0deg,
-        transparent 30deg,
-        var(--el-upload-dragger-uniform-color, #409eff) 60deg,
-        color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 70%, white) 90deg,
-        transparent 120deg,
-        transparent 180deg,
-        color-mix(in srgb, var(--el-upload-dragger-uniform-color, #409eff) 70%, white) 210deg,
-        var(--el-upload-dragger-uniform-color, #409eff) 240deg,
-        transparent 270deg,
-        transparent 360deg
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    animation: borderRotate 2s linear infinite;
-    pointer-events: none;
-    z-index: 1;
 }
 
 .paste-card :deep(.el-card__body) {
@@ -1765,7 +1699,7 @@ border: var(--upload-list-card-border);
     height: 17vh;
 }
 .upload-card-textarea {
-    width: 50vw;
+    width: calc(100% - 48px);
     height: 70%;
     border-radius: 14px;
     background: #ffffff;
@@ -1841,7 +1775,7 @@ border: var(--upload-list-card-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50vw;
+    width: calc(100% - 48px);
     margin-top: 3%;
 }
 
@@ -1990,14 +1924,16 @@ border: var(--upload-list-card-border);
 
 .upload-list-dashboard {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    height: 7vh;
-    padding: 0 15px;
+    gap: var(--space-3, 12px);
+    min-height: 52px;
+    padding: 8px 15px;
     position: sticky;
     top: 0;
     z-index: 1;
-    border-radius: 14px;
+    border-radius: 16px;
     transition: background-color var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease);
 }
 .upload-list-dashboard.list-scrolled {
@@ -2005,25 +1941,30 @@ border: var(--upload-list-card-border);
     box-shadow: var(--upload-list-dashboard-shadow);
 }
 
+.upload-list-dashboard-action {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2, 8px);
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.upload-list-dashboard-action :deep(.upload-page-actions) {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.upload-list-dashboard-action :deep(.page-action) {
+    flex: 0 0 auto;
+    border-radius: 999px;
+}
+
 :deep(.el-upload-dragger) {
     position: relative;
     overflow: hidden;
-}
-
-:deep(.el-upload-dragger::before) {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(90deg, #ff5b4f, #de1d8d, #0a72ef);
-    opacity: 0;
-    transform: translateY(calc(100% - 3px));
-    transition: opacity var(--motion-base) var(--motion-ease);
-}
-
-.upload-card:hover :deep(.el-upload-dragger::before),
-:deep(.el-upload-dragger.is-dragover::before) {
-    opacity: 1;
 }
 
 /* ============================================
@@ -2035,7 +1976,7 @@ border: var(--upload-list-card-border);
     gap: 6px;
     padding: 4px;
     background: var(--modern-action-group-bg, #fafafa);
-    border-radius: 12px;
+    border-radius: 999px;
     border: none;
     box-shadow: var(--shadow-as-border);
     transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
@@ -2051,10 +1992,10 @@ border: var(--upload-list-card-border);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border: none;
-    border-radius: 9px;
+    border-radius: 999px;
     background: #171717;
     color: white;
     cursor: pointer;
@@ -2113,10 +2054,11 @@ border: var(--upload-list-card-border);
     gap: 8px;
     padding: 6px 14px;
     background: var(--dashboard-title-bg, #fafafa);
-    border-radius: 10px;
+    border-radius: 999px;
     color: var(--el-text-color-primary);
     letter-spacing: -0.01em;
     box-shadow: var(--shadow-as-border);
+    flex: 0 0 auto;
 }
 
 .upload-list-dashboard-title .el-icon {
@@ -2132,19 +2074,34 @@ border: var(--upload-list-card-border);
     .modern-action-group {
         gap: 4px;
         padding: 3px;
-        border-radius: 12px;
+        border-radius: 999px;
     }
 
     .modern-action-btn {
         width: 32px;
         height: 32px;
-        border-radius: 8px;
+        border-radius: 999px;
         font-size: 12px;
     }
 
     .upload-list-dashboard-title {
         font-size: 12px;
         padding: 4px 10px;
+    }
+
+    .upload-list-dashboard {
+        padding: 0 10px;
+        gap: 6px;
+    }
+
+    .upload-list-dashboard-action {
+        gap: 4px;
+    }
+}
+
+@media (max-width: 560px) {
+    .upload-list-dashboard-action :deep(.upload-page-actions .base-button__label) {
+        display: none;
     }
 }
 

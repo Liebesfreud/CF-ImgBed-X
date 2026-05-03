@@ -14,12 +14,19 @@ html,
 body {
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    color: #171717;
+    min-height: 100%;
+    background-color: var(--color-bg);
+    background-image: var(--app-dot-background);
+    background-attachment: fixed;
+    background-size: 26px 26px, 58px 58px, 520px 520px, 680px 680px, 100% 100%;
+    background-position: 0 0, 17px 19px, 12% 18%, 82% 10%, 0 0;
+    background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
+    color: var(--color-text);
 }
 
 body {
     font-family: var(--font-sans);
+    position: relative;
 }
 
 :focus-visible {
@@ -61,6 +68,19 @@ body {
     --color-accent: #171717;
     --color-accent-contrast: #ffffff;
     --color-danger: #dc2626;
+    
+    /* Background Pattern Colors */
+    --color-dot: rgba(0, 0, 0, 0.08);
+    --color-dot-soft: rgba(0, 0, 0, 0.035);
+    --color-dot-dense: rgba(0, 0, 0, 0.055);
+    --color-dot-dense-soft: rgba(0, 0, 0, 0.022);
+    --color-dot-ghost: rgba(0, 0, 0, 0.028);
+    --app-dot-background:
+        radial-gradient(circle, var(--color-dot) 0 1.15px, var(--color-dot-soft) 1.25px, transparent 2.05px),
+        radial-gradient(circle, var(--color-dot-dense) 0 1.05px, var(--color-dot-dense-soft) 1.2px, transparent 1.95px),
+        radial-gradient(circle at 32% 28%, var(--color-dot-ghost) 0 42px, transparent 118px),
+        radial-gradient(circle at 68% 34%, var(--color-dot-ghost) 0 28px, transparent 132px),
+        linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg) 100%);
 
     --radius-sm: 6px;
     --radius-md: 8px;
@@ -94,7 +114,7 @@ body {
     --upload-list-dashboard-shadow: var(--shadow-as-border);
     --upload-list-file-icon-color: var(--color-accent);
 
-    --el-upload-dragger-bg-color: var(--color-surface-soft);
+    --el-upload-dragger-bg-color: var(--upload-list-card-bg-color);
     --el-upload-dragger-border: none;
     --el-upload-dragger-box-shadow: var(--shadow-as-border);
     --el-upload-dragger-border-color: var(--color-border-strong);
@@ -104,11 +124,7 @@ body {
     --paste-card-textarea-border-color: var(--color-border-strong);
     --paste-card-textarea-box-shadow: var(--shadow-as-border-strong);
 
-    --el-icon--upload-color: var(--color-accent);
-    --upload-text-color: var(--color-text-muted);
-    --upload-header-color: var(--color-text);
-    --upload-main-title-color: var(--color-text);
-
+    /* ִʽ */
     --modern-action-group-bg: var(--color-surface-soft);
     --modern-action-group-border: none;
     --logo-glow-color: transparent;
@@ -220,6 +236,13 @@ body {
     --color-accent: #fafafa;
     --color-accent-contrast: #0b0b0c;
     --color-danger: #ef4444;
+
+    /* Background Pattern Colors - Dark Mode */
+    --color-dot: rgba(255, 255, 255, 0.095);
+    --color-dot-soft: rgba(255, 255, 255, 0.04);
+    --color-dot-dense: rgba(255, 255, 255, 0.065);
+    --color-dot-dense-soft: rgba(255, 255, 255, 0.028);
+    --color-dot-ghost: rgba(255, 255, 255, 0.035);
 
     --shadow-as-border: 0px 0px 0px 1px var(--color-border);
     --shadow-as-border-strong: 0px 0px 0px 1px var(--color-border-strong);
@@ -920,8 +943,9 @@ box-shadow: var(--popper-shadow);
 /* Unified app primitives */
 .ui-page-shell {
     min-height: 100vh;
-    background: var(--color-bg);
+    background: transparent;
     color: var(--color-text);
+
 }
 
 .ui-page-main {

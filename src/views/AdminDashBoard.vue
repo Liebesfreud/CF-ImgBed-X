@@ -13,22 +13,23 @@
         </header>
         <el-container>
             <el-main class="main-container">
-            <section class="gallery-toolbar">
-                <div class="search-area">
-                    <div class="search-card">
-                        <el-input v-model="tempSearch" size="small" :placeholder="$t('dashboard.searchPlaceholder')" @keyup.enter="handleSearch">
-                            <template #suffix>
-                                <font-awesome-icon icon="search" class="search-icon" @click="handleSearch"/>
-                            </template>
-                        </el-input>
-                    </div>
-                    <FilterDropdown
-                        v-model:filters="filters"
-                        :channelNameOptions="channelNameOptions"
-                        @change="handleFilterChange"
-                    />
-                </div>
-                <div class="actions">
+                <div class="gallery-frame">
+                    <section class="gallery-toolbar">
+                        <div class="search-area">
+                            <div class="search-card">
+                                <el-input v-model="tempSearch" size="small" :placeholder="$t('dashboard.searchPlaceholder')" @keyup.enter="handleSearch">
+                                    <template #suffix>
+                                        <font-awesome-icon icon="search" class="search-icon" @click="handleSearch"/>
+                                    </template>
+                                </el-input>
+                            </div>
+                            <FilterDropdown
+                                v-model:filters="filters"
+                                :channelNameOptions="channelNameOptions"
+                                @change="handleFilterChange"
+                            />
+                        </div>
+                        <div class="actions">
                     <el-dropdown @command="sort" :hide-on-click="false">
                         <BaseButton class="toolbar-button" :icon="sortIcon" variant="secondary">
                             {{ $t('dashboard.sortByDateDesc') }}
@@ -262,6 +263,7 @@
                         <el-button size="small" type="primary" @click="handleJumpPage" class="jump-btn">GO</el-button>
                     </div>
                 </div>
+            </div>
             </div>
             </el-main>
         </el-container>
@@ -1995,7 +1997,9 @@ mounted() {
 
 <style scoped>
 .container {
-    background: var(--admin-container-bg-color);
+    --dashboard-nav-width: calc(88px * 4 + 12px * 3);
+    --gallery-frame-width: min(var(--dashboard-nav-width), calc(100vw - 32px));
+    background: transparent;
     min-height: 100vh;
     color: var(--admin-container-color);
     margin: 0;
@@ -2021,8 +2025,9 @@ box-shadow: var(--dialog-box-shadow);
     position: sticky;
     top: 12px;
     z-index: 200;
+    box-sizing: border-box;
     width: min(1080px, calc(100% - 32px));
-    margin: 10px auto 16px;
+    margin: 10px auto 0;
     padding: 8px 12px;
     border-radius: var(--radius-xl);
     background: var(--color-surface);
@@ -2061,7 +2066,7 @@ box-shadow: var(--dialog-box-shadow);
 @media (max-width: 768px) {
     .app-topbar {
         top: 6px;
-        width: calc(100% - 16px);
+        width: calc(100vw - 16px);
         border-radius: 18px;
         padding: 8px;
     }
@@ -2151,8 +2156,8 @@ box-shadow: var(--dialog-box-shadow);
     margin-bottom: var(--space-5);
     padding: var(--space-3);
     border-radius: var(--radius-xl);
-    background: var(--color-surface-soft);
-    box-shadow: var(--shadow-as-border);
+    background: transparent;
+    box-shadow: none;
 }
 
 .actions {
@@ -2326,15 +2331,27 @@ box-shadow: var(--dialog-box-shadow);
 .main-container {
     display: flex;
     flex-direction: column;
-    width: min(1320px, calc(100% - 32px));
-    margin: 24px auto 0;
+    box-sizing: border-box;
+    width: var(--gallery-frame-width);
+    margin: 0 auto;
     padding: 0 0 42px;
     min-height: calc(100vh - 110px);
 }
 
+.gallery-frame {
+    box-sizing: border-box;
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-as-border);
+    padding: 20px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
 @media (max-width: 768px) {
     .main-container {
-        width: calc(100% - 20px);
+        width: calc(100vw - 16px);
         margin-top: 16px;
     }
 }
@@ -2344,7 +2361,7 @@ box-shadow: var(--dialog-box-shadow);
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 20px;
-    padding: 10px;
+    padding: 0;
     padding-bottom: 0px;
     flex-grow: 1;
     min-height: 80vh;
@@ -2402,7 +2419,8 @@ box-shadow: var(--dialog-box-shadow);
     border-radius: 12px;
     overflow-x: auto;
     overflow-y: visible;
-    box-shadow: var(--admin-dashboard-imgcard-shadow);
+    box-shadow: none;
+    border: 1px solid var(--el-border-color-lighter);
     margin-top: 15px;
 }
 
