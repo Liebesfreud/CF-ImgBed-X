@@ -192,7 +192,7 @@ mounted() {
 
 <style scoped>
 .system-management {
-    padding: 20px;
+    padding: 0;
     min-height: 500px;
 }
 
@@ -274,10 +274,10 @@ mounted() {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-    .others-settings {
-        padding: 15px;
-        padding-bottom: 80px; /* 为悬浮按钮留出空间 */
-    }
+.others-settings {
+    padding: 0;
+    min-height: 500px;
+}
     
     .first-settings :deep(.el-form) {
         padding: 12px 15px;

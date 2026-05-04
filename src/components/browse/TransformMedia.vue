@@ -822,7 +822,7 @@ export default {
 <style>
 /* Plyr 深色主题覆盖 */
 .plyr {
-  --plyr-color-main: #3b82f6;
+  --plyr-color-main: var(--color-accent);
 }
 .plyr--audio .plyr__controls {
   background: rgba(255, 255, 255, 0.1);
@@ -911,7 +911,7 @@ export default {
 
 .plyr-speed-option.active,
 .plyr-playmode-option.active {
-  color: #3b82f6;
+  color: var(--color-accent);
   font-weight: 600;
 }
 

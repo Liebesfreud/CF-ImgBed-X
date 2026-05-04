@@ -120,7 +120,7 @@ export default {
     data() {
         return {
             localSelected: this.selected,
-            tagColors: ['#f472b6', '#a78bfa', '#60a5fa', '#34d399']
+            tagColors: ['#f472b6', '#a78bfa', 'var(--color-accent)', '#34d399']
         }
     },
     computed: {

@@ -242,26 +242,37 @@ export default {
 
 <style scoped>
 .filter-dropdown {
-    flex-shrink: 0;
+    flex: 0 0 var(--gallery-toolbar-icon-button-size, 38px);
 }
 
 .filter-trigger {
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    width: var(--gallery-toolbar-icon-button-size, 38px);
+    min-width: var(--gallery-toolbar-icon-button-size, 38px);
+    min-height: var(--gallery-toolbar-control-height, 38px);
+    border-radius: var(--gallery-toolbar-control-radius, 8px);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
 }
 
 .header-icon {
-    font-size: 1.5em;
+    font-size: 1.1em;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
     color: var(--admin-container-color);
     outline: none;
 }
 
-.header-icon:hover {
+.filter-trigger:hover {
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-as-border-strong);
+}
+
+.filter-trigger:hover .header-icon {
     color: var(--admin-purple);
-    transform: scale(1.2);
 }
 
 .filter-badge :deep(.el-badge__content) {

@@ -69,7 +69,7 @@
                         </el-text>
                         <div class="upload-list-dashboard-action">
                             <slot name="dashboard-actions"></slot>
-                            <div class="modern-action-group">
+                            <div class="modern-action-group group-tools">
                                 <el-tooltip :disabled="disableTooltip" :content="$t('upload.copyAll')" placement="top">
                                     <button class="modern-action-btn" @click="copyAll">
                                         <font-awesome-icon icon="copy" />
@@ -1702,7 +1702,7 @@ beforeDestroy() {
     width: calc(100% - 48px);
     height: 70%;
     border-radius: 14px;
-    background: #ffffff;
+    background: var(--color-surface);
     box-shadow: var(--shadow-as-border);
     transition: box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
     box-sizing: border-box;
@@ -1714,16 +1714,18 @@ beforeDestroy() {
 }
 
 .upload-card-textarea:hover {
+    background: var(--color-surface-soft);
     box-shadow: var(--shadow-as-border-strong);
 }
 
 .upload-card-textarea:focus-within {
+    background: var(--color-surface);
     box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
 }
 
 :deep(.el-textarea__inner) {
     border-radius: 14px;
-    background: #ffffff;
+    background: transparent;
     transition: box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
     resize: none;
     border: none;
@@ -1741,13 +1743,13 @@ beforeDestroy() {
 }
 
 :deep(.el-textarea__inner:hover) {
-    background: #ffffff;
+    background: transparent;
 }
 
 :deep(.el-textarea__inner:focus) {
     border-color: transparent;
     box-shadow: none;
-    background: #ffffff;
+    background: transparent;
 }
 
 /* Modern Scrollbar Styles */
@@ -1946,20 +1948,22 @@ beforeDestroy() {
     align-items: center;
     flex-wrap: wrap;
     justify-content: flex-end;
-    gap: var(--space-2, 8px);
+    gap: var(--space-3, 12px);
     min-width: 0;
     flex: 1 1 auto;
 }
 
 .upload-list-dashboard-action :deep(.upload-page-actions) {
     justify-content: flex-end;
+    align-items: center;
     flex-wrap: wrap;
     min-width: 0;
+    flex: 1 1 auto;
 }
 
 .upload-list-dashboard-action :deep(.page-action) {
     flex: 0 0 auto;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
 }
 
 :deep(.el-upload-dragger) {
@@ -1976,16 +1980,13 @@ beforeDestroy() {
     gap: 6px;
     padding: 4px;
     background: var(--modern-action-group-bg, #fafafa);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     border: none;
     box-shadow: var(--shadow-as-border);
-    transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), background-color var(--motion-base) var(--motion-ease);
 }
 
-.modern-action-group:hover {
-    background: #f4f4f5;
-    box-shadow: var(--shadow-as-border-strong);
-    transform: translateY(-1px);
+.modern-action-group.group-tools {
+    padding: 4px;
 }
 
 .modern-action-btn {
@@ -1995,7 +1996,7 @@ beforeDestroy() {
     width: 32px;
     height: 32px;
     border: none;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     background: #171717;
     color: white;
     cursor: pointer;
@@ -2054,7 +2055,7 @@ beforeDestroy() {
     gap: 8px;
     padding: 6px 14px;
     background: var(--dashboard-title-bg, #fafafa);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     color: var(--el-text-color-primary);
     letter-spacing: -0.01em;
     box-shadow: var(--shadow-as-border);
@@ -2074,13 +2075,13 @@ beforeDestroy() {
     .modern-action-group {
         gap: 4px;
         padding: 3px;
-        border-radius: 999px;
+        border-radius: var(--radius-sm);
     }
 
     .modern-action-btn {
         width: 32px;
         height: 32px;
-        border-radius: 999px;
+        border-radius: var(--radius-sm);
         font-size: 12px;
     }
 

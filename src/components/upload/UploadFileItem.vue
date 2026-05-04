@@ -127,7 +127,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin: 8px 10px;
-    border: 1px solid var(--upload-list-item-border-color, rgba(64, 158, 255, 0.1));
+    border: 1px solid var(--upload-list-item-border-color, var(--color-border));
     padding: 10px 12px;
     border-radius: 16px;
     background: var(--upload-list-item-bg, linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%));
@@ -135,8 +135,8 @@ box-shadow: 0 2px 8px var(--upload-list-item-shadow, rgba(0, 0, 0, 0.04));
     transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .upload-list-item:hover {
-    border-color: var(--upload-list-item-hover-border, rgba(64, 158, 255, 0.25));
-    box-shadow: 0 4px 16px var(--upload-list-item-hover-shadow, rgba(64, 158, 255, 0.12));
+    border-color: var(--upload-list-item-hover-border, var(--color-border-strong));
+    box-shadow: 0 4px 16px var(--upload-list-item-hover-shadow, rgba(0, 0, 0, 0.08));
     transform: translateY(-2px);
 }
 .upload-list-item-content {
@@ -176,15 +176,15 @@ box-shadow: 0 2px 8px var(--upload-list-item-shadow, rgba(0, 0, 0, 0.04));
     align-items: center;
     justify-content: center;
     padding: 8px 16px;
-    background: var(--file-name-bg, linear-gradient(135deg, rgba(64, 158, 255, 0.08) 0%, rgba(64, 158, 255, 0.03) 100%));
+    background: var(--file-name-bg, var(--color-surface-soft));
     border-radius: 10px;
     margin-bottom: 8px;
-    border: 1px solid var(--file-name-border, rgba(64, 158, 255, 0.12));
+    border: 1px solid var(--file-name-border, var(--color-border));
 transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 .upload-list-item-name-wrapper:hover {
-    background: var(--file-name-hover-bg, linear-gradient(135deg, rgba(64, 158, 255, 0.12) 0%, rgba(64, 158, 255, 0.06) 100%));
-    border-color: var(--file-name-hover-border, rgba(64, 158, 255, 0.2));
+    background: var(--file-name-hover-bg, var(--color-surface-soft));
+    border-color: var(--file-name-hover-border, var(--color-border-strong));
 }
 .upload-list-item-name {
     font-size: 14px;
@@ -200,12 +200,12 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
     margin-top: 8px;
     width: 28vw;
     padding: 4px 8px;
-    background: var(--progress-wrapper-bg, linear-gradient(135deg, rgba(64, 158, 255, 0.05) 0%, rgba(64, 158, 255, 0.02) 100%));
+    background: var(--progress-wrapper-bg, var(--color-surface-soft));
     border-radius: 12px;
-    border: 1px solid var(--progress-wrapper-border, rgba(64, 158, 255, 0.1));
+    border: 1px solid var(--progress-wrapper-border, var(--color-border));
 }
 .upload-list-item-progress :deep(.el-progress) {
-    --el-color-primary: #409eff;
+    --el-color-primary: var(--color-accent);
 }
 .upload-list-item-progress :deep(.el-progress-bar) {
     padding-right: 0;
@@ -220,8 +220,8 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
 }
 .upload-list-item-progress :deep(.el-progress-bar__inner) {
     border-radius: 8px;
-    background: linear-gradient(90deg, #409eff 0%, #66b1ff 50%, #409eff 100%) !important;
-    box-shadow: 0 0 12px rgba(64, 158, 255, 0.5), 0 0 4px rgba(64, 158, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 50%, var(--color-accent) 100%) !important;
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 25%, transparent), 0 0 4px rgba(23, 23, 23, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
     transition: width 0.3s ease;
@@ -302,7 +302,7 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
     content: '';
     position: absolute;
     top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(64, 158, 255, 0.08), transparent);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent);
     animation: shimmer 2s infinite;
     z-index: 0;
 }
@@ -399,13 +399,13 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
     height: 100%;
 }
 .modern-file-action-btn-primary {
-    background: var(--file-action-primary-bg, linear-gradient(145deg, #409eff 0%, #53a8ff 50%, #66b1ff 100%));
-    color: white;
-    box-shadow: 0 3px 10px rgba(64, 158, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    background: var(--file-action-primary-bg, linear-gradient(145deg, var(--color-accent) 0%, var(--color-accent-hover) 100%));
+    color: var(--color-accent-contrast);
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--color-accent) 25%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 .modern-file-action-btn-primary:hover {
     transform: translateY(-3px) scale(1.08);
-    box-shadow: 0 6px 20px rgba(64, 158, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--color-accent) 35%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 .modern-file-action-btn-primary:active {
     transform: translateY(-1px) scale(1.02);

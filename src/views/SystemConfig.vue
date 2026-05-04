@@ -132,6 +132,7 @@ export default {
     position: sticky;
     top: 12px;
     z-index: 200;
+    box-sizing: border-box;
     width: min(1080px, calc(100% - 32px));
     margin: 10px auto 16px;
     padding: 8px 12px;
@@ -153,7 +154,7 @@ export default {
     width: var(--control-height-md);
     height: var(--control-height-md);
     border: none;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     background: var(--color-surface);
     color: var(--color-text);
     cursor: pointer;
@@ -170,7 +171,7 @@ export default {
 }
 
 .settings-layout {
-    width: min(1120px, calc(100% - 32px));
+    width: min(1080px, calc(100% - 32px));
     margin: 22px auto 0;
     padding-bottom: 48px;
 }
@@ -205,7 +206,7 @@ export default {
     }
 
     .settings-layout {
-        width: calc(100% - 20px);
+        width: calc(100% - 16px);
         margin-top: 18px;
     }
 }

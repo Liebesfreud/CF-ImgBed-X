@@ -35,8 +35,8 @@
             </div>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="handleClose">{{ $t('moveFile.cancel') }}</el-button>
-                    <el-button type="primary" :loading="loading" @click="handleConfirm">{{ $t('moveFile.confirm') }}</el-button>
+                    <BaseButton @click="handleClose" variant="secondary">{{ $t('moveFile.cancel') }}</BaseButton>
+                    <BaseButton variant="primary" :loading="loading" @click="handleConfirm">{{ $t('moveFile.confirm') }}</BaseButton>
                 </span>
             </template>
         </el-dialog>
@@ -109,8 +109,8 @@
             </div>
             <template #footer>
                 <div class="drawer-footer">
-                    <el-button @click="handleClose" class="footer-btn">{{ $t('moveFile.cancel') }}</el-button>
-                    <el-button type="primary" :loading="loading" @click="handleConfirm" class="footer-btn">{{ $t('moveFile.confirm') }}</el-button>
+                    <BaseButton @click="handleClose" class="footer-btn" variant="secondary">{{ $t('moveFile.cancel') }}</BaseButton>
+                    <BaseButton variant="primary" :loading="loading" @click="handleConfirm" class="footer-btn">{{ $t('moveFile.confirm') }}</BaseButton>
                 </div>
             </template>
         </el-drawer>
@@ -255,13 +255,13 @@ export default {
 
 <style scoped>
 .move-dialog-content {
-    padding: 0 10px;
+    padding: 0 var(--space-sm);
 }
 
 .move-path-input-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-sm);
 }
 
 .move-path-input {
@@ -273,38 +273,38 @@ export default {
 }
 
 .move-dialog-hint {
-    margin-top: 12px;
+    margin-top: var(--space-3);
     font-size: 12px;
-    color: var(--el-text-color-secondary);
+    color: var(--color-text-muted);
 }
 
 /* 移动端抽屉样式 */
 .move-drawer-content {
-    padding: 16px;
+    padding: var(--space-md);
 }
 
 .move-path-section {
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
 }
 
 .move-path-label {
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 8px;
-    color: var(--el-text-color-primary);
+    margin-bottom: var(--space-sm);
+    color: var(--color-text);
 }
 
 .move-path-input-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-sm);
 }
 
 /* 内嵌目录树样式 */
 .embedded-tree-section {
-    margin-top: 16px;
-    border: 1px solid var(--el-border-color-lighter);
-    border-radius: 8px;
+    margin-top: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     overflow: hidden;
 }
 
@@ -312,9 +312,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    background: var(--el-fill-color-light);
-    border-bottom: 1px solid var(--el-border-color-lighter);
+    padding: var(--space-3) var(--space-md);
+    background: var(--color-surface-soft);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .tree-section-title {
@@ -326,7 +326,7 @@ export default {
     min-height: 200px;
     max-height: 300px;
     overflow-y: auto;
-    padding: 8px;
+    padding: var(--space-sm);
 }
 
 .directory-tree {
@@ -335,25 +335,25 @@ export default {
 
 .directory-tree :deep(.el-tree-node__content) {
     height: 44px;
-    padding: 0 8px;
-    border-radius: 8px;
+    padding: 0 var(--space-sm);
+    border-radius: var(--radius-md);
 }
 
 .tree-node {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 0;
+    gap: var(--space-sm);
+    padding: var(--space-xs) 0;
     width: 100%;
 }
 
 .tree-node.is-current {
-    color: var(--el-color-primary);
+    color: var(--color-accent);
     font-weight: 500;
 }
 
 .folder-icon {
-    color: var(--el-color-warning);
+    color: var(--color-warning);
     font-size: 16px;
 }
 
@@ -368,25 +368,25 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 40px 20px;
+    gap: var(--space-3);
+    padding: var(--space-xl) var(--space-5);
     text-align: center;
 }
 
 .error-icon {
     font-size: 32px;
-    color: var(--el-color-danger);
+    color: var(--color-danger);
 }
 
 .error-text {
-    color: var(--el-text-color-secondary);
+    color: var(--color-text-muted);
     font-size: 14px;
 }
 
 .drawer-footer {
     display: flex;
-    gap: 12px;
-    padding: 0 16px 16px;
+    gap: var(--space-3);
+    padding: 0 var(--space-md) var(--space-md);
 }
 
 .footer-btn {
@@ -396,17 +396,17 @@ export default {
 
 <style>
 .move-dialog .el-dialog__body {
-    padding: 20px;
+    padding: var(--space-5);
 }
 
 .move-drawer {
-    border-radius: 16px 16px 0 0 !important;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0 !important;
 }
 
 .move-drawer .el-drawer__header {
     margin-bottom: 0;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--el-border-color-lighter);
+    padding: var(--space-md) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .move-drawer .el-drawer__body {

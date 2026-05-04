@@ -3,8 +3,6 @@
         :title="loginTitle"
         :fields="loginFields"
         :submit-text="$t('login.submit')"
-        background-key="loginBkImg"
-        :is-admin="false"
         :loading="isLoading"
         @submit="handleLogin"
     />
@@ -12,7 +10,6 @@
 
 <script>
 import axios from '@/utils/axios'
-import { mapGetters } from 'vuex'
 import BaseLogin from '@/components/BaseLogin.vue'
 
 export default {
@@ -23,12 +20,8 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['userConfig']),
-        ownerName() {
-            return this.userConfig?.ownerName || 'Sanyue'
-        },
         loginTitle() {
-            return this.$t('login.title', { owner: this.ownerName })
+            return 'ImgBed X'
         }
     },
     components: {

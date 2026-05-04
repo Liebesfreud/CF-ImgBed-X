@@ -173,7 +173,7 @@ mounted() {
 
 <style scoped>
 .page-settings {
-    padding: 20px;
+    padding: 0;
     min-height: 500px;
 }
 

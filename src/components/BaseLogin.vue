@@ -1,8 +1,6 @@
 <template>
     <div class="login" :style="viewportStyle">
-        <ToggleDark class="toggle-dark"/>
-        <LanguageSwitcher class="language-switcher"/>
-        <Logo />
+        <AdminToggleDark class="toggle-dark"/>
         <div class="login-container">
             <h1 class="login-title" tabindex="0">{{ title }}</h1>
             
@@ -44,21 +42,14 @@
                 <span v-else>{{ computedSubmitText }}</span>
             </el-button>
         </div>
-        <Footer class="footer"/>
     </div>
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue';
-import ToggleDark from '@/components/ToggleDark.vue';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
-import Logo from '@/components/Logo.vue';
-import { mapGetters } from 'vuex';
-import backgroundManager from '@/mixins/backgroundManager';
+import AdminToggleDark from '@/components/dashboard/AdminToggleDark.vue';
 
 export default {
     name: 'BaseLogin',
-    mixins: [backgroundManager],
     props: {
         // 页面标题
         title: {
@@ -76,16 +67,6 @@ export default {
             type: String,
             default: ''
         },
-        // 背景图配置键名
-        backgroundKey: {
-            type: String,
-            required: true
-        },
-        // 是否为管理端登录（影响背景样式）
-        isAdmin: {
-            type: Boolean,
-            default: false
-        },
         // 是否正在加载
         loading: {
             type: Boolean,
@@ -101,7 +82,6 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['userConfig']),
         computedSubmitText() {
             return this.submitText || this.$t('login.submit');
         },
@@ -128,16 +108,11 @@ export default {
         }
     },
     components: {
-        Footer,
-        ToggleDark,
-        LanguageSwitcher,
-        Logo
+        AdminToggleDark
     },
     mounted() {
         // 初始化表单数据
         this.initFormData();
-        // 初始化背景图
-        this.initializeBackground(this.backgroundKey, '.login', !this.isAdmin, true);
         // 在下一个tick计算标签宽度，确保DOM已经渲染
         this.$nextTick(() => {
             this.calculateLabelWidths();
@@ -244,7 +219,7 @@ export default {
     flex-direction: column;
     min-height: 100vh;
     height: auto;
-    background: var(--admin-container-bg-color, var(--bg-color));
+    background: radial-gradient(circle at 50% 0%, rgba(10, 114, 239, 0.05), transparent 30%);
     overflow-y: auto;
     padding: 20px 0;
     box-sizing: border-box;
@@ -352,7 +327,7 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
     bottom: -2px;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--login-input-underline-color, #5b9bd3), var(--login-input-underline-secondary-color, #7ba9d8));
+    background: linear-gradient(90deg, var(--login-input-underline-color, var(--color-accent)), var(--login-input-underline-secondary-color, var(--color-accent-hover)));
     transition: width 0.3s linear;
     border-radius: 1px;
 }
@@ -364,7 +339,7 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
 
 .input-container:has(.input-wrapper.focused) .input-name,
 .input-container:hover .input-name {
-    color: var(--login-input-label-focus-color, #5b9bd3);
+    color: var(--login-input-label-focus-color, var(--color-accent));
 }
 
 @media (max-width: 768px) {
@@ -446,7 +421,7 @@ transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s eas
 }
 
 .password-input:deep(.el-input__wrapper):focus-within .el-input__prefix {
-    color: var(--login-input-label-focus-color, #5b9bd3);
+    color: var(--login-input-label-focus-color, var(--color-accent));
 }
 
 .password-input:deep(.el-input__wrapper) {
@@ -478,12 +453,12 @@ position: relative;
 .password-input:deep(.el-input__wrapper):hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    border-color: var(--login-input-underline-color, #5b9bd3);
+    border-color: var(--login-input-underline-color, var(--color-accent));
 }
 
 .password-input:deep(.el-input__wrapper):focus-within {
-    border-color: var(--login-input-underline-color, #5b9bd3);
-    box-shadow: 0 0 0 3px rgba(91, 155, 211, 0.1);
+    border-color: var(--login-input-underline-color, var(--color-accent));
+    box-shadow: var(--focus-ring);
     transform: translateY(-1px);
 }
 
@@ -521,7 +496,7 @@ position: relative;
 }
 
 .password-input:deep(.el-input__wrapper):hover .el-input__suffix-inner {
-    color: var(--login-input-label-focus-color, #5b9bd3);
+    color: var(--login-input-label-focus-color, var(--color-accent));
 }
 
 @media (max-width: 768px) {
@@ -535,48 +510,39 @@ position: relative;
     }
 }
 
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100vw;
-}
 .toggle-dark {
     position: fixed;
-    top: 30px;
-    right: 30px;
+    top: 18px;
+    right: 18px;
+    z-index: 200;
     border: none;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-border-radius: 12px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-as-border);
+    transition: color var(--motion-fast) var(--motion-ease), background-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease), opacity var(--motion-fast) var(--motion-ease);
 }
 .toggle-dark:hover {
-    transform: scale(1.05);
-    box-shadow: var(--toolbar-button-shadow-hover);
+    color: var(--color-text);
+    background: var(--color-surface-soft);
+    box-shadow: var(--shadow-as-border-strong);
+    transform: none;
 }
-.language-switcher {
-    position: fixed;
-    top: 30px;
-    right: 80px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
-    background-color: var(--toolbar-button-bg-color);
-    box-shadow: var(--toolbar-button-shadow);
-border-radius: 12px;
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
+
+.login,
+.login *,
+.login :deep(*) {
+    transition: none !important;
+    animation: none !important;
 }
-@media (max-width: 768px) {
-    .language-switcher {
-        width: 2rem;
-        height: 2rem;
-    }
-}
-.language-switcher:hover {
-    transform: scale(1.05);
-    box-shadow: var(--toolbar-button-shadow-hover);
+
+.login-title:hover,
+.login-title:focus,
+.login-container:hover,
+.submit:not(.is-loading):hover,
+.submit:not(.is-loading):focus,
+.password-input:deep(.el-input__wrapper):hover,
+.password-input:deep(.el-input__wrapper):focus-within {
+    transform: none !important;
 }
 </style>

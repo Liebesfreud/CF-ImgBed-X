@@ -230,7 +230,8 @@ export default {
 <style scoped>
 .img-card {
     width: 100%;
-    height: 22vh;
+    aspect-ratio: 1 / 1;
+    height: auto;
     background: var(--admin-dashboard-imgcard-bg-color);
     border-radius: 8px;
     box-shadow: var(--admin-dashboard-imgcard-shadow);
@@ -256,7 +257,7 @@ export default {
 .image-preview, .video-preview {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.4s ease, opacity 0.3s ease;
     filter: var(--image-preview-filter);
 }
@@ -350,9 +351,7 @@ export default {
     z-index: 10;
 }
 .file-name-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
 }
 .file-name {
     color: white;

@@ -1,33 +1,33 @@
 <template>
     <el-dialog :title="$t('fileDetail.title')" v-model="visible" :width="dialogWidth">
         <div class="detail-actions">
-            <el-button type="primary" @click="$emit('download')" round size="small" class="detail-action" v-if="!isEditing">
+            <BaseButton variant="primary" @click="$emit('download')" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="download" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.download') }}
-            </el-button>
-            <el-button type="primary" @click="$emit('tagManagement')" round size="small" class="detail-action" v-if="!isEditing">
+            </BaseButton>
+            <BaseButton variant="primary" @click="$emit('tagManagement')" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="tags" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.tags') }}
-            </el-button>
-            <el-button type="primary" @click="$emit('block')" round size="small" class="detail-action" v-if="!isEditing">
+            </BaseButton>
+            <BaseButton variant="primary" @click="$emit('block')" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="ban" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.blacklist') }}
-            </el-button>
-            <el-button type="primary" @click="$emit('white')" round size="small" class="detail-action" v-if="!isEditing">
+            </BaseButton>
+            <BaseButton variant="primary" @click="$emit('white')" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="user-plus" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.whitelist') }}
-            </el-button>
-            <el-button type="danger" @click="$emit('delete')" round size="small" class="detail-action" v-if="!isEditing">
+            </BaseButton>
+            <BaseButton variant="danger" @click="$emit('delete')" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="trash-alt" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.deleteBtn') }}
-            </el-button>
-            <el-button type="warning" @click="startEdit()" round size="small" class="detail-action" v-if="!isEditing">
+            </BaseButton>
+            <BaseButton variant="secondary" @click="startEdit()" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="edit" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.edit') }}
-            </el-button>
-            <el-button type="info" @click="openRenameDialog()" round size="small" class="detail-action" v-if="!isEditing">
+            </BaseButton>
+            <BaseButton variant="secondary" @click="openRenameDialog()" round size="sm" class="detail-action" v-if="!isEditing">
                 <font-awesome-icon icon="i-cursor" style="margin-right: 3px;"></font-awesome-icon> {{ $t('fileDetail.rename') }}
-            </el-button>
-            <el-button type="success" @click="saveMetadata()" round size="small" class="detail-action" v-if="isEditing" :loading="editSaving">
+            </BaseButton>
+            <BaseButton variant="secondary" @click="saveMetadata()" round size="sm" class="detail-action" v-if="isEditing" :loading="editSaving">
                 <font-awesome-icon icon="save" style="margin-right: 3px;" v-if="!editSaving"></font-awesome-icon> {{ $t('fileDetail.save') }}
-            </el-button>
-            <el-button @click="cancelEdit()" round size="small" class="detail-action" v-if="isEditing">
+            </BaseButton>
+            <BaseButton @click="cancelEdit()" round size="sm" class="detail-action" v-if="isEditing" variant="secondary">
                 {{ $t('fileDetail.cancel') }}
-            </el-button>
+            </BaseButton>
         </div>
         <el-tabs v-model="activeTab" @tab-click="handleTabClick" style="margin-bottom: 10px;">
             <el-tab-pane :label="$t('fileDetail.originUrl')" name="originUrl">
@@ -85,7 +85,7 @@
                     <span>{{ file?.metadata?.Width }} × {{ file?.metadata?.Height }}</span>
                     <el-tag size="small" type="info" style="display: inline-flex; align-items: center; justify-content: center;">{{ orientationIcon }}</el-tag>
                 </div>
-                <span v-else style="color: #909399;">{{ $t('fileDetail.noDimensions') }}</span>
+                <span v-else class="muted-text">{{ $t('fileDetail.noDimensions') }}</span>
             </el-descriptions-item>
             <el-descriptions-item :label="$t('fileDetail.uploadTimeLabel')">{{ uploadTime }}</el-descriptions-item>
             <el-descriptions-item :label="$t('fileDetail.channelTypeAndName')">
@@ -102,7 +102,7 @@
                 <div v-if="file?.metadata?.Tags && file?.metadata?.Tags.length > 0" style="display: flex; flex-wrap: wrap; gap: 5px;">
                     <el-tag v-for="tag in file?.metadata?.Tags" :key="tag" size="small">{{ tag }}</el-tag>
                 </div>
-                <span v-else style="color: #909399;">{{ $t('fileDetail.noTags') }}</span>
+                <span v-else class="muted-text">{{ $t('fileDetail.noTags') }}</span>
             </el-descriptions-item>
         </el-descriptions>
         <!-- 重命名弹窗 -->
@@ -123,8 +123,10 @@
                 </el-form-item>
             </el-form>
             <template #footer>
-                <el-button @click="closeRenameDialog()">{{ $t('fileDetail.renameCancel') }}</el-button>
-                <el-button type="primary" @click="submitRename()" :loading="renameSaving" :disabled="!renameValidation.valid">{{ $t('fileDetail.renameConfirm') }}</el-button>
+                <span class="dialog-footer">
+                    <BaseButton @click="closeRenameDialog()" variant="secondary">{{ $t('fileDetail.renameCancel') }}</BaseButton>
+                    <BaseButton variant="primary" @click="submitRename()" :loading="renameSaving" :disabled="!renameValidation.valid">{{ $t('fileDetail.renameConfirm') }}</BaseButton>
+                </span>
             </template>
         </el-dialog>
     </el-dialog>
@@ -387,10 +389,10 @@ export default {
 <style scoped>
 .detail-actions {
     display: flex;
-    justify-content: right;
-    margin-bottom: 10px;
+    justify-content: flex-end;
+    margin-bottom: var(--space-sm);
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-sm);
 }
 .detail-action {
     margin-left: 0 !important;
@@ -399,21 +401,21 @@ export default {
     width: 100%;
     max-width: 400px;
     max-height: 300px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     object-fit: contain;
 }
 .audio-preview {
     width: 100%;
     max-width: 400px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
 }
 .image-preview {
     width: auto;
     height: auto;
     max-width: 100%;
     max-height: 300px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
 }
 .image-preview :deep(img) {
@@ -423,15 +425,15 @@ export default {
 }
 .file-icon-detail {
     font-size: 64px;
-    color: var(--el-text-color-secondary);
+    color: var(--color-text-muted);
 }
 .preview-section {
     display: flex;
     justify-content: center;
-    margin-bottom: 15px;
-    padding: 12px;
-    background: var(--el-fill-color-light);
-    border-radius: 8px;
+    margin-bottom: var(--space-md);
+    padding: var(--space-3);
+    background: var(--color-surface-soft);
+    border-radius: var(--radius-md);
     min-height: 60px;
 }
 .preview-content {
@@ -439,6 +441,14 @@ export default {
     justify-content: center;
     align-items: center;
     width: 100%;
+}
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+}
+.muted-text {
+    color: var(--color-text-subtle);
 }
 :deep(.el-descriptions__content) {
     word-break: break-all;

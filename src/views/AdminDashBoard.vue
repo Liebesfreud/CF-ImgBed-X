@@ -45,9 +45,13 @@
                         {{ $t('dashboard.selectPage') }}
                     </BaseButton>
                     <el-dropdown @command="handleBatchAction" :hide-on-click="false" :disabled="selectedFiles.length === 0">
-                        <BaseButton class="toolbar-button" icon="ellipsis-h" variant="secondary" :disabled="selectedFiles.length === 0">
-                            {{ $t('dashboard.actions') }}
-                        </BaseButton>
+                        <BaseButton
+                            class="toolbar-button toolbar-button--icon-only"
+                            icon="ellipsis-h"
+                            variant="secondary"
+                            :disabled="selectedFiles.length === 0"
+                            :aria-label="$t('dashboard.actions')"
+                        />
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item command="copy">
@@ -81,12 +85,18 @@
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
-                    <BaseButton class="toolbar-button" icon="link" @click="showUrlDialog = true">
-                        {{ $t('dashboard.linkFormat') }}
-                    </BaseButton>
-                    <BaseButton class="toolbar-button" :icon="viewMode === 'card' ? 'list' : 'th-large'" @click="toggleViewMode">
-                        {{ viewMode === 'card' ? $t('dashboard.listView') : $t('dashboard.cardView') }}
-                    </BaseButton>
+                    <BaseButton
+                        class="toolbar-button toolbar-button--icon-only"
+                        icon="link"
+                        :aria-label="$t('dashboard.linkFormat')"
+                        @click="showUrlDialog = true"
+                    />
+                    <BaseButton
+                        class="toolbar-button toolbar-button--icon-only"
+                        :icon="viewMode === 'card' ? 'list' : 'th-large'"
+                        :aria-label="viewMode === 'card' ? $t('dashboard.listView') : $t('dashboard.cardView')"
+                        @click="toggleViewMode"
+                    />
                 </div>
             </section>
             <!-- 目录导航 -->
@@ -235,20 +245,20 @@
                         :pager-count="pagerCount"
                         @current-change="handlePageChange">
                     </el-pagination>
-                    <el-button 
-                        type="primary" 
-                        @click="refreshFileList" 
+                    <BaseButton
+                        variant="primary"
+                        @click="refreshFileList"
                         class="refresh-btn">
                         <font-awesome-icon icon="sync" :class="{ 'fa-spin': refreshLoading }"/>
-                    </el-button>
-                    <el-button
-                        v-if="currentPage === Math.ceil(filteredTableData.length / pageSize)" 
-                        type="primary" 
-                        @click="loadMoreData" 
-                        :loading="loading" 
+                    </BaseButton>
+                    <BaseButton
+                        v-if="currentPage === Math.ceil(filteredTableData.length / pageSize)"
+                        variant="primary"
+                        @click="loadMoreData"
+                        :loading="loading"
                         class="load-more">
                         {{ $t('dashboard.loadMore') }}
-                    </el-button>
+                    </BaseButton>
                 </div>
                 <div class="pagination-right">
                     <span class="page-total">{{ $t('dashboard.totalPages', { count: realTotalPages }) }}</span>
@@ -260,7 +270,7 @@
                             class="jump-input"
                             @keyup.enter="handleJumpPage"
                         />
-                        <el-button size="small" type="primary" @click="handleJumpPage" class="jump-btn">GO</el-button>
+                        <BaseButton size="sm" variant="primary" @click="handleJumpPage" class="jump-btn">GO</BaseButton>
                     </div>
                 </div>
             </div>
@@ -336,7 +346,7 @@
             </div>
 
             <div class="dialog-action">
-                <el-button type="primary" @click="showUrlDialog = false" class="confirm-btn">{{ $t('settings.confirm') }}</el-button>
+                <BaseButton variant="primary" @click="showUrlDialog = false" class="confirm-btn">{{ $t('settings.confirm') }}</BaseButton>
             </div>
         </el-dialog>
 
@@ -1997,8 +2007,8 @@ mounted() {
 
 <style scoped>
 .container {
-    --dashboard-nav-width: calc(88px * 4 + 12px * 3);
-    --gallery-frame-width: min(var(--dashboard-nav-width), calc(100vw - 32px));
+    --dashboard-nav-width: min(1080px, calc(100% - 32px));
+    --gallery-frame-width: var(--dashboard-nav-width);
     background: transparent;
     min-height: 100vh;
     color: var(--admin-container-color);
@@ -2047,7 +2057,7 @@ box-shadow: var(--dialog-box-shadow);
     width: var(--control-height-md);
     height: var(--control-height-md);
     border: none;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     background: var(--color-surface);
     color: var(--color-text);
     cursor: pointer;
@@ -2149,29 +2159,45 @@ box-shadow: var(--dialog-box-shadow);
 
 
 .gallery-toolbar {
-    display: grid;
-    grid-template-columns: minmax(260px, 1fr) auto;
+    --gallery-toolbar-control-width: 118px;
+    --gallery-toolbar-icon-button-size: var(--control-height-md);
+    --gallery-toolbar-control-height: var(--control-height-md);
+    --gallery-toolbar-control-radius: var(--radius-sm);
+    display: flex;
+    flex-wrap: nowrap;
     align-items: center;
+    justify-content: space-between;
     gap: var(--space-3);
     margin-bottom: var(--space-5);
     padding: var(--space-3);
     border-radius: var(--radius-xl);
     background: transparent;
     box-shadow: none;
-}
-
-.actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
 }
 
-.actions::-webkit-scrollbar {
+.gallery-toolbar::-webkit-scrollbar {
     display: none;
+}
+
+.search-area {
+    display: flex;
+    flex: 1 1 320px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 0;
+}
+
+.actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: max-content;
 }
 
 .toolbar-button {
@@ -2179,9 +2205,10 @@ box-shadow: var(--dialog-box-shadow);
     align-items: center;
     justify-content: center;
     gap: 7px;
-    min-height: var(--control-height-md);
+    width: var(--gallery-toolbar-control-width);
+    min-height: var(--gallery-toolbar-control-height);
     border: none;
-    border-radius: 999px;
+    border-radius: var(--gallery-toolbar-control-radius);
     padding: 0 var(--space-3);
     background: var(--color-surface);
     color: var(--color-text-muted);
@@ -2192,6 +2219,12 @@ box-shadow: var(--dialog-box-shadow);
     font-weight: 650;
     white-space: nowrap;
     transition: color var(--motion-fast) var(--motion-ease), background-color var(--motion-fast) var(--motion-ease), box-shadow var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease), opacity var(--motion-fast) var(--motion-ease);
+}
+
+.toolbar-button--icon-only {
+    width: var(--gallery-toolbar-icon-button-size);
+    min-width: var(--gallery-toolbar-icon-button-size);
+    padding: 0;
 }
 
 .toolbar-button:hover:not(.disabled) {
@@ -2207,49 +2240,42 @@ box-shadow: var(--dialog-box-shadow);
     pointer-events: none;
 }
 
-@media (max-width: 1080px) {
-    .gallery-toolbar {
-        grid-template-columns: 1fr;
-    }
-
-    .actions {
-        justify-content: flex-start;
-    }
-}
-
-@media (max-width: 768px) {
-    .gallery-toolbar {
-        border-radius: 18px;
-        padding: 10px;
-    }
-
-    .toolbar-button span {
-        display: none;
-    }
-}
-
 .batch-action-item-icon {
     width: 20px;
     margin-right: 5px;
 }
 
 /* 搜索区域样式（包含搜索框和筛选按钮） */
-.search-area {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    min-width: 250px;
-}
 @media (max-width: 1080px) {
-    .search-area {
-        justify-content: stretch;
-        min-width: 0;
+    .gallery-toolbar {
+        --gallery-toolbar-control-width: 108px;
+    }
+
+    .search-card {
+        width: calc(var(--gallery-toolbar-control-width) * 2);
+        flex: 0 0 calc(var(--gallery-toolbar-control-width) * 2);
     }
 }
+
 @media (max-width: 768px) {
+    .gallery-toolbar {
+        --gallery-toolbar-control-width: 96px;
+        gap: 8px;
+        border-radius: 18px;
+        padding: 10px;
+    }
+
     .search-area {
+        flex: 0 0 auto;
         gap: 6px;
+    }
+
+    .toolbar-button {
+        padding: 0 var(--space-2);
+    }
+
+    .toolbar-button--icon-only {
+        padding: 0;
     }
 }
 
@@ -2257,20 +2283,24 @@ box-shadow: var(--dialog-box-shadow);
 .search-card {
     display: flex;
     align-items: center;
+    width: calc(var(--gallery-toolbar-control-width) * 2);
+    flex: 0 0 calc(var(--gallery-toolbar-control-width) * 2);
 }
 .search-card :deep(.el-input__wrapper) {
-    border-radius: 20px;
+    width: 100%;
+    height: var(--gallery-toolbar-control-height);
+    border-radius: var(--gallery-toolbar-control-radius);
     background: var(--admin-dashboard-search-card-bg-color);
     box-shadow: var(--admin-dashboard-search-card-box-shadow);
     transition: background-color 0.3s;
 }
 
 .search-card :deep(.el-input__inner) {
-    width: 280px;
-    height: 40px;
-    font-size: 1.2em;
+    width: 100%;
+    height: 100%;
+    font-size: 13px;
     border: none;
-    transition: width 0.3s;
+    transition: none;
     background: none;
 }
 
@@ -2288,21 +2318,7 @@ box-shadow: var(--dialog-box-shadow);
     opacity: 0.4;
     transform: translateX(5px);
 }
-@media (max-width: 768px) {
-    .search-card :deep(.el-input__inner) {
-        width: 45vw;
-        height: 32px;
-        font-size: 1em;
-    }
-}
-.search-card :deep(.el-input__inner:focus) {
-    width: 350px;
-}
-@media (max-width: 768px) {
-    .search-card :deep(.el-input__inner:focus) {
-        width: 55vw;
-    }
-}
+
 .search-icon {
     cursor: pointer;
     color: var(--admin-container-color);
@@ -2330,9 +2346,11 @@ box-shadow: var(--dialog-box-shadow);
 /* 主容器样式 */
 .main-container {
     display: flex;
+    flex: 0 0 var(--gallery-frame-width);
     flex-direction: column;
     box-sizing: border-box;
     width: var(--gallery-frame-width);
+    max-width: var(--gallery-frame-width);
     margin: 0 auto;
     padding: 0 0 42px;
     min-height: calc(100vh - 110px);
@@ -2364,7 +2382,7 @@ box-shadow: var(--dialog-box-shadow);
     padding: 0;
     padding-bottom: 0px;
     flex-grow: 1;
-    min-height: 80vh;
+    min-height: 60vh;
 }
 
 /* 空状态样式 */
@@ -2504,6 +2522,11 @@ box-shadow: var(--dialog-box-shadow);
     --el-pagination-hover-color: var(--admin-purple);
 }
 
+:global(.dark) .pagination-container {
+    --admin-dashboard-active-btn-bg-color: var(--color-surface-soft);
+    --admin-dashboard-active-btn-color: var(--color-text);
+}
+
 .pagination-container :deep(.el-pager li) {
     background: var(--admin-dashboard-btn-bg-color);
     border-radius: 10px;
@@ -2524,8 +2547,8 @@ box-shadow: var(--dialog-box-shadow);
 }
 
 .pagination-container :deep(.el-pager li.is-active) {
-    background: linear-gradient(135deg, var(--color-accent), var(--color-accent)) !important;
-    color: white !important;
+    background: var(--admin-dashboard-active-btn-bg-color, var(--color-accent)) !important;
+    color: var(--admin-dashboard-active-btn-color, var(--color-accent-contrast)) !important;
     border-radius: 10px;
     box-shadow: 
         var(--admin-dashboard-btn-shadow),
@@ -2603,14 +2626,14 @@ box-shadow: var(--dialog-box-shadow);
 }
 
 .page-jump .jump-btn {
-    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    background: var(--admin-dashboard-active-btn-bg-color, var(--color-accent));
     border: none;
     border-radius: 8px;
     padding: 0 12px;
     height: 28px;
     font-size: 12px;
     font-weight: 600;
-    color: white;
+    color: var(--admin-dashboard-active-btn-color, var(--color-accent-contrast));
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
@@ -2665,15 +2688,15 @@ box-shadow: var(--dialog-box-shadow);
 .refresh-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--admin-dashboard-btn-hover-shadow);
-    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
-    color: white;
+    background: var(--admin-dashboard-active-btn-bg-color, var(--color-accent));
+    color: var(--admin-dashboard-active-btn-color, var(--color-accent-contrast));
 }
 
 .load-more {
     cursor: pointer;
-    background: linear-gradient(135deg, var(--color-accent), var(--color-accent));
+    background: var(--admin-dashboard-active-btn-bg-color, var(--color-accent));
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
-    color: white;
+    color: var(--admin-dashboard-active-btn-color, var(--color-accent-contrast));
     border: none;
     border-radius: 10px;
     height: 36px;

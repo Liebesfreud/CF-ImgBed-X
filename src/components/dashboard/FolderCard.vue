@@ -69,7 +69,8 @@ export default {
 <style scoped>
 .img-card {
     width: 100%;
-    height: 22vh;
+    aspect-ratio: 1 / 1;
+    height: auto;
     background: var(--admin-dashboard-imgcard-bg-color);
     border-radius: 8px;
     box-shadow: var(--admin-dashboard-imgcard-shadow);

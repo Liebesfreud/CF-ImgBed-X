@@ -7,18 +7,18 @@
             </div>
             <div class="header-right">
                 <el-tooltip :content="$t('uploadHistory.switchView')" placement="bottom">
-                    <el-button circle @click="toggleViewMode">
+                    <BaseButton round @click="toggleViewMode" variant="secondary">
                         <font-awesome-icon :icon="viewMode === 'grid' ? 'list' : 'th-large'" />
-                    </el-button>
+                    </BaseButton>
                 </el-tooltip>
                 <el-tooltip :content="$t('uploadHistory.clearRecords')" placement="bottom">
-                    <el-button circle type="danger" @click="clearHistory">
+                    <BaseButton round variant="danger" @click="clearHistory">
                         <font-awesome-icon icon="trash-alt" />
-                    </el-button>
+                    </BaseButton>
                 </el-tooltip>
-                <el-button circle @click="$emit('close')">
+                <BaseButton round @click="$emit('close')" variant="secondary">
                     <font-awesome-icon icon="times" />
-                </el-button>
+                </BaseButton>
             </div>
         </div>
         
@@ -40,15 +40,15 @@
                             </div>
                             <div class="grid-overlay">
                                 <div class="grid-actions">
-                                    <el-button circle size="default" type="primary" @click="copyLink(item.url)">
+                                    <BaseButton round variant="primary" @click="copyLink(item.url)">
                                         <font-awesome-icon icon="copy" />
-                                    </el-button>
-                                    <el-button circle size="default" class="action-btn-view" @click="openLink(item.url)">
+                                    </BaseButton>
+                                    <BaseButton round class="action-btn-view" @click="openLink(item.url)" variant="secondary">
                                         <font-awesome-icon icon="external-link-alt" />
-                                    </el-button>
-                                    <el-button circle size="default" type="danger" @click="deleteItem(item)">
+                                    </BaseButton>
+                                    <BaseButton round variant="danger" @click="deleteItem(item)">
                                         <font-awesome-icon icon="trash-alt" />
-                                    </el-button>
+                                    </BaseButton>
                                 </div>
                             </div>
                         </div>
@@ -77,15 +77,15 @@
                             <div class="upload-time">{{ formatTime(item.time) }}</div>
                         </div>
                         <div class="list-actions">
-                            <el-button circle size="small" type="primary" @click="copyLink(item.url)">
+                            <BaseButton round size="sm" variant="primary" @click="copyLink(item.url)">
                                 <font-awesome-icon icon="copy" />
-                            </el-button>
-                            <el-button circle size="small" class="action-btn-view" @click="openLink(item.url)">
+                            </BaseButton>
+                            <BaseButton round size="sm" class="action-btn-view" @click="openLink(item.url)" variant="secondary">
                                 <font-awesome-icon icon="external-link-alt" />
-                            </el-button>
-                            <el-button circle size="small" type="danger" @click="deleteItem(item)">
+                            </BaseButton>
+                            <BaseButton round size="sm" variant="danger" @click="deleteItem(item)">
                                 <font-awesome-icon icon="trash-alt" />
-                            </el-button>
+                            </BaseButton>
                         </div>
                     </div>
                 </div>

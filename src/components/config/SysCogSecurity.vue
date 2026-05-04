@@ -51,9 +51,9 @@
 
             <h4 class="second-title token-title">{{ $t('sysSecurity.apiTokenManagement') }}
                 <a class="token-actions">
-                    <el-button type="primary" size="small" @click="showCreateTokenDialog = true" circle>
+                    <BaseButton variant="primary" size="sm" @click="showCreateTokenDialog = true" round>
                         <font-awesome-icon icon="plus"/>
-                    </el-button>
+                    </BaseButton>
                 </a>
             </h4>
             <div class="token-table-container">
@@ -113,8 +113,8 @@
                     <el-table-column :label="$t('sysSecurity.operation')" fixed="right" header-align="center">
                         <template #default="scope">
                             <div class="table-cell-content action-buttons">
-                                <el-button class="action-button" size="small" @click="editToken(scope.row)">{{ $t('sysSecurity.editBtn') }}</el-button>
-                                <el-button class="action-button" size="small" type="danger" @click="deleteToken(scope.row.id)">{{ $t('sysSecurity.deleteBtn') }}</el-button>
+                                <BaseButton class="action-button" size="sm" @click="editToken(scope.row)" variant="secondary">{{ $t('sysSecurity.editBtn') }}</BaseButton>
+                                <BaseButton class="action-button" size="sm" variant="danger" @click="deleteToken(scope.row.id)">{{ $t('sysSecurity.deleteBtn') }}</BaseButton>
                             </div>
                         </template>
                     </el-table-column>
@@ -244,8 +244,8 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showCreateTokenDialog = false">{{ $t('common.cancel') }}</el-button>
-                    <el-button type="primary" @click="createToken">{{ $t('sysSecurity.createBtn') }}</el-button>
+                    <BaseButton @click="showCreateTokenDialog = false" variant="secondary">{{ $t('common.cancel') }}</BaseButton>
+                    <BaseButton variant="primary" @click="createToken">{{ $t('sysSecurity.createBtn') }}</BaseButton>
                 </span>
             </template>
         </el-dialog>
@@ -281,8 +281,8 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showEditTokenDialog = false">{{ $t('common.cancel') }}</el-button>
-                    <el-button type="primary" @click="updateToken">{{ $t('sysSecurity.updateBtn') }}</el-button>
+                    <BaseButton @click="showEditTokenDialog = false" variant="secondary">{{ $t('common.cancel') }}</BaseButton>
+                    <BaseButton variant="primary" @click="updateToken">{{ $t('sysSecurity.updateBtn') }}</BaseButton>
                 </span>
             </template>
         </el-dialog>
@@ -301,7 +301,7 @@
                     <el-form-item :label="$t('sysSecurity.fullToken')">
                         <el-input v-model="createdToken.token" readonly>
                             <template #append>
-                                <el-button @click="copyToken">{{ $t('sysSecurity.copyBtn') }}</el-button>
+                                <BaseButton @click="copyToken" variant="secondary">{{ $t('sysSecurity.copyBtn') }}</BaseButton>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -309,7 +309,7 @@
             </div>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="showTokenResultDialog = false">{{ $t('sysSecurity.savedBtn') }}</el-button>
+                    <BaseButton variant="primary" @click="showTokenResultDialog = false">{{ $t('sysSecurity.savedBtn') }}</BaseButton>
                 </span>
             </template>
         </el-dialog>
@@ -808,7 +808,7 @@ mounted() {
 
 <style scoped>
 .security-settings {
-    padding: 20px;
+    padding: 0;
     min-height: 500px;
 }
 

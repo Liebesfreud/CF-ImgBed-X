@@ -15,10 +15,10 @@
                     :placeholder="$t('sysUpload.filterPlaceholder')"
                     width="160px"
                 />
-                <el-button type="primary" @click="showAddDialog = true" class="add-btn">
+                <BaseButton variant="primary" @click="showAddDialog = true" class="add-btn">
                     <font-awesome-icon icon="plus" style="margin-right: 6px;"/>
                     {{ $t('sysUpload.addChannel') }}
-                </el-button>
+                </BaseButton>
             </div>
         </div>
 
@@ -125,15 +125,15 @@
                         </div>
                     </div>
                     <div class="card-actions">
-                        <el-button text type="primary" size="small" @click="openDetailDialog(channelType.value, index)">
+                        <BaseButton variant="ghost" size="sm" @click="openDetailDialog(channelType.value, index)">
                             <font-awesome-icon icon="eye" style="margin-right: 4px;"/>{{ $t('sysUpload.detail') }}
-                        </el-button>
-                        <el-button text type="primary" size="small" @click="openEditDialog(channelType.value, index)">
+                        </BaseButton>
+                        <BaseButton variant="ghost" size="sm" @click="openEditDialog(channelType.value, index)">
                             <font-awesome-icon icon="edit" style="margin-right: 4px;"/>{{ $t('sysUpload.editBtn') }}
-                        </el-button>
-                        <el-button text type="danger" size="small" @click="deleteChannel(channelType.value, index)" :disabled="channel.fixed">
+                        </BaseButton>
+                        <BaseButton variant="ghost" size="sm" @click="deleteChannel(channelType.value, index)" :disabled="channel.fixed">
                             <font-awesome-icon icon="trash-alt" style="margin-right: 4px;"/>{{ $t('sysUpload.deleteBtn') }}
-                        </el-button>
+                        </BaseButton>
                     </div>
                 </div>
             </div>
@@ -279,8 +279,10 @@
                 </template>
             </el-form>
             <template #footer>
-                <el-button @click="showAddDialog = false">{{ $t('sysUpload.cancel') }}</el-button>
-                <el-button type="primary" @click="confirmAddChannel" v-if="newChannel.type !== 'cfr2'">{{ $t('sysUpload.confirmAdd') }}</el-button>
+                <span class="dialog-footer">
+                    <BaseButton @click="showAddDialog = false" variant="secondary">{{ $t('sysUpload.cancel') }}</BaseButton>
+                    <BaseButton variant="primary" @click="confirmAddChannel" v-if="newChannel.type !== 'cfr2'">{{ $t('sysUpload.confirmAdd') }}</BaseButton>
+                </span>
             </template>
         </el-dialog>
 
@@ -349,9 +351,9 @@
                         <template #label>
                             <span class="quota-label">
                                 {{ $t('sysUpload.currentUsage') }}
-                                <el-button link type="primary" @click="refreshQuota" class="refresh-btn">
+                                <BaseButton variant="ghost" @click="refreshQuota" class="refresh-btn">
                                     <font-awesome-icon icon="sync-alt" :class="{ 'fa-spin': quotaLoading }" />
-                                </el-button>
+                                </BaseButton>
                             </span>
                         </template>
                         <div class="quota-status">
@@ -370,8 +372,10 @@
                 </template>
             </el-descriptions>
             <template #footer>
-                <el-button @click="showDetailDialog = false">{{ $t('sysUpload.closeBtn') }}</el-button>
-                <el-button type="primary" @click="openEditFromDetail">{{ $t('sysUpload.editBtn') }}</el-button>
+                <span class="dialog-footer">
+                    <BaseButton @click="showDetailDialog = false" variant="secondary">{{ $t('sysUpload.closeBtn') }}</BaseButton>
+                    <BaseButton variant="primary" @click="openEditFromDetail">{{ $t('sysUpload.editBtn') }}</BaseButton>
+                </span>
             </template>
         </el-dialog>
 
@@ -507,8 +511,10 @@
                 </template>
             </el-form>
             <template #footer>
-                <el-button @click="showEditDialog = false">{{ $t('sysUpload.cancel') }}</el-button>
-                <el-button type="primary" @click="confirmEditChannel">{{ $t('sysUpload.saveChanges') }}</el-button>
+                <span class="dialog-footer">
+                    <BaseButton @click="showEditDialog = false" variant="secondary">{{ $t('sysUpload.cancel') }}</BaseButton>
+                    <BaseButton variant="primary" @click="confirmEditChannel">{{ $t('sysUpload.saveChanges') }}</BaseButton>
+                </span>
             </template>
         </el-dialog>
     </div>
@@ -1211,7 +1217,7 @@ mounted() {
 
 <style scoped>
 .upload-settings {
-    padding: 20px;
+    padding: 0;
     min-height: 500px;
     overflow-x: hidden;
 }

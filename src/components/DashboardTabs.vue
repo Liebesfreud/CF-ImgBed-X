@@ -18,17 +18,15 @@
         </nav>
 
         <div class="nav-controls">
-            <slot name="actions" />
             <AdminToggleDark />
-            <LanguageSwitcher class="tabs-language-switcher" />
+            <slot name="actions" />
         </div>
     </div>
 </template>
 
 <script>
 import AdminToggleDark from './dashboard/AdminToggleDark.vue';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
-import { IconCloudUpload, IconPhoto, IconSettings, IconUserCog } from '@tabler/icons-vue';
+import { IconCameraUp, IconPhoto, IconSettings, IconUserCog } from '@tabler/icons-vue';
 
 export default {
     name: 'DashboardTabs',
@@ -40,16 +38,15 @@ export default {
     },
     components: {
         AdminToggleDark,
-        LanguageSwitcher,
-        IconCloudUpload
+        IconCameraUp
     },
     computed: {
         navItems() {
             return [
-                { key: 'home', route: '/', icon: IconCloudUpload, label: '主页' },
+                { key: 'home', route: '/', icon: IconCameraUp, label: '主页' },
                 { key: 'gallery', route: '/dashboard', icon: IconPhoto, label: '图库' },
-                { key: 'settings', route: '/systemConfig', icon: IconSettings, label: '设置' },
-                { key: 'users', route: '/customerConfig', icon: IconUserCog, label: '用户' }
+                { key: 'users', route: '/customerConfig', icon: IconUserCog, label: '用户' },
+                { key: 'settings', route: '/systemConfig', icon: IconSettings, label: '设置' }
             ];
         }
     },
@@ -90,7 +87,10 @@ export default {
     justify-content: center;
     gap: 12px;
     min-width: 0;
+    margin: -4px 0;
+    padding: 4px 0;
     overflow-x: auto;
+    overflow-y: visible;
     scrollbar-width: none;
 }
 
@@ -103,10 +103,11 @@ export default {
     min-width: 88px;
     min-height: 38px;
     padding: 0 16px;
+    overflow: visible;
     font-size: 14px;
     font-weight: 650;
     line-height: 1;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     color: var(--color-text-muted);
 }
 
@@ -122,9 +123,10 @@ export default {
 }
 
 .nav-item.is-active {
+    --base-button-shadow: var(--shadow-as-border-strong);
+
     color: var(--color-accent-contrast);
     background: var(--color-accent);
-    box-shadow: var(--shadow-as-border);
 }
 
 .nav-controls {
@@ -137,11 +139,6 @@ export default {
     min-height: 46px;
 }
 
-.tabs-language-switcher {
-    --lang-icon-size: 1.15em;
-    --lang-icon-color: var(--admin-theme-toggle-color);
-    border-radius: 999px;
-}
 
 @media (max-width: 860px) {
     .dashboard-shell-nav {

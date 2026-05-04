@@ -80,7 +80,7 @@
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="handleClose">{{ $t('tagManagement.close') }}</el-button>
+                <BaseButton @click="handleClose" variant="secondary">{{ $t('tagManagement.close') }}</BaseButton>
             </span>
         </template>
     </el-dialog>
@@ -308,12 +308,12 @@ export default {
 
 <style scoped>
 .tag-management-container {
-    padding: 10px 0;
+    padding: var(--space-sm) 0;
 }
 
 .input-section {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
 }
 
 .suggestions-panel {
@@ -323,16 +323,16 @@ export default {
     right: 0;
     background: var(--admin-dashboard-tag-suggestion-bg-color);
     border: 1px solid var(--admin-dashboard-tag-suggestion-border-color);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     box-shadow: var(--admin-dashboard-tag-suggestion-box-shadow);
     max-height: 200px;
     overflow-y: auto;
     z-index: 1000;
-    margin-top: 4px;
+    margin-top: var(--space-xs);
 }
 
 .suggestion-item {
-    padding: 8px 12px;
+    padding: var(--space-sm) var(--space-3);
     cursor: pointer;
     transition: background-color 0.2s;
 }
@@ -343,20 +343,20 @@ export default {
 
 .current-tags-section,
 .popular-tags-section {
-    margin-bottom: 20px;
+    margin-bottom: var(--space-5);
 }
 
 .current-tags-section h4,
 .popular-tags-section h4 {
-    margin: 0 0 10px 0;
+    margin: 0 0 var(--space-sm) 0;
     font-size: 14px;
-    color: #606266;
+    color: var(--color-text-muted);
 }
 
 .tags-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--space-sm);
     min-height: 40px;
 }
 
@@ -374,13 +374,14 @@ export default {
 }
 
 .empty-message {
-    color: #909399;
+    color: var(--color-text-subtle);
     font-size: 13px;
-    padding: 10px 0;
+    padding: var(--space-sm) 0;
 }
 
 .dialog-footer {
     display: flex;
     justify-content: flex-end;
+    gap: var(--space-sm);
 }
 </style>

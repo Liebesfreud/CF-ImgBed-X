@@ -6,14 +6,15 @@
     <div class="blocked-content">
       <!-- 返回首页按钮 -->
       <div class="back-button-wrapper">
-        <el-button 
-          class="back-button" 
+        <BaseButton
+          class="back-button"
           @click="goHome"
-          circle
-          size="large"
+          round
+          size="lg"
+          variant="secondary"
         >
           <font-awesome-icon icon="home" />
-        </el-button>
+        </BaseButton>
       </div>
 
       <!-- 禁止访问图标和动画 -->
@@ -38,24 +39,25 @@
         
         <!-- 操作按钮 -->
         <div class="status-actions">
-          <el-button 
-            type="primary" 
-            size="large" 
-            class="action-btn primary-btn" 
+          <BaseButton
+            variant="primary"
+            size="lg"
+            class="action-btn primary-btn"
             @click="goHome"
           >
             <font-awesome-icon icon="home" class="btn-icon" />
             返回首页
-          </el-button>
-          
-          <el-button 
-            size="large" 
-            class="action-btn secondary-btn" 
+          </BaseButton>
+
+          <BaseButton
+            size="lg"
+            class="action-btn secondary-btn"
             @click="goBack"
+            variant="secondary"
           >
             <font-awesome-icon icon="arrow-left" class="btn-icon" />
             返回上页
-          </el-button>
+          </BaseButton>
         </div>
         
         <!-- 帮助信息 -->
@@ -158,8 +160,8 @@ export default {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: var(--bg-color, linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%));
-  color: var(--text-color, #333);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .background-wrapper {
@@ -175,12 +177,11 @@ export default {
   text-align: center;
   z-index: 10;
   max-width: 600px;
-  padding: 2rem;
+  padding: var(--space-xl);
   position: relative;
-  background: rgba(255, 255, 255, 0.1);
-border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 /* 返回按钮 */
@@ -192,35 +193,30 @@ border-radius: 20px;
 }
 
 .back-button {
-  background: var(--toolbar-button-bg-color, rgba(255, 255, 255, 0.9));
-  border: none;
-  color: var(--toolbar-button-text-color, #333);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-as-border-strong);
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .back-button:hover {
   transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-  background: var(--primary-color, #409eff);
-  color: white;
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 /* 状态动画部分 */
 .status-animation {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-xl);
   position: relative;
 }
 
 .status-icon {
   position: relative;
   display: inline-block;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
 }
 
 .ban-icon {
   font-size: 4rem;
-  color: #f56c6c;
+  color: var(--color-danger);
   animation: shake 2s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(245, 108, 108, 0.3));
 }
@@ -229,19 +225,19 @@ border-radius: 20px;
   position: absolute;
   bottom: -5px;
   right: -5px;
-  background: #e6a23c;
-  border-radius: 50%;
+  background: var(--color-warning);
+  border-radius: var(--radius-full);
   width: 30px;
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid white;
+  border: 3px solid var(--color-surface);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .exclamation-icon {
-  color: white;
+  color: var(--color-accent-contrast);
   font-size: 0.9rem;
   animation: bounce 1.5s ease-in-out infinite;
 }
@@ -254,9 +250,9 @@ border-radius: 20px;
 .status-title {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--text-color, #333);
-  background: var(--not-found-title-text-color, linear-gradient(45deg, #409eff, #67c23a));
+  margin-bottom: var(--space-md);
+  color: var(--color-text);
+  background: linear-gradient(45deg, var(--color-accent), var(--color-success));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -265,123 +261,109 @@ border-radius: 20px;
 .status-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   opacity: 0.9;
-  color: var(--text-color, #333);
+  color: var(--color-text);
 }
 
 .status-description-en {
   font-size: 0.95rem;
   line-height: 1.5;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-xl);
   opacity: 0.7;
-  color: var(--text-color-secondary, #666);
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
 /* 操作按钮 */
 .status-actions {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-md);
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-xl);
 }
 
 .action-btn {
-  border-radius: 25px;
-  padding: 12px 24px;
   font-weight: 600;
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: none;
   min-width: 140px;
-}
-
-.primary-btn {
-  background: var(--primary-color, #409eff);
-  color: white;
-}
-
-.secondary-btn {
-  background: var(--toolbar-button-bg-color, rgba(255, 255, 255, 0.9));
-  color: var(--text-color, #333);
 }
 
 .action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 .btn-icon {
-  margin-right: 8px;
+  margin-right: var(--space-sm);
 }
 
 /* 帮助信息 */
 .help-info {
   animation: fadeInUp 1s ease-out 1s both;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-lg);
 }
 
 .help-text {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   opacity: 0.7;
   font-size: 0.9rem;
-  color: var(--text-color-secondary, #666);
+  color: var(--color-text-muted);
 }
 
 .quick-links {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-md);
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .quick-link {
-  color: var(--primary-color, #409eff);
+  color: var(--color-accent);
   text-decoration: none;
   font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
-  background: var(--toolbar-button-bg-color, rgba(255, 255, 255, 0.8));
-transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(64, 158, 255, 0.2);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-soft);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-as-border);
   font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
 }
 
 .quick-link:hover {
-  background: var(--primary-color, #409eff);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(64, 158, 255, 0.3);
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 /* 项目信息 */
 .powered-by {
   animation: fadeInUp 1s ease-out 1.2s both;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
   opacity: 0.8;
 }
 
 .powered-by p {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--text-color-secondary, #666);
+  color: var(--color-text-muted);
 }
 
 .project-link {
-  color: var(--primary-color, #409eff);
+  color: var(--color-accent);
   text-decoration: none;
   font-weight: 600;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .project-link:hover {
-  color: #67c23a;
+  color: var(--color-success);
   text-shadow: 0 0 10px rgba(103, 194, 58, 0.3);
 }
 
@@ -399,7 +381,7 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
 .floating-shape {
   position: absolute;
   background: rgba(245, 108, 108, 0.1);
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   animation: floatShapes 8s ease-in-out infinite;
 }
 
@@ -505,9 +487,9 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .blocked-content {
-    padding: 1.5rem;
-    margin: 1rem;
-    max-width: calc(100% - 2rem);
+    padding: var(--space-lg);
+    margin: var(--space-md);
+    max-width: calc(100% - var(--space-xl));
   }
   
   .back-button-wrapper {
@@ -542,7 +524,7 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
   
   .quick-links {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-sm);
     align-items: center;
   }
   
@@ -555,9 +537,9 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
 
 @media (max-width: 480px) {
   .blocked-content {
-    padding: 1rem;
-    margin: 0.5rem;
-    max-width: calc(100% - 1rem);
+    padding: var(--space-md);
+    margin: var(--space-sm);
+    max-width: calc(100% - var(--space-md));
   }
   
   .status-title {
@@ -574,39 +556,6 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
   
   .ban-icon {
     font-size: 2.5rem;
-  }
-}
-
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-  .blocked-container {
-    background: var(--bg-color, linear-gradient(135deg, #c0392b 0%, #8e44ad 100%));
-    color: var(--text-color, #e4e7ed);
-  }
-  
-  .blocked-content {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .status-title {
-    color: var(--text-color, #e4e7ed);
-  }
-  
-  .status-description {
-    color: var(--text-color, #e4e7ed);
-  }
-  
-  .status-description-en {
-    color: var(--text-color-secondary, #909399);
-  }
-  
-  .help-text {
-    color: var(--text-color-secondary, #909399);
-  }
-  
-  .powered-by p {
-    color: var(--text-color-secondary, #909399);
   }
 }
 </style>

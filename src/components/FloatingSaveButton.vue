@@ -77,7 +77,7 @@ export default {
     border: 1px solid var(--color-accent);
     background: var(--floating-btn-bg);
     color: var(--floating-btn-color);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     box-shadow: var(--floating-btn-shadow);
     transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease), opacity var(--motion-base) var(--motion-ease);

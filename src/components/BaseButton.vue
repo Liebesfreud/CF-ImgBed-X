@@ -31,7 +31,7 @@ export default {
         variant: {
             type: String,
             default: 'secondary',
-            validator: value => ['primary', 'secondary', 'ghost', 'danger'].includes(value)
+            validator: value => ['primary', 'secondary', 'ghost', 'danger', 'success', 'warning', 'info', 'text'].includes(value)
         },
         size: {
             type: String,
@@ -74,6 +74,10 @@ export default {
             type: Boolean,
             default: false
         },
+        circle: {
+            type: Boolean,
+            default: false
+        },
         ariaLabel: {
             type: String,
             default: null
@@ -100,8 +104,8 @@ export default {
                 `base-button--${this.size}`,
                 {
                     'base-button--block': this.block,
-                    'base-button--round': this.round,
-                    'base-button--square': !this.$slots.default,
+                    'base-button--round': this.round || this.circle,
+                    'base-button--square': this.circle || !this.$slots.default,
                     'is-loading': this.loading,
                     'is-disabled': this.disabled || this.loading
                 }

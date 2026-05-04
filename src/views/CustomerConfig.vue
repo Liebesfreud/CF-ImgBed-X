@@ -251,7 +251,7 @@ export default {
 
 <style scoped>
 .container {
-    background: var(--bg-color);
+    background: var(--color-bg);
     min-height: 100vh;
 }
 
@@ -305,6 +305,7 @@ export default {
     position: sticky;
     top: 12px;
     z-index: 200;
+    box-sizing: border-box;
     width: min(1080px, calc(100% - 32px));
     margin: 10px auto 16px;
     padding: 8px 12px;
@@ -326,7 +327,7 @@ export default {
     width: var(--control-height-md);
     height: var(--control-height-md);
     border: none;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     background: var(--color-surface);
     color: var(--color-text);
     cursor: pointer;

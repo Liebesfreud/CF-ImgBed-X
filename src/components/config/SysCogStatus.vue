@@ -195,8 +195,9 @@
           <!-- 操作按钮 -->
           <div v-else class="action-buttons">
             <el-tooltip :content="$t('sysStatus.rebuildTooltip')" placement="top">
-              <el-button 
-                type="primary" 
+              <BaseButton
+                variant="primary"
+                size="lg"
                 :loading="rebuilding"
                 :disabled="isProcessing"
                 @click="rebuildIndex"
@@ -204,12 +205,13 @@
               >
                 <font-awesome-icon icon="sync-alt" />
                 {{ rebuilding ? $t('sysStatus.rebuilding') : $t('sysStatus.rebuildIndex') }}
-              </el-button>
+              </BaseButton>
             </el-tooltip>
 
             <el-tooltip :content="$t('sysStatus.backupTooltip')" placement="top">
-              <el-button 
-                type="success" 
+              <BaseButton
+                variant="success"
+                size="lg"
                 :loading="backing"
                 :disabled="isProcessing"
                 @click="backupData"
@@ -217,20 +219,21 @@
               >
                 <font-awesome-icon icon="download" />
                 {{ backing ? $t('sysStatus.backingUp') : $t('sysStatus.backupData') }}
-              </el-button>
+              </BaseButton>
             </el-tooltip>
 
             <el-tooltip :content="$t('sysStatus.restoreTooltip')" placement="top">
               <div class="restore-section">
-                <input 
-                  type="file" 
-                  ref="fileInput" 
+                <input
+                  type="file"
+                  ref="fileInput"
                   accept=".json"
                   @change="handleFileSelect"
                   style="display: none"
                 />
-                <el-button 
-                  type="warning" 
+                <BaseButton
+                  variant="warning"
+                  size="lg"
                   :loading="restoring"
                   :disabled="isProcessing"
                   @click="selectRestoreFile"
@@ -238,7 +241,7 @@
                 >
                   <font-awesome-icon icon="upload" />
                   {{ restoring ? $t('sysStatus.restoring') : $t('sysStatus.restoreData') }}
-                </el-button>
+                </BaseButton>
               </div>
             </el-tooltip>
           </div>
@@ -917,7 +920,7 @@ export default {
 
 <style scoped>
 .status-panel {
-  padding: 20px;
+  padding: 0;
   background: transparent;
   min-height: 100vh;
 }
@@ -1258,19 +1261,10 @@ html.dark .legend-item:hover {
 }
 
 .action-btn {
-  border: none;
-  border-radius: 14px;
-  padding: 14px 28px;
   margin-left: 0;
-  font-weight: 600;
-  font-size: 14px;
-  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-width: 150px;
   width: 150px;
   height: 52px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 768px) {
@@ -1282,62 +1276,9 @@ html.dark .legend-item:hover {
   }
 }
 
-.action-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.action-btn:hover::before {
-  left: 100%;
-}
-
-.action-btn:hover {
-  transform: translateY(-3px);
-}
-
-.action-btn:active {
-  transform: translateY(-1px);
-}
-
 .action-btn .fa-icon {
   margin-right: 10px;
   font-size: 15px;
-}
-
-.rebuild-btn {
-  background: var(--color-accent);
-  color: var(--color-accent-foreground, #fff);
-}
-
-.rebuild-btn:hover {
-  box-shadow: var(--shadow-md);
-  background: var(--color-accent-hover, #404040);
-}
-
-.backup-btn {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  color: #fff;
-}
-
-.backup-btn:hover {
-  box-shadow: 0 8px 24px rgba(17, 153, 142, 0.45);
-  background: linear-gradient(135deg, #0f8a80 0%, #32d970 100%);
-}
-
-.restore-btn {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: #fff;
-}
-
-.restore-btn:hover {
-  box-shadow: 0 8px 24px rgba(245, 87, 108, 0.45);
-  background: linear-gradient(135deg, #e085eb 0%, #e04d61 100%);
 }
 
 .restore-section {

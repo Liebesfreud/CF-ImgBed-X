@@ -68,26 +68,12 @@
                     </DirectoryTreePicker>
                 </div>
                 <div class="upload-page-actions ui-scroll-actions" :aria-label="$t('upload.settings')">
-                    <BaseButton class="page-action primary" :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" variant="secondary" @click="handleChangeUploadMethod">
-                        <font-awesome-icon :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" />
-                        <span class="action-label">{{ uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload') }}</span>
-                    </BaseButton>
-                    <BaseButton class="page-action" icon="cloud-upload" variant="secondary" @click="openCompressDialog">
-                        <font-awesome-icon icon="cloud-upload" class="action-icon-only"/>
-                        <span class="action-label">{{ $t('upload.settings') }}</span>
-                    </BaseButton>
-                    <BaseButton class="page-action" icon="link" variant="secondary" @click="openUrlDialog">
-                        <font-awesome-icon icon="link" class="action-icon-only"/>
-                        <span class="action-label">{{ $t('upload.linkFormat') }}</span>
-                    </BaseButton>
-                    
-                    <div class="secondary-actions">
-                        <BaseButton class="page-action icon-only-btn" variant="secondary" @click="showHistory = true" :aria-label="$t('upload.history')">
-                            <font-awesome-icon icon="history" />
-                        </BaseButton>
-                        <BaseButton class="page-action icon-only-btn" variant="secondary" :disabled="!announcementAvailable" @click="handleShowAnnouncement" :aria-label="$t('upload.announcement')">
-                            <font-awesome-icon icon="bullhorn" />
-                        </BaseButton>
+                    <div class="upload-page-action-group upload-page-action-group--tools">
+                        <BaseButton class="page-action icon-only-btn" :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" variant="secondary" @click="handleChangeUploadMethod" :aria-label="uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload')" />
+                        <BaseButton class="page-action icon-only-btn" icon="cloud-upload" variant="secondary" @click="openCompressDialog" :aria-label="$t('upload.settings')" />
+                        <BaseButton class="page-action icon-only-btn" icon="link" variant="secondary" @click="openUrlDialog" :aria-label="$t('upload.linkFormat')" />
+                        <BaseButton class="page-action icon-only-btn" icon="history" variant="secondary" @click="showHistory = true" :aria-label="$t('upload.history')" />
+                        <BaseButton class="page-action icon-only-btn" icon="bullhorn" variant="secondary" :disabled="!announcementAvailable" @click="handleShowAnnouncement" :aria-label="$t('upload.announcement')" />
                     </div>
                 </div>
             </template>
@@ -157,7 +143,6 @@
             v-model:serverCompress="serverCompress"
         />
     </div>
-    <Footer class="footer"/>
     <el-dialog :title="$t('upload.announcementTitle')" v-model="showAnnouncementDialog" :width="dialogWidth" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" center>
         <div v-html="announcementContent"></div>
         <template #footer>
@@ -172,7 +157,6 @@
 
 <script>
 import UploadForm from '@/components/upload/UploadForm.vue'
-import Footer from '@/components/Footer.vue'
 import Logo from '@/components/Logo.vue'
 import DashboardTabs from '@/components/DashboardTabs.vue'
 import UploadHistory from '@/components/upload/UploadHistory.vue'
@@ -350,7 +334,6 @@ export default {
     },
     components: {
         UploadForm,
-        Footer,
         Logo,
         DashboardTabs,
         UploadHistory,
@@ -498,6 +481,7 @@ export default {
     position: sticky;
     top: 12px;
     z-index: 200;
+    box-sizing: border-box;
     width: min(1080px, calc(100% - 32px));
     margin: 10px auto 16px;
     padding: 8px 12px;
@@ -540,7 +524,7 @@ export default {
   .upload-folder {
       width: 100%;
       height: 36px;
-      border-radius: 999px;
+      border-radius: var(--radius-sm);
       transition: box-shadow var(--motion-base) var(--motion-ease);
   }
   
@@ -551,15 +535,21 @@ export default {
   }
 
   .upload-folder :deep(.el-input__wrapper) {
-      background: var(--input-bg, #ffffff);
-      border-radius: 999px;
+      background: var(--color-surface);
+      border-radius: var(--radius-sm);
       box-shadow: var(--shadow-as-border);
       transition: all 0.3s ease;
       padding: 0 16px;
       height: 36px;
   }
 
+  .upload-folder :deep(.el-input__wrapper:hover) {
+      background: var(--color-surface-soft);
+      box-shadow: var(--shadow-as-border-strong);
+  }
+
   .upload-folder :deep(.el-input__wrapper.is-focus) {
+      background: var(--color-surface);
       box-shadow: var(--focus-ring), var(--shadow-as-border-strong);
   }
 
@@ -575,7 +565,7 @@ export default {
   .directory-tree-trigger {
       width: 36px;
       height: 36px;
-      border-radius: 999px !important;
+      border-radius: var(--radius-sm) !important;
       padding: 0;
       display: flex;
       align-items: center;
@@ -603,21 +593,50 @@ export default {
   .upload-page-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
       justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
   }
-  
-  .secondary-actions {
-      display: flex;
+
+  .upload-page-action-group {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--modern-action-group-bg, #fafafa);
       padding: 4px;
-      border-radius: 999px;
+      min-width: 0;
+      border-radius: var(--radius-sm);
+      background: var(--modern-action-group-bg);
       box-shadow: var(--shadow-as-border);
   }
-  
+
+  .upload-page-action-group--primary {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 1 1 auto;
+  }
+
+  .upload-page-action-group--tools {
+      flex: 0 0 auto;
+  }
+
+  .upload-page-actions :deep(.page-action) {
+      min-height: 32px;
+  }
+
+  .upload-page-action-group--tools :deep(.page-action) {
+      background: transparent;
+      box-shadow: none;
+  }
+
+  .upload-page-action-group--tools :deep(.page-action:hover:not(.is-disabled)),
+  .upload-page-action-group--tools :deep(.page-action:focus:not(:focus-visible)),
+  .upload-page-action-group--tools :deep(.page-action:focus-visible) {
+      background: transparent;
+      box-shadow: none;
+  }
+
   .icon-only-btn {
       width: 32px !important;
       height: 32px !important;
@@ -625,9 +644,9 @@ export default {
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      min-width: unset !important;
+      min-width: 32px !important;
   }
-  
+
   .icon-only-btn :deep(.base-button__content) {
       margin: 0 !important;
   }
@@ -644,11 +663,20 @@ export default {
   .upload-page-actions {
       justify-content: flex-end;
   }
-  
-  
+
+
   @media (max-width: 980px) {
     .upload-workspace-panel {
         grid-template-columns: 1fr;
+    }
+
+    .upload-page-actions {
+        justify-content: flex-start;
+    }
+
+    .upload-page-action-group--primary {
+        flex: 1 1 100%;
+        justify-content: flex-start;
     }
 }
 
@@ -665,6 +693,21 @@ export default {
         border-radius: 18px;
     }
 
+    .upload-page-actions {
+        gap: 6px;
+        width: 100%;
+    }
+
+    .upload-page-action-group {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .upload-page-action-group--tools {
+        width: auto;
+        margin-left: auto;
+    }
+
     .upload-page-actions :deep(.base-button) {
         min-height: 34px;
         padding: 0 10px;
@@ -673,6 +716,11 @@ export default {
 
     .upload-page-actions :deep(.base-button__label) {
         display: none;
+    }
+
+    .upload-page-actions :deep(svg) {
+        display: block !important;
+        margin: 0 !important;
     }
 }
 
@@ -753,9 +801,6 @@ box-shadow: var(--dialog-box-shadow);
     position: relative;
 }
 
-.footer {
-    height: 6vh;
-}
 </style>
 
 

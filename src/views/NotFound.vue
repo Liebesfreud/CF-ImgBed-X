@@ -6,14 +6,15 @@
     <div class="not-found-content">
       <!-- 返回首页按钮 -->
       <div class="back-button-wrapper">
-        <el-button 
-          class="back-button" 
+        <BaseButton
+          class="back-button"
           @click="goHome"
-          circle
-          size="large"
+          round
+          size="lg"
+          variant="secondary"
         >
           <font-awesome-icon icon="home" />
-        </el-button>
+        </BaseButton>
       </div>
 
       <!-- 404动画图标 -->
@@ -37,24 +38,25 @@
         
         <!-- 操作按钮 -->
         <div class="error-actions">
-          <el-button 
-            type="primary" 
-            size="large" 
-            class="action-btn primary-btn" 
+          <BaseButton
+            variant="primary"
+            size="lg"
+            class="action-btn primary-btn"
             @click="goHome"
           >
             <font-awesome-icon icon="home" class="btn-icon" />
             返回首页
-          </el-button>
-          
-          <el-button 
-            size="large" 
-            class="action-btn secondary-btn" 
+          </BaseButton>
+
+          <BaseButton
+            size="lg"
+            class="action-btn secondary-btn"
             @click="goBack"
+            variant="secondary"
           >
             <font-awesome-icon icon="arrow-left" class="btn-icon" />
             返回上页
-          </el-button>
+          </BaseButton>
         </div>
         
         <!-- 帮助链接 -->
@@ -140,8 +142,8 @@ export default {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: var(--bg-color, linear-gradient(135deg, #fafafa 0%, #ffffff 100%));
-  color: var(--text-color, #333);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .background-wrapper {
@@ -157,12 +159,11 @@ export default {
   text-align: center;
   z-index: 10;
   max-width: 600px;
-  padding: 2rem;
+  padding: var(--space-xl);
   position: relative;
-  background: rgba(255, 255, 255, 0.1);
-border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 /* 返回按钮 */
@@ -174,23 +175,18 @@ border-radius: 20px;
 }
 
 .back-button {
-  background: var(--toolbar-button-bg-color, rgba(255, 255, 255, 0.9));
-  border: none;
-  color: var(--toolbar-button-text-color, #333);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-as-border-strong);
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .back-button:hover {
   transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-  background: var(--primary-color, #409eff);
-  color: white;
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 /* 404动画部分 */
 .error-animation {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-xl);
   position: relative;
 }
 
@@ -200,16 +196,16 @@ border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  color: var(--primary-color, #409eff);
+  color: var(--color-accent);
 }
 
 .error-number span {
   display: inline-block;
   animation: bounce 2s infinite;
-  background: var(--not-found-title-text-color, linear-gradient(45deg, #409eff, #67c23a));
+  background: linear-gradient(45deg, var(--color-accent), var(--color-success));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -221,8 +217,8 @@ border-radius: 20px;
 
 .error-number .zero {
   animation-delay: -0.25s;
-  color: #f56c6c;
-  -webkit-text-fill-color: #f56c6c;
+  color: var(--color-danger);
+  -webkit-text-fill-color: var(--color-danger);
 }
 
 .error-number .four:last-child {
@@ -232,7 +228,7 @@ border-radius: 20px;
 .error-image {
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0;
+  margin: var(--space-lg) 0;
 }
 
 .floating-image {
@@ -241,10 +237,10 @@ border-radius: 20px;
   object-fit: contain;
   animation: float 3s ease-in-out infinite;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 10px;
-border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-soft);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-as-border);
 }
 
 /* 错误信息 */
@@ -255,9 +251,9 @@ border: 1px solid rgba(255, 255, 255, 0.2);
 .error-title {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--text-color, #333);
-  background: var(--not-found-title-text-color, linear-gradient(45deg, #409eff, #67c23a));
+  margin-bottom: var(--space-md);
+  color: var(--color-text);
+  background: linear-gradient(45deg, var(--color-accent), var(--color-success));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -266,47 +262,33 @@ border: 1px solid rgba(255, 255, 255, 0.2);
 .error-description {
   font-size: 1.1rem;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-xl);
   opacity: 0.8;
-  color: var(--text-color-secondary, #666);
+  color: var(--color-text-muted);
 }
 
 /* 操作按钮 */
 .error-actions {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-md);
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-xl);
 }
 
 .action-btn {
-  border-radius: 25px;
-  padding: 12px 24px;
   font-weight: 600;
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: none;
   min-width: 140px;
-}
-
-.primary-btn {
-  background: var(--primary-color, #409eff);
-  color: white;
-}
-
-.secondary-btn {
-  background: var(--toolbar-button-bg-color, rgba(255, 255, 255, 0.9));
-  color: var(--text-color, #333);
 }
 
 .action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 .btn-icon {
-  margin-right: 8px;
+  margin-right: var(--space-sm);
 }
 
 /* 帮助链接 */
@@ -315,39 +297,39 @@ border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .help-text {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
   opacity: 0.7;
   font-size: 0.9rem;
-  color: var(--text-color-secondary, #666);
+  color: var(--color-text-muted);
 }
 
 .quick-links {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-md);
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .quick-link {
-  color: var(--primary-color, #409eff);
+  color: var(--color-accent);
   text-decoration: none;
   font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
-  background: var(--toolbar-button-bg-color, rgba(255, 255, 255, 0.8));
-transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(64, 158, 255, 0.2);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-soft);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-as-border);
   font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
 }
 
 .quick-link:hover {
-  background: var(--primary-color, #409eff);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(64, 158, 255, 0.3);
+  box-shadow: var(--shadow-as-border-strong);
 }
 
 /* 装饰性元素 */
@@ -363,8 +345,8 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
 
 .floating-shape {
   position: absolute;
-  background: rgba(64, 158, 255, 0.1);
-  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  border-radius: var(--radius-full);
   animation: floatShapes 8s ease-in-out infinite;
 }
 
@@ -458,9 +440,9 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
 /* 响应式设计 */
 @media (max-width: 768px) {
   .not-found-content {
-    padding: 1.5rem;
-    margin: 1rem;
-    max-width: calc(100% - 2rem);
+    padding: var(--space-lg);
+    margin: var(--space-md);
+    max-width: calc(100% - var(--space-xl));
   }
   
   .back-button-wrapper {
@@ -470,7 +452,7 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
   
   .error-number {
     font-size: 4rem;
-    gap: 0.3rem;
+    gap: var(--space-xs);
   }
   
   .error-title {
@@ -492,7 +474,7 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
   
   .quick-links {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-sm);
     align-items: center;
   }
   
@@ -505,33 +487,8 @@ transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s 
   .floating-image {
     width: 80px;
     height: 80px;
-    border-radius: 15px;
-    padding: 8px;
-  }
-}
-
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-  .not-found-container {
-    background: var(--bg-color, linear-gradient(135deg, #2c3e50 0%, #34495e 100%));
-    color: var(--text-color, #e4e7ed);
-  }
-  
-  .not-found-content {
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .error-title {
-    color: var(--text-color, #e4e7ed);
-  }
-  
-  .error-description {
-    color: var(--text-color-secondary, #909399);
-  }
-  
-  .help-text {
-    color: var(--text-color-secondary, #909399);
+    border-radius: var(--radius-xl);
+    padding: var(--space-sm);
   }
 }
 </style>
